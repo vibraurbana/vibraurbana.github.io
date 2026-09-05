@@ -1,0 +1,58 @@
+/* =====================================================================
+   VIBRA URBANA — Design tokens
+   Paleta: negro profundo + blanco + amarillo/dorado como unico acento.
+   Tipografia: Archivo (display, peso 900) para marca/titulos/precios;
+   Inter para texto de UI — dos familias, claramente distintas, ambas
+   cargan rapido desde Google Fonts.
+   ===================================================================== */
+
+:root {
+  /* Color */
+  --color-bg: #111111;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-card: #1d1d1d;
+  --color-border: #2b2b2b;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a6a6a6;
+  --color-accent: #f5c400;
+  --color-accent-hover: #ffd633;
+  --color-accent-text: #111111;
+  --color-ok: #2fbf5f;
+  --color-agotado: #6b6b6b;
+
+  /* Tipografia */
+  --font-display: "Archivo", "Arial Black", sans-serif;
+  --font-body: "Inter", -apple-system, sans-serif;
+
+  --text-hero: clamp(2.1rem, 8vw, 3.4rem);
+  --text-h1: clamp(1.5rem, 5vw, 2.1rem);
+  --text-h2: 1.15rem;
+  --text-h3: 1rem;
+  --text-body: 0.95rem;
+  --text-small: 0.8rem;
+  --text-xs: 0.72rem;
+
+  /* Espaciado (escala 4px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Layout */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --header-h: 60px;
+  --content-max: 1200px;
+
+  /* Movimiento */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --duration: 0ms; }
+}

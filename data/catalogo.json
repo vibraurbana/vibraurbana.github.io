@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "marca": "VIBRA URBANA",
+    "moneda": "Bs",
+    "whatsapp_numero": "59170000000",
+    "generado_en": "2026-09-05T00:00:00-04:00",
+    "fuente": "mock"
+  },
+  "categorias": [
+    { "id": 3, "nombre": "Zapatos", "prefijo": "ZAP" }
+  ],
+  "etiquetas": [
+    { "id": 1, "nombre": "Casuales",    "color": "#F5C400", "orden": 1, "visible_en_chips": true },
+    { "id": 2, "nombre": "Deportivo",   "color": "#F5C400", "orden": 2, "visible_en_chips": true },
+    { "id": 3, "nombre": "Mocassin",    "color": "#F5C400", "orden": 3, "visible_en_chips": true },
+    { "id": 4, "nombre": "Todoterreno", "color": "#F5C400", "orden": 4, "visible_en_chips": true }
+  ],
+  "colores": [
+    { "id": 1, "nombre": "Negro",  "codigo_hex": "#111111" },
+    { "id": 2, "nombre": "Plata",  "codigo_hex": "#c9c9c9" },
+    { "id": 3, "nombre": "Café",   "codigo_hex": "#6b4226" },
+    { "id": 4, "nombre": "Beige Arena", "codigo_hex": "#d8c6a8" }
+  ],
+  "productos": [
+    {
+      "id": 101,
+      "categoria_id": 3,
+      "codigo": "ZAP-0001",
+      "nombre": "Vibra Runner",
+      "marca": "Vibra Urbana",
+      "modelo": "Runner",
+      "etiquetas_ids": [1, 2],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 1,
+          "imagen_principal": "uploads/productos/101/negro/1.jpg",
+          "imagenes": ["uploads/productos/101/negro/1.jpg", "uploads/productos/101/negro/2.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0001-N-39", "talla": "39", "stock": 4, "precio": 320 },
+            { "sku": "ZAP-0001-N-40", "talla": "40", "stock": 6, "precio": 320 },
+            { "sku": "ZAP-0001-N-41", "talla": "41", "stock": 0, "precio": 320 },
+            { "sku": "ZAP-0001-N-42", "talla": "42", "stock": 3, "precio": 320 }
+          ]
+        },
+        {
+          "color_id": 2,
+          "imagen_principal": "uploads/productos/101/plata/1.jpg",
+          "imagenes": ["uploads/productos/101/plata/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0001-P-40", "talla": "40", "stock": 5, "precio": 320 },
+            { "sku": "ZAP-0001-P-41", "talla": "41", "stock": 5, "precio": 320 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "categoria_id": 3,
+      "codigo": "ZAP-0002",
+      "nombre": "Urban Classic",
+      "marca": "Vibra Urbana",
+      "modelo": "Classic",
+      "etiquetas_ids": [1],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 3,
+          "imagen_principal": "uploads/productos/102/cafe/1.jpg",
+          "imagenes": ["uploads/productos/102/cafe/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0002-C-40", "talla": "40", "stock": 8, "precio": 280 },
+            { "sku": "ZAP-0002-C-41", "talla": "41", "stock": 8, "precio": 280 },
+            { "sku": "ZAP-0002-C-42", "talla": "42", "stock": 2, "precio": 280 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "categoria_id": 3,
+      "codigo": "ZAP-0003",
+      "nombre": "Street Flex",
+      "marca": "Vibra Urbana",
+      "modelo": "Flex",
+      "etiquetas_ids": [2],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 1,
+          "imagen_principal": "uploads/productos/103/negro/1.jpg",
+          "imagenes": ["uploads/productos/103/negro/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0003-N-39", "talla": "39", "stock": 10, "precio": 300 },
+            { "sku": "ZAP-0003-N-40", "talla": "40", "stock": 10, "precio": 300 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "categoria_id": 3,
+      "codigo": "ZAP-0004",
+      "nombre": "Hiker Pro",
+      "marca": "Vibra Urbana",
+      "modelo": "Pro",
+      "etiquetas_ids": [4],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 4,
+          "imagen_principal": "uploads/productos/104/beige/1.jpg",
+          "imagenes": ["uploads/productos/104/beige/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0004-B-41", "talla": "41", "stock": 0, "precio": 350 },
+            { "sku": "ZAP-0004-B-42", "talla": "42", "stock": 0, "precio": 350 }
+          ]
+        }
+      ]
+    }
+  ]
+}
