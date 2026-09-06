@@ -123,6 +123,13 @@ button { font-family: inherit; cursor: pointer; }
   padding: 0 3px;
 }
 
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.cart-badge.is-bump { animation: cartBump 320ms var(--ease); }
+
 .site-header__nav {
   display: none;
 }
@@ -280,6 +287,7 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 700;
   letter-spacing: 0.02em;
   white-space: nowrap;
+  transition: background var(--duration) var(--ease), border-color var(--duration) var(--ease), color var(--duration) var(--ease);
 }
 
 .chip.is-active {
@@ -310,6 +318,15 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   position: relative;
+  transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+@media (hover: hover) {
+  .product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+  }
+  .product-card:hover .product-card__media img { transform: scale(1.04); }
 }
 
 .product-card__media {
@@ -324,6 +341,7 @@ button { font-family: inherit; cursor: pointer; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 320ms var(--ease), opacity var(--duration) var(--ease);
 }
 
 .product-card__fav {
@@ -339,7 +357,9 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform var(--duration) var(--ease), color var(--duration) var(--ease);
 }
+.product-card__fav:active { transform: scale(0.85); }
 
 .product-card__tag {
   position: absolute;
@@ -487,3 +507,49 @@ button { font-family: inherit; cursor: pointer; }
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ---------- Skeletons (mientras carga catalogo.json) ---------- */
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+
+.skeleton-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-card__media {
+  aspect-ratio: 4 / 5;
+  background: var(--color-bg-elevated);
+  animation: skeletonPulse 1.3s ease-in-out infinite;
+}
+
+.skeleton-card__line {
+  height: 10px;
+  border-radius: 4px;
+  background: var(--color-bg-elevated);
+  margin: var(--space-3) var(--space-3) 0;
+  animation: skeletonPulse 1.3s ease-in-out infinite;
+}
+.skeleton-card__line--sm { width: 40%; }
+.skeleton-card__line--lg { width: 70%; margin-bottom: var(--space-3); }
+
+.skeleton-chip {
+  height: 34px;
+  width: 84px;
+  border-radius: 999px;
+  background: var(--color-bg-elevated);
+  animation: skeletonPulse 1.3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ---------- Fade-in generico para contenido que reemplaza a un skeleton ---------- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeInUp 260ms var(--ease); }

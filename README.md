@@ -90,9 +90,8 @@ cambiar la forma de los datos, solo el origen.
 | 2 | Catálogo: grid, chips de etiquetas, buscador, orden, filtro color/talla | ✅ Entregado |
 | 3 | Detalle de producto: galería por color, selector color/talla, precio y stock por variante | ✅ Entregado |
 | 4 | Carrito (localStorage) + botón "Consultar por WhatsApp" con mensaje autogenerado | ✅ Entregado |
-| 5 | Pulido responsive, estados vacío/agotado, microanimaciones | Próximo |
-| 5 | Pulido responsive, estados vacío/agotado, microanimaciones | Pendiente |
-| 6 | Esquema final de `catalogo.json` + checklist de exportación | Pendiente |
+| 5 | Pulido responsive, estados vacío/agotado, microanimaciones | ✅ Entregado |
+| 6 | Esquema final de `catalogo.json` + checklist de exportación | Próximo |
 | 7 | Conexión real: script en CI4 que genera `catalogo.json` + copia imágenes a `uploads/` | Al final, no se toca el sistema actual hasta llegar acá |
 
 ## Notas de esta entrega (Fase 1)
@@ -178,3 +177,36 @@ cambiar la forma de los datos, solo el origen.
 - Estado vacío: ícono de carrito + "Tu carrito está vacío" + botón directo
   a "Ver zapatos", igual criterio visual que el resto de los estados vacíos
   del sitio.
+
+## Notas de la Fase 5 (Pulido responsive + microanimaciones)
+
+- **Breakpoint de tablet (640–1023px)** en las 4 páginas: grillas de 3
+  columnas en vez de saltar directo de 2 (mobile) a 4 (desktop), y
+  `producto.html`/`carrito.html` se centran con un ancho máximo en vez de
+  estirarse hasta el borde.
+- **Skeletons de carga** — Home y Catálogo muestran placeholders
+  pulsantes (mismo tamaño que las cards/chips reales) mientras
+  `catalogo.json` está en camino, en vez de una pantalla en blanco. Con el
+  JSON local es casi instantáneo, pero en GitHub Pages con una conexión
+  de TikTok promedio sí se va a notar.
+- **Microanimaciones agregadas:**
+  - Product card: se levanta un poco y la foto hace zoom sutil al pasar
+    el mouse (solo en dispositivos con hover real, no interfiere en touch).
+  - Galería de producto: fade entre fotos al cambiar de color o miniatura,
+    en vez de un salto brusco.
+  - Swatches de color y chips de talla: feedback de "presionado" al
+    tocar, y el color activo se agranda levemente.
+  - Ícono del carrito: "bump" (rebote) cada vez que sube la cantidad —
+    agregar producto, sumar unidades en el carrito.
+  - Item del carrito: se desliza y se achica antes de desaparecer al
+    quitarlo, en vez de saltar de golpe.
+  - Popovers de Color/Talla en el catálogo: entran con un fade + slide
+    corto en vez de aparecer de golpe.
+- **`prefers-reduced-motion` respetado de verdad** — agregué una regla
+  global que apaga (casi) todas las transiciones/animaciones del sitio si
+  el usuario tiene esa preferencia activada en su sistema, no solo las que
+  usan la variable `--duration`.
+- No hay nada "roto" que arreglar de estados vacío/agotado — ya estaban
+  bien desde las Fases 2-4; esta fase los dejó visualmente más pulidos
+  (mismo lenguaje visual, sin inconsistencias entre páginas) en vez de
+  rehacerlos.

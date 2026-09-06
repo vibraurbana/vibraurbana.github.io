@@ -43,7 +43,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 200ms var(--ease);
 }
+.galeria__principal img.is-cambiando { opacity: 0; }
 
 .galeria__contador {
   position: absolute;
@@ -75,7 +77,9 @@
   background: #1c1c1c;
   flex-shrink: 0;
   padding: 0;
+  transition: border-color var(--duration) var(--ease), transform var(--duration) var(--ease);
 }
+.galeria__miniatura:active { transform: scale(0.93); }
 .galeria__miniatura img { width: 100%; height: 100%; object-fit: cover; }
 .galeria__miniatura.is-active { border-color: var(--color-accent); }
 
@@ -169,13 +173,18 @@
   padding: 3px;
   position: relative;
   background-clip: content-box;
+  transition: transform var(--duration) var(--ease), border-color var(--duration) var(--ease);
 }
 .color-swatch.is-active {
   border-color: var(--color-accent);
+  transform: scale(1.08);
 }
 .color-swatch[disabled] {
   opacity: 0.3;
   cursor: not-allowed;
+}
+@media (hover: hover) {
+  .color-swatch:not([disabled]):hover { transform: scale(1.08); }
 }
 
 /* Chips de talla */
@@ -196,7 +205,9 @@
   font-weight: 700;
   font-size: 0.88rem;
   position: relative;
+  transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease), transform var(--duration) var(--ease);
 }
+.talla-chip:active:not([disabled]) { transform: scale(0.94); }
 
 .talla-chip.is-active {
   border-color: var(--color-accent);
@@ -299,6 +310,12 @@
   color: var(--color-text-muted);
 }
 .producto-empty strong { display: block; color: var(--color-text); font-size: 1.1rem; margin-bottom: var(--space-2); }
+
+/* ---------- Tablet: mismo layout apilado que mobile, pero centrado
+   y con un ancho maximo para que no se estire demasiado la galeria ---------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .producto-layout { max-width: 560px; margin: 0 auto; }
+}
 
 /* ---------- Desktop ---------- */
 @media (min-width: 1024px) {

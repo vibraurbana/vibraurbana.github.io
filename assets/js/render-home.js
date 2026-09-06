@@ -1,6 +1,7 @@
 import { cargarCatalogo } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { tarjetaProductoHTML, RUTA_PLACEHOLDER } from "./product-card.js";
+import { skeletonCards, skeletonStyleCards } from "./skeleton.js";
 
 const MAX_DESTACADOS = 4;
 
@@ -18,6 +19,9 @@ async function iniciar() {
   const estiloGrid = document.querySelector("[data-style-grid]");
   const productoGrid = document.querySelector("[data-destacados-grid]");
 
+  if (estiloGrid) estiloGrid.innerHTML = skeletonStyleCards(4);
+  if (productoGrid) productoGrid.innerHTML = skeletonCards(MAX_DESTACADOS);
+
   try {
     const catalogo = await cargarCatalogo();
 
@@ -26,6 +30,7 @@ async function iniciar() {
         .filter((e) => e.visible_en_chips)
         .sort((a, b) => (a.orden || 0) - (b.orden || 0));
       estiloGrid.innerHTML = visibles.map(tarjetaEstilo).join("");
+      estiloGrid.classList.add("fade-in");
     }
 
     if (productoGrid) {
@@ -33,6 +38,7 @@ async function iniciar() {
         .filter((p) => p.activo !== false)
         .slice(0, MAX_DESTACADOS);
       productoGrid.innerHTML = destacados.map((p) => tarjetaProductoHTML(catalogo, p)).join("");
+      productoGrid.classList.add("fade-in");
     }
   } catch (err) {
     console.error(err);

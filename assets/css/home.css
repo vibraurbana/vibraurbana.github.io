@@ -143,6 +143,13 @@
 .trust-item strong { display: block; font-size: 0.85rem; }
 .trust-item span { font-size: 0.75rem; color: var(--color-text-muted); }
 
+/* ---------- Tablet ---------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .style-grid { grid-template-columns: repeat(4, 1fr); }
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+  .features { max-width: 480px; margin: 0 auto; }
+}
+
 /* ---------- Desktop ---------- */
 @media (min-width: 1024px) {
   .hero {

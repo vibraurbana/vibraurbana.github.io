@@ -1,6 +1,7 @@
 import { cargarCatalogo, precioDesde } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { tarjetaProductoHTML } from "./product-card.js";
+import { skeletonCards, skeletonChips } from "./skeleton.js";
 
 const estado = {
   q: "",
@@ -11,6 +12,7 @@ const estado = {
 };
 
 let catalogoGlobal = null;
+let primerRenderGrid = true;
 
 const els = {};
 
@@ -169,6 +171,11 @@ function actualizar() {
     ? filtrados.map((p) => tarjetaProductoHTML(catalogoGlobal, p)).join("")
     : "";
 
+  if (primerRenderGrid) {
+    els.grid.classList.add("fade-in");
+    primerRenderGrid = false;
+  }
+
   els.empty.hidden = filtrados.length !== 0;
 
   const n = filtrados.length;
@@ -255,6 +262,9 @@ async function iniciar() {
   els.panelTalla = document.querySelector("[data-panel-talla]");
   els.resetColor = document.querySelector("[data-reset-color]");
   els.resetTalla = document.querySelector("[data-reset-talla]");
+
+  els.chips.innerHTML = skeletonChips(5);
+  els.grid.innerHTML = skeletonCards(8);
 
   try {
     catalogoGlobal = await cargarCatalogo();

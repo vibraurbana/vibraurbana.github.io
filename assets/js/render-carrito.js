@@ -58,9 +58,26 @@ function iniciarEventosItems() {
   });
   els.lista.querySelectorAll("[data-quitar]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      eliminarDelCarrito(btn.dataset.quitar);
-      pintarContadorCarrito();
-      render();
+      const sku = btn.dataset.quitar;
+      const fila = els.lista.querySelector(`[data-sku="${sku}"]`);
+
+      if (!fila) {
+        eliminarDelCarrito(sku);
+        pintarContadorCarrito();
+        render();
+        return;
+      }
+
+      fila.classList.add("is-saliendo");
+      fila.addEventListener(
+        "transitionend",
+        () => {
+          eliminarDelCarrito(sku);
+          pintarContadorCarrito();
+          render();
+        },
+        { once: true }
+      );
     });
   });
 }

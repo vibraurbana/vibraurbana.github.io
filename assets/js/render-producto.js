@@ -54,9 +54,19 @@ function renderGaleria() {
   const imagenes = (color && color.imagenes && color.imagenes.length ? color.imagenes : [RUTA_PLACEHOLDER]);
   const idx = Math.min(estado.miniaturaIndex, imagenes.length - 1);
 
-  els.galeriaImg.src = imagenes[idx];
-  els.galeriaImg.alt = producto.nombre;
-  els.galeriaImg.onerror = () => { els.galeriaImg.src = RUTA_PLACEHOLDER; };
+  const cambiarImagen = () => {
+    els.galeriaImg.src = imagenes[idx];
+    els.galeriaImg.alt = producto.nombre;
+    els.galeriaImg.onerror = () => { els.galeriaImg.src = RUTA_PLACEHOLDER; };
+    requestAnimationFrame(() => els.galeriaImg.classList.remove("is-cambiando"));
+  };
+
+  if (els.galeriaImg.src) {
+    els.galeriaImg.classList.add("is-cambiando");
+    setTimeout(cambiarImagen, 140);
+  } else {
+    cambiarImagen();
+  }
 
   els.galeriaContador.textContent = `${idx + 1}/${imagenes.length}`;
   els.galeriaContador.hidden = imagenes.length <= 1;
