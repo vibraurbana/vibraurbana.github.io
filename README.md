@@ -158,6 +158,92 @@ cambiar la forma de los datos, solo el origen.
   usando las imágenes de `producto.colores[].imagenes` — mismo criterio que
   tu tabla `producto_imagenes` (imágenes por producto + color).
 
+## Modo remoto — leer directo del CI4 (sin copiar archivos)
+
+En vez del plan original de "exportar y subir archivos a mano", este
+catálogo-web puede leer `catalogo.json` **directo del servidor donde vive
+tu CI4**, incluyendo las imágenes de su `uploads/` tal cual están — sin
+duplicar nada. Se activa con un solo valor en `assets/js/config.js`:
+
+```js
+export const CATALOGO_BASE_URL = "https://tu-dominio-o-ip.com"; // sin barra final
+```
+
+Vacío (`""`) = sigue en modo local con el JSON mock de este repo (lo que
+usamos en las Fases 1-5). Con un valor, `data.js` lee
+`<CATALOGO_BASE_URL>/catalogo.json` y arma cada imagen como
+`<CATALOGO_BASE_URL>/<ruta del json>` automáticamente — no hay que tocar
+nada más en el resto del código.
+
+### Checklist de factibilidad — correr ANTES de poner la URL real
+
+Estas son pruebas contra **tu** servidor CI4, para confirmar que el modo
+remoto realmente va a funcionar antes de depender de él. Reemplazá
+`https://tu-dominio.com` por tu URL real en cada comando.
+
+**1. Certificado HTTPS válido**
+```bash
+curl -vI https://tu-dominio.com/catalogo.json 2>&1 | grep -i "SSL certificate\|subject\|expire"
+```
+o simplemente abrí esa URL en el navegador: si el candado sale roto/tachado,
+o Chrome avisa "no seguro", el modo remoto no va a funcionar (los
+navegadores bloquean `fetch` a HTTPS con certificado inválido, sin
+excepción posible desde el código).
+
+**2. `catalogo.json` responde y tiene CORS**
+```bash
+curl -I https://tu-dominio.com/catalogo.json
+```
+Tiene que devolver `200 OK` y, en las cabeceras, algo como
+`Access-Control-Allow-Origin: *` (o al menos el dominio de GitHub Pages).
+Prueba más directa, pegá esto en la consola del navegador (F12) estando en
+**cualquier** página, incluso `localhost`:
+```js
+fetch('https://tu-dominio.com/catalogo.json').then(r => r.json()).then(console.log).catch(console.error)
+```
+Si sale un error mencionando **"CORS policy"** o **"blocked by CORS"**,
+falta ese header del lado del servidor — es la causa más común de que esto
+falle en la práctica, y el navegador no explica cómo arreglarlo desde acá.
+
+**3. `uploads/` accesible sin sesión/login**
+```bash
+curl -I https://tu-dominio.com/uploads/productos/101/negro/1.jpg
+```
+(usá una ruta real que exista en tu servidor). Tiene que dar `200` con un
+`Content-Type: image/...`. Si da `302` (redirección a login), `403`
+(prohibido) o `404` con una ruta que sabés que existe, significa que esas
+imágenes hoy se sirven a través de un controlador PHP con sesión/permisos,
+no como archivos estáticos — y en ese caso hay que exponer esa carpeta
+aparte (o crear una ruta pública específica solo para lectura).
+También podés simplemente abrir esa URL de imagen en una pestaña de
+incógnito (sin haber iniciado sesión en el CI4): si la ves, está bien
+expuesta.
+
+**4. Cache-Control razonable**
+```bash
+curl -I https://tu-dominio.com/catalogo.json
+```
+Mirá el header `Cache-Control`. Si no existe, o dice algo como `max-age`
+de varios días, el navegador de un cliente puede quedarse con una versión
+vieja del catálogo un buen rato después de que regeneres el JSON. Un
+`max-age=300` (5 min) o `no-cache` es razonable para este archivo puntual
+(no hace falta tocar el resto de la configuración del servidor).
+
+**5. Prueba de punta a punta (la que realmente confirma todo)**
+Con los 4 puntos anteriores en verde, poné la URL real en `config.js`,
+corré el catalogo-web local (`python3 -m http.server 8080`) y abrí
+`catalogo.html` con la consola del navegador abierta. Si carga el grid con
+tus productos reales y las fotos reales, andás. Si algo falla, el error
+en consola va a decir exactamente cuál de los 4 puntos de arriba es.
+
+### Nota sobre carritos ya guardados
+
+Si venís probando el carrito desde las Fases 3-4 con el modo local, esas
+líneas del carrito tienen rutas de imagen del JSON mock guardadas tal
+cual. Al pasar a modo remoto, lo más prolijo es limpiar ese carrito de
+prueba (`localStorage.clear()` en la consola del navegador) para que las
+próximas líneas ya guarden la URL resuelta correctamente.
+
 ## Notas de la Fase 4 (Carrito + WhatsApp)
 
 - El carrito lee directo de `localStorage` (lo que ya guarda la Fase 3) —

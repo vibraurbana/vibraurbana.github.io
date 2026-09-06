@@ -1,4 +1,4 @@
-import { formatearPrecio, precioDesde, tieneStockDisponible, imagenPrincipal } from "./data.js";
+import { formatearPrecio, precioDesde, tieneStockDisponible, imagenPrincipal, resolverImagen } from "./data.js";
 import { iconos } from "./icons.js";
 
 export const RUTA_PLACEHOLDER = "assets/icons/shoe-placeholder.svg";
@@ -6,7 +6,8 @@ export const RUTA_PLACEHOLDER = "assets/icons/shoe-placeholder.svg";
 export function tarjetaProductoHTML(catalogo, producto) {
   const desde = precioDesde(producto);
   const disponible = tieneStockDisponible(producto);
-  const imagen = imagenPrincipal(producto) || RUTA_PLACEHOLDER;
+  const rutaImagen = imagenPrincipal(producto);
+  const imagen = rutaImagen ? resolverImagen(rutaImagen) : RUTA_PLACEHOLDER;
   const primeraEtiquetaId = (producto.etiquetas_ids || [])[0];
   const primeraEtiqueta = (catalogo.etiquetas || []).find((e) => e.id === primeraEtiquetaId);
 

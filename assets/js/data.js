@@ -1,8 +1,13 @@
-// Único punto de acceso a los datos del catálogo. Hoy lee un JSON mock;
-// en la Fase 7 esto seguirá apuntando a "data/catalogo.json", solo que
-// ese archivo lo generará el sistema CI4 en vez de estar escrito a mano.
+import { CATALOGO_BASE_URL } from "./config.js";
 
-const RUTA_CATALOGO = "data/catalogo.json";
+// Único punto de acceso a los datos del catálogo. En modo local lee un
+// JSON mock; en modo remoto (ver config.js) apunta al catalogo.json que
+// genera el sistema CI4 en su propio servidor -- misma forma de datos,
+// solo cambia de dónde se leen.
+
+const RUTA_CATALOGO = CATALOGO_BASE_URL
+  ? `${CATALOGO_BASE_URL.replace(/\/$/, "")}/catalogo.json`
+  : "data/catalogo.json";
 
 let catalogoCache = null;
 
@@ -15,6 +20,22 @@ export async function cargarCatalogo() {
   }
   catalogoCache = await res.json();
   return catalogoCache;
+}
+
+/**
+ * Resuelve una ruta de imagen tal como viene en catalogo.json.
+ * - Modo local: la deja igual (ruta relativa a este proyecto).
+ * - Modo remoto: la antepone con CATALOGO_BASE_URL para que apunte a
+ *   uploads/ del servidor CI4 en vez de a este repo.
+ * - Si ya viene una URL absoluta (http/https), no la toca.
+ * No usar esto con RUTA_PLACEHOLDER (assets/icons/...): ese es un
+ * recurso propio de este proyecto, no un dato del catálogo.
+ */
+export function resolverImagen(ruta) {
+  if (!ruta) return ruta;
+  if (/^https?:\/\//i.test(ruta)) return ruta;
+  if (!CATALOGO_BASE_URL) return ruta;
+  return `${CATALOGO_BASE_URL.replace(/\/$/, "")}/${ruta.replace(/^\//, "")}`;
 }
 
 export function formatearPrecio(valor, moneda) {

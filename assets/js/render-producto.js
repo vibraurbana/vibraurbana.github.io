@@ -1,4 +1,4 @@
-import { cargarCatalogo, formatearPrecio, etiquetasDeProducto } from "./data.js";
+import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen } from "./data.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
@@ -51,7 +51,8 @@ function elegirTallaInicial(colorId) {
 /* ---------- Render: galeria ---------- */
 function renderGaleria() {
   const color = colorDelProducto(estado.colorId);
-  const imagenes = (color && color.imagenes && color.imagenes.length ? color.imagenes : [RUTA_PLACEHOLDER]);
+  const rutasCrudas = color && color.imagenes && color.imagenes.length ? color.imagenes : null;
+  const imagenes = rutasCrudas ? rutasCrudas.map(resolverImagen) : [RUTA_PLACEHOLDER];
   const idx = Math.min(estado.miniaturaIndex, imagenes.length - 1);
 
   const cambiarImagen = () => {
@@ -257,7 +258,9 @@ function iniciarAgregar() {
       talla: variante.talla,
       precio: variante.precio,
       cantidad: estado.cantidad,
-      imagen: (colorProducto && colorProducto.imagen_principal) || RUTA_PLACEHOLDER,
+      imagen: (colorProducto && colorProducto.imagen_principal)
+        ? resolverImagen(colorProducto.imagen_principal)
+        : RUTA_PLACEHOLDER,
     });
 
     pintarContadorCarrito();
