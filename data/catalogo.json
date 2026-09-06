@@ -51,15 +51,36 @@
     "etiquetas": [
         {
             "id": 1,
-            "nombre": "Casuales",
+            "nombre": "CASUALES",
             "color": null,
             "orden": 0,
             "visible_en_chips": true
         },
         {
             "id": 2,
-            "nombre": "Mocasin",
-            "color": null,
+            "nombre": "TODO TERRENO",
+            "color": "#666666",
+            "orden": 0,
+            "visible_en_chips": true
+        },
+        {
+            "id": 3,
+            "nombre": "DEPORTIVOS",
+            "color": "#22CC00",
+            "orden": 0,
+            "visible_en_chips": true
+        },
+        {
+            "id": 4,
+            "nombre": "BOTINES",
+            "color": "#66CCDD",
+            "orden": 0,
+            "visible_en_chips": true
+        },
+        {
+            "id": 5,
+            "nombre": "MOCASINES",
+            "color": "#8041F8",
             "orden": 0,
             "visible_en_chips": true
         }

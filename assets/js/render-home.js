@@ -1,4 +1,4 @@
-import { cargarCatalogo } from "./data.js";
+import { cargarCatalogo, resolverImagen } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { tarjetaProductoHTML, RUTA_PLACEHOLDER } from "./product-card.js";
 import { skeletonCards, skeletonStyleCards } from "./skeleton.js";
@@ -6,10 +6,20 @@ import { skeletonCards, skeletonStyleCards } from "./skeleton.js";
 const MAX_DESTACADOS = 4;
 
 function tarjetaEstilo(etiqueta) {
+  const nombreArchivo = etiqueta.nombre
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "_");
+  const imagenEstilo = `assets/img/${nombreArchivo}.png`;
+  const productoFallback = etiqueta.imagen_fallback || RUTA_PLACEHOLDER;
+
   return `
-    <a class="style-card" href="catalogo.html?etiqueta=${etiqueta.id}">
-      <span class="style-card__media"><img src="${RUTA_PLACEHOLDER}" alt="" aria-hidden="true"></span>
-      <span class="style-card__label">${etiqueta.nombre}</span>
+    <a class="style-card" href="catalogo.html?etiqueta=${etiqueta.id}" aria-label="Ver ${etiqueta.nombre}">
+      <span class="style-card__media">
+        <img src="${imagenEstilo}" alt="${etiqueta.nombre}" data-fallback="${productoFallback}">
+        <span class="style-card__caption"><strong>${etiqueta.nombre}</strong><span aria-hidden="true">→</span></span>
+      </span>
     </a>`;
 }
 
@@ -19,7 +29,7 @@ async function iniciar() {
   const estiloGrid = document.querySelector("[data-style-grid]");
   const productoGrid = document.querySelector("[data-destacados-grid]");
 
-  if (estiloGrid) estiloGrid.innerHTML = skeletonStyleCards(4);
+  if (estiloGrid) estiloGrid.innerHTML = skeletonStyleCards(5);
   if (productoGrid) productoGrid.innerHTML = skeletonCards(MAX_DESTACADOS);
 
   try {
@@ -29,7 +39,27 @@ async function iniciar() {
       const visibles = (catalogo.etiquetas || [])
         .filter((e) => e.visible_en_chips)
         .sort((a, b) => (a.orden || 0) - (b.orden || 0));
-      estiloGrid.innerHTML = visibles.map(tarjetaEstilo).join("");
+      const productos = (catalogo.productos || []).filter((p) => p.activo !== false);
+      const tarjetas = visibles.map((etiqueta) => {
+        const producto = productos.find((p) => (p.etiquetas_ids || []).includes(etiqueta.id)) || productos.find((p) => {
+          const nombre = (p.nombre || "").toLowerCase();
+          const termino = etiqueta.nombre.toLowerCase().split(" ")[0];
+          return nombre.includes(termino);
+        });
+        return tarjetaEstilo({
+          ...etiqueta,
+          imagen_fallback: producto?.colores?.[0]?.imagen_principal
+            ? resolverImagen(producto.colores[0].imagen_principal)
+            : RUTA_PLACEHOLDER,
+        });
+      });
+      estiloGrid.innerHTML = tarjetas.join("");
+      estiloGrid.querySelectorAll("img[data-fallback]").forEach((img) => {
+        img.addEventListener("error", () => {
+          if (img.src.endsWith(img.dataset.fallback)) return;
+          img.src = img.dataset.fallback;
+        }, { once: true });
+      });
       estiloGrid.classList.add("fade-in");
     }
 

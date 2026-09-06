@@ -88,6 +88,12 @@ button { font-family: inherit; cursor: pointer; }
   display: block;
 }
 
+.brand__picture { display: block; }
+
+@media (max-width: 639px) {
+  .brand__logo { width: 42px; height: 42px; object-fit: contain; }
+}
+
 .brand__main {
   font-family: var(--font-display);
   font-weight: 900;
@@ -230,6 +236,10 @@ button { font-family: inherit; cursor: pointer; }
   }
   .site-header__search input:focus { outline: none; }
   .site-header__search-mobile { display: none; }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .brand__logo { width: 108px; }
 }
 
 /* ---------- Botones ---------- */
