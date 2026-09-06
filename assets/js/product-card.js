@@ -1,4 +1,4 @@
-import { formatearPrecio, precioDesde, tieneStockDisponible, imagenPrincipal, resolverImagen } from "./data.js";
+import { formatearPrecio, precioDesde, tieneStockDisponible, imagenPrincipal, resolverImagen, categoriaDeProducto } from "./data.js";
 import { iconos } from "./icons.js";
 
 export const RUTA_PLACEHOLDER = "assets/icons/shoe-placeholder.svg";
@@ -10,9 +10,11 @@ export function tarjetaProductoHTML(catalogo, producto) {
   const imagen = rutaImagen ? resolverImagen(rutaImagen) : RUTA_PLACEHOLDER;
   const primeraEtiquetaId = (producto.etiquetas_ids || [])[0];
   const primeraEtiqueta = (catalogo.etiquetas || []).find((e) => e.id === primeraEtiquetaId);
+  const categoria = categoriaDeProducto(catalogo, producto);
+  const claseCategoria = categoria?.nombre === "Zapato" ? " product-card--shoe" : "";
 
   return `
-    <a class="product-card" href="producto.html?id=${producto.id}">
+    <a class="product-card${claseCategoria}" href="producto.html?id=${producto.id}">
       <span class="product-card__media">
         ${primeraEtiqueta ? `<span class="product-card__tag">${primeraEtiqueta.nombre}</span>` : ""}
         <button class="product-card__fav" type="button" aria-label="Guardar en favoritos" onclick="event.preventDefault()">${iconos.corazon}</button>

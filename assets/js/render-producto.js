@@ -1,4 +1,4 @@
-import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen } from "./data.js";
+import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, categoriaDeProducto } from "./data.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
@@ -201,6 +201,8 @@ function renderPrecioYDisponibilidad() {
 }
 
 function renderTodo() {
+  const categoria = categoriaDeProducto(catalogo, producto);
+  els.galeria.classList.toggle("galeria--shoe", categoria?.nombre === "Zapato");
   renderGaleria();
   renderColores();
   renderTallas();
@@ -287,6 +289,7 @@ async function iniciar() {
   iniciarHeader();
 
   els.miga = document.querySelector("[data-miga]");
+  els.galeria = document.querySelector(".galeria");
   els.galeriaImg = document.querySelector("[data-galeria-img]");
   els.galeriaContador = document.querySelector("[data-galeria-contador]");
   els.miniaturas = document.querySelector("[data-miniaturas]");

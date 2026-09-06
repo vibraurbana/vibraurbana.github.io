@@ -39,12 +39,17 @@
   position: relative;
 }
 
+.galeria--shoe .galeria__principal {
+  aspect-ratio: 4 / 3;
+}
+
 .galeria__principal img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: opacity 200ms var(--ease);
 }
+.galeria--shoe .galeria__principal img { object-fit: contain; }
 .galeria__principal img.is-cambiando { opacity: 0; }
 
 .galeria__contador {
