@@ -15,4 +15,4 @@
 // sin CORS o sin HTTPS no va a cargar, y esto no tiene forma de avisar
 // mas que el error silencioso en la consola del navegador.
 //export const CATALOGO_BASE_URL = "";
-export const CATALOGO_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public/catalogo.json";
+export const CATALOGO_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public";
