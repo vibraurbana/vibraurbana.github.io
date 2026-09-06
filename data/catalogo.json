@@ -121,6 +121,95 @@
           ]
         }
       ]
+    },
+    {
+      "id": 105,
+      "categoria_id": 3,
+      "codigo": "ZAP-0005",
+      "nombre": "Vibra Sport A1",
+      "marca": "Vibra Urbana",
+      "modelo": "Sport A1",
+      "etiquetas_ids": [2],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 1,
+          "imagen_principal": "uploads/productos/105/negro/1.jpg",
+          "imagenes": ["uploads/productos/105/negro/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0005-N-39", "talla": "39", "stock": 6, "precio": 320 },
+            { "sku": "ZAP-0005-N-40", "talla": "40", "stock": 6, "precio": 320 },
+            { "sku": "ZAP-0005-N-41", "talla": "41", "stock": 6, "precio": 320 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "categoria_id": 3,
+      "codigo": "ZAP-0006",
+      "nombre": "Vibra Sport A2",
+      "marca": "Vibra Urbana",
+      "modelo": "Sport A2",
+      "etiquetas_ids": [2],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 2,
+          "imagen_principal": "uploads/productos/106/plata/1.jpg",
+          "imagenes": ["uploads/productos/106/plata/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0006-P-40", "talla": "40", "stock": 4, "precio": 320 },
+            { "sku": "ZAP-0006-P-41", "talla": "41", "stock": 4, "precio": 320 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "categoria_id": 3,
+      "codigo": "ZAP-0007",
+      "nombre": "Vibra Light",
+      "marca": "Vibra Urbana",
+      "modelo": "Light",
+      "etiquetas_ids": [1, 3],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 4,
+          "imagen_principal": "uploads/productos/107/beige/1.jpg",
+          "imagenes": ["uploads/productos/107/beige/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0007-B-38", "talla": "38", "stock": 3, "precio": 300 },
+            { "sku": "ZAP-0007-B-39", "talla": "39", "stock": 3, "precio": 300 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "categoria_id": 3,
+      "codigo": "ZAP-0008",
+      "nombre": "Vibra Boost",
+      "marca": "Vibra Urbana",
+      "modelo": "Boost",
+      "etiquetas_ids": [2, 4],
+      "es_unico": false,
+      "activo": true,
+      "colores": [
+        {
+          "color_id": 3,
+          "imagen_principal": "uploads/productos/108/cafe/1.jpg",
+          "imagenes": ["uploads/productos/108/cafe/1.jpg"],
+          "variantes": [
+            { "sku": "ZAP-0008-C-42", "talla": "42", "stock": 7, "precio": 330 },
+            { "sku": "ZAP-0008-C-43", "talla": "43", "stock": 7, "precio": 330 }
+          ]
+        }
+      ]
     }
   ]
 }

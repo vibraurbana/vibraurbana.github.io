@@ -52,6 +52,14 @@ assets/js/
                         por todas las páginas)
   icons.js             Set de íconos SVG inline (sin librería externa)
   render-home.js        Pinta la Home a partir de catalogo.json
+  render-catalogo.js     Pinta el Catálogo: filtros, búsqueda, orden
+  render-producto.js      Pinta el detalle de producto: galería, color,
+                          talla, precio/stock por variante, agregar al carrito
+  render-carrito.js       Pinta la página de carrito: items, cantidad,
+                          totales, link de WhatsApp
+  whatsapp.js             Arma el texto del pedido + el link https://wa.me/...
+  product-card.js        Builder de la card de producto (compartido por
+                          Home y Catálogo, para no duplicar el HTML)
 ```
 
 ## Por qué este formato de JSON
@@ -79,9 +87,10 @@ cambiar la forma de los datos, solo el origen.
 | # | Fase | Estado |
 |---|------|--------|
 | 1 | Home/Landing (mobile + desktop) con datos mock | ✅ Entregado |
-| 2 | Catálogo: grid, chips de etiquetas, buscador, orden | Próximo |
-| 3 | Detalle de producto: galería por color, selector color/talla, precio y stock por variante | Pendiente |
-| 4 | Carrito (localStorage) + botón "Consultar por WhatsApp" con mensaje autogenerado | Pendiente |
+| 2 | Catálogo: grid, chips de etiquetas, buscador, orden, filtro color/talla | ✅ Entregado |
+| 3 | Detalle de producto: galería por color, selector color/talla, precio y stock por variante | ✅ Entregado |
+| 4 | Carrito (localStorage) + botón "Consultar por WhatsApp" con mensaje autogenerado | ✅ Entregado |
+| 5 | Pulido responsive, estados vacío/agotado, microanimaciones | Próximo |
 | 5 | Pulido responsive, estados vacío/agotado, microanimaciones | Pendiente |
 | 6 | Esquema final de `catalogo.json` + checklist de exportación | Pendiente |
 | 7 | Conexión real: script en CI4 que genera `catalogo.json` + copia imágenes a `uploads/` | Al final, no se toca el sistema actual hasta llegar acá |
@@ -101,3 +110,71 @@ cambiar la forma de los datos, solo el origen.
 - El número de WhatsApp (`meta.whatsapp_numero` en el JSON) es un placeholder
   boliviano de ejemplo — reemplazalo por el real cuando quieras probarlo, o
   decime el número definitivo y lo dejo cargado para la Fase 4.
+
+## Notas de la Fase 2 (Catálogo)
+
+- El buscador filtra por `nombre`, `marca`, `modelo` y `codigo` a medida que
+  escribís (sin distinguir mayúsculas ni acentos).
+- Los chips de estilo salen de `catalogo.etiquetas` (mismas que en la Home),
+  selección única — igual criterio que ya usás en el chip de Inventario del
+  CI4.
+- "Color" y "Talla" son popovers nativos (`<details>`) armados dinámicamente
+  con los colores/tallas que **realmente existen** en `catalogo.json` — si
+  mañana agregás un color nuevo en CI4, aparece solo, no hay nada
+  hardcodeado.
+- "Ordenar" tiene 4 opciones: Destacados (orden del JSON), Nombre A-Z,
+  Precio menor→mayor y mayor→menor. No hay "más vendidos" todavía porque el
+  catálogo estático no tiene datos de ventas — eso viviría del lado del CI4
+  si en algún momento se quiere exportar ese dato también.
+- El filtro por talla considera la talla como disponible en el catálogo
+  aunque esa variante puntual esté agotada (mismo criterio del proyecto:
+  "no ocultar, mostrar el estado") — el detalle de agotado/disponible por
+  talla se resuelve en la Fase 3, dentro de la página de producto.
+- Estado vacío: si ningún producto matchea los filtros, se muestra un
+  mensaje con botón para limpiar todo de una.
+
+## Notas de la Fase 3 (Detalle de producto)
+
+- **Selección por defecto:** al entrar, se preselecciona automáticamente el
+  primer color con stock disponible, y dentro de ese color la primera talla
+  con stock — así el botón "Agregar al carrito" ya queda usable sin obligar
+  a un clic extra. Si el producto está 100% agotado, no se preselecciona
+  ninguna talla y el botón queda deshabilitado.
+- **Tallas agotadas:** se muestran siempre (tachadas, sin poder
+  seleccionarse) — nunca se ocultan, tal como pediste. Cambiar de color
+  recalcula qué tallas están disponibles para ESE color específico.
+- **Precio y stock:** ambos pertenecen a la variante (color+talla), no al
+  producto — por eso solo se ven "en firme" cuando hay una talla
+  seleccionada; antes de eso se muestra "Desde Bs X".
+- **Disponibilidad:** 3 estados — "En stock" (>3 unidades), "Últimas
+  unidades" (1-3) y "Agotado" — nunca el número exacto de unidades, según
+  lo que pediste en el punto 20 del brief.
+- **Agregar al carrito ya funciona de verdad:** guarda en `localStorage`
+  identificado por SKU (no por producto), y si volvés a agregar el mismo
+  SKU, suma cantidad en vez de duplicar la línea. El contador del carrito
+  en el header se actualiza al toque. La Fase 4 solo tiene que **leer** ese
+  mismo localStorage para mostrar la pantalla de carrito — no hay que tocar
+  esta lógica de nuevo.
+- La galería cambia sus fotos e índice de miniaturas al cambiar de color,
+  usando las imágenes de `producto.colores[].imagenes` — mismo criterio que
+  tu tabla `producto_imagenes` (imágenes por producto + color).
+
+## Notas de la Fase 4 (Carrito + WhatsApp)
+
+- El carrito lee directo de `localStorage` (lo que ya guarda la Fase 3) —
+  no hay nada nuevo que sincronizar, esta fase solo lo **muestra y edita**.
+- **Editar cantidad** respeta el stock real: el botón "+" se frena si ya
+  llegaste al stock disponible de ese SKU en `catalogo.json` (búsqueda en
+  vivo, no un número guardado de memoria que se puede desactualizar).
+- **Quitar un item** es inmediato, sin confirmación — carrito de bajo
+  compromiso, coherente con "no quiero un sistema complejo de pedidos".
+- **Mensaje de WhatsApp:** armado exactamente con el formato de tu brief
+  (sección 23) — un bloque por producto con color/talla/cantidad/precio
+  unitario/subtotal, y el total al final. Se abre en pestaña nueva con
+  `https://wa.me/<numero>?text=<mensaje>`.
+- El número de WhatsApp sigue siendo el placeholder de `meta.whatsapp_numero`
+  en `catalogo.json` — cambialo ahí (un solo lugar) cuando tengas el
+  definitivo, y automáticamente lo toman tanto el carrito como el footer.
+- Estado vacío: ícono de carrito + "Tu carrito está vacío" + botón directo
+  a "Ver zapatos", igual criterio visual que el resto de los estados vacíos
+  del sitio.

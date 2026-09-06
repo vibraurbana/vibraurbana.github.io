@@ -3,45 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Detalle de producto — VIBRA URBANA</title>
+<title>Producto — VIBRA URBANA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
-<style>
-  .placeholder { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: var(--space-3); padding: var(--space-7) var(--space-4); }
-  .placeholder__badge { font-family: var(--font-display); font-weight: 800; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--color-accent); background: rgba(245,196,0,0.1); padding: 4px 12px; border-radius: 999px; }
-  .placeholder h1 { font-family: var(--font-display); font-weight: 900; font-size: var(--text-h1); margin: 0; }
-  .placeholder p { color: var(--color-text-muted); max-width: 42ch; margin: 0; }
-</style>
+<link rel="stylesheet" href="assets/css/producto.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <button class="site-header__menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobileNav" aria-label="Abrir menú">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
+    <a href="catalogo.html" class="producto-header__back" aria-label="Volver al catálogo">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+
     <a href="index.html" class="brand">
       <span class="brand__main">VIBRA</span>
       <span class="brand__sub">URBANA</span>
     </a>
+
     <nav class="site-header__nav" aria-label="Principal">
       <a href="index.html">Inicio</a>
-      <a href="catalogo.html">Zapatos</a>
+      <a href="catalogo.html" class="is-active">Zapatos</a>
       <a href="catalogo.html">Categorías</a>
       <a href="index.html#contacto">Contacto</a>
     </nav>
+
     <div class="site-header__search">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="search" placeholder="Buscar productos..." aria-label="Buscar productos">
+      <input type="search" placeholder="Buscar productos..." aria-label="Buscar productos" onfocus="location.href='catalogo.html'" readonly>
     </div>
+
     <div class="site-header__icons">
       <a class="site-header__icon-btn" href="catalogo.html" aria-label="Buscar productos">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </a>
-      <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito">
+      <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito" title="Carrito — disponible en la Fase 4">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.4" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/></svg>
         <span class="cart-badge" data-cart-count hidden>0</span>
       </a>
@@ -49,20 +48,109 @@
   </div>
 </header>
 
-<nav class="mobile-nav" id="mobileNav" data-mobile-nav aria-label="Menú móvil">
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Zapatos</a>
-  <a href="catalogo.html">Categorías</a>
-  <a href="index.html#contacto">Contacto</a>
-</nav>
+<main class="container">
 
-<main class="container placeholder">
-  <span class="placeholder__badge">FASE 3 · PRÓXIMAMENTE</span>
-  <h1>Detalle de producto</h1>
-  <p>Esta pantalla se construye en la siguiente fase del proyecto. Por ahora podés volver al inicio o ver el catálogo.</p>
-  <a href="index.html" class="btn btn--primary" style="margin-top:8px">Volver al inicio</a>
+  <p class="producto-header__miga">
+    <a href="catalogo.html">Catálogo</a> / <strong data-miga>Producto</strong>
+  </p>
+
+  <div data-producto-layout class="producto-layout">
+
+    <!-- GALERIA -->
+    <section class="galeria">
+      <div class="galeria__principal">
+        <span class="galeria__contador" data-galeria-contador></span>
+        <img data-galeria-img src="assets/icons/shoe-placeholder.svg" alt="">
+      </div>
+      <div class="galeria__miniaturas" data-miniaturas></div>
+    </section>
+
+    <!-- INFO -->
+    <section class="producto-info">
+      <div class="producto-info__marca" data-producto-marca></div>
+      <h1 class="producto-info__nombre" data-producto-nombre></h1>
+
+      <div class="producto-info__precio">
+        <span data-producto-precio></span>
+      </div>
+      <p class="producto-info__precio-hint" data-producto-precio-hint hidden></p>
+
+      <p class="producto-info__desc" data-producto-desc></p>
+
+      <div class="producto-info__etiquetas" data-producto-etiquetas></div>
+
+      <div class="selector-block">
+        <div class="selector-block__head">
+          <span class="selector-block__label">COLOR</span>
+          <span class="selector-block__valor" data-color-valor></span>
+        </div>
+        <div class="color-swatches" data-color-swatches></div>
+      </div>
+
+      <div class="selector-block">
+        <div class="selector-block__head">
+          <span class="selector-block__label">TALLA</span>
+          <a href="#" class="selector-block__guia" onclick="event.preventDefault(); alert('Guía de tallas: próximamente.')">Guía de tallas</a>
+        </div>
+        <div class="talla-chips" data-talla-chips></div>
+      </div>
+
+      <div class="disponibilidad" data-disponibilidad>
+        <span class="disponibilidad__dot"></span>
+        <span data-disponibilidad-texto>Elegí una talla</span>
+      </div>
+
+      <div class="accion-bar">
+        <div class="stepper">
+          <button type="button" data-stepper-menos aria-label="Quitar una unidad">−</button>
+          <span class="stepper__valor" data-stepper-valor>1</span>
+          <button type="button" data-stepper-mas aria-label="Agregar una unidad">+</button>
+        </div>
+        <button type="button" class="btn btn--primary btn--block" data-btn-agregar disabled>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.4" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+          Agregar al carrito
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="producto-empty" data-producto-empty hidden>
+    <strong>No encontramos este producto</strong>
+    <p>Puede que el enlace esté desactualizado.</p>
+    <a href="catalogo.html" class="btn btn--primary" style="margin-top:16px">Ver catálogo</a>
+  </div>
+
 </main>
 
-<script type="module" src="assets/js/placeholder.js"></script>
+<div class="toast" data-toast></div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__brand">
+      <span class="site-footer__mark">VU</span>
+      <div>
+        <strong>Tienda oficial VIBRA URBANA</strong>
+        <div class="site-footer__tagline">Moda urbana y casual para toda la familia.</div>
+      </div>
+    </div>
+    <div class="site-footer__links">
+      <a class="site-footer__link" href="https://wa.me/59170000000" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm5.78 14.24c-.24.68-1.39 1.3-1.92 1.35-.5.06-1.02.26-3.4-.7-2.87-1.15-4.72-4.06-4.87-4.25-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.08 1-2.37.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.6.82 2.06.9 2.2.07.14.11.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.28.7 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.87.28.14.46.2.53.32.07.12.07.68-.17 1.35Z"/></svg>
+        <span><strong>Consultas por WhatsApp</strong>Respondemos rápido</span>
+      </a>
+      <a class="site-footer__link" href="#">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16.5 2h-2.7v13.6a3.4 3.4 0 1 1-2.4-3.25V9.2a6.2 6.2 0 1 0 4.5 5.96V8.9a7.6 7.6 0 0 0 4.4 1.4V7.6a4.9 4.9 0 0 1-3.8-3.8V2Z"/></svg>
+        <span><strong>Síguenos en redes</strong>Novedades y lanzamientos</span>
+      </a>
+      <a class="site-footer__link" href="#">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        <span><strong>Cochabamba, Bolivia</strong>Atención de lunes a sábado</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/js/render-producto.js"></script>
 </body>
 </html>
