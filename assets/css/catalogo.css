@@ -187,6 +187,13 @@
 }
 .catalogo-toolbar__orden select:focus { outline: none; }
 
+/* ---------- Grid de productos ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
 /* ---------- Estado vacio ---------- */
 .catalogo-empty {
   text-align: center;
@@ -197,6 +204,46 @@
 .catalogo-empty strong { display: block; color: var(--color-text); font-size: 1rem; margin-bottom: 4px; }
 .catalogo-empty button {
   margin-top: var(--space-4);
+}
+
+/* ---------- Paginación ---------- */
+.catalogo-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) 0 var(--space-7);
+}
+
+.catalogo-pagination[hidden] { display: none; }
+
+.catalogo-pagination__button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.catalogo-pagination__button:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.catalogo-pagination__button.is-active {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.catalogo-pagination__button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* ---------- Tablet ---------- */

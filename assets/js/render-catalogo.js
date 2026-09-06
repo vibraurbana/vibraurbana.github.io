@@ -9,10 +9,12 @@ const estado = {
   colorId: null,
   talla: null,
   orden: "destacados",
+  pagina: 1,
 };
 
 let catalogoGlobal = null;
 let primerRenderGrid = true;
+const PRODUCTOS_POR_PAGINA = 12;
 
 const els = {};
 
@@ -164,11 +166,48 @@ function marcarPopoverActivo(id, tieneValor) {
   if (el) el.classList.toggle("tiene-valor", tieneValor);
 }
 
-function actualizar() {
-  const filtrados = ordenar((catalogoGlobal.productos || []).filter(productoCoincide));
+function pintarPaginacion(total) {
+  const totalPaginas = Math.ceil(total / PRODUCTOS_POR_PAGINA);
+  els.pagination.hidden = totalPaginas <= 1;
+  els.pagination.innerHTML = "";
+  if (totalPaginas <= 1) return;
 
-  els.grid.innerHTML = filtrados.length
-    ? filtrados.map((p) => tarjetaProductoHTML(catalogoGlobal, p)).join("")
+  const crearBoton = (texto, pagina, etiqueta, deshabilitado = false) => {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "catalogo-pagination__button";
+    boton.textContent = texto;
+    boton.setAttribute("aria-label", etiqueta);
+    boton.disabled = deshabilitado;
+    if (pagina === estado.pagina) {
+      boton.classList.add("is-active");
+      boton.setAttribute("aria-current", "page");
+    }
+    boton.addEventListener("click", () => {
+      estado.pagina = pagina;
+      actualizar(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    return boton;
+  };
+
+  els.pagination.append(crearBoton("Anterior", estado.pagina - 1, "Página anterior", estado.pagina === 1));
+  for (let pagina = 1; pagina <= totalPaginas; pagina += 1) {
+    els.pagination.append(crearBoton(String(pagina), pagina, `Ir a la página ${pagina}`));
+  }
+  els.pagination.append(crearBoton("Siguiente", estado.pagina + 1, "Página siguiente", estado.pagina === totalPaginas));
+}
+
+function actualizar(resetPagina = true) {
+  if (resetPagina) estado.pagina = 1;
+  const filtrados = ordenar((catalogoGlobal.productos || []).filter(productoCoincide));
+  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / PRODUCTOS_POR_PAGINA));
+  estado.pagina = Math.min(estado.pagina, totalPaginas);
+  const inicio = (estado.pagina - 1) * PRODUCTOS_POR_PAGINA;
+  const paginaActual = filtrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA);
+
+  els.grid.innerHTML = paginaActual.length
+    ? paginaActual.map((p) => tarjetaProductoHTML(catalogoGlobal, p)).join("")
     : "";
 
   if (primerRenderGrid) {
@@ -180,6 +219,7 @@ function actualizar() {
 
   const n = filtrados.length;
   els.count.textContent = n === 1 ? "1 producto" : `${n} productos`;
+  pintarPaginacion(n);
 
   els.search.value = estado.q;
   els.searchClear.classList.toggle("is-visible", estado.q.length > 0);
@@ -258,6 +298,7 @@ async function iniciar() {
   els.search = document.querySelector("[data-catalogo-search]");
   els.searchClear = document.querySelector("[data-catalogo-search-clear]");
   els.orden = document.querySelector("[data-catalogo-orden]");
+  els.pagination = document.querySelector("[data-catalogo-pagination]");
   els.panelColor = document.querySelector("[data-panel-color]");
   els.panelTalla = document.querySelector("[data-panel-talla]");
   els.resetColor = document.querySelector("[data-reset-color]");
