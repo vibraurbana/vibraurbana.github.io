@@ -446,18 +446,53 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------- Footer ---------- */
 .site-footer {
   border-top: 1px solid var(--color-border);
-  padding: var(--space-6) 0 var(--space-7);
+  padding: var(--space-7) 0 0;
   background: #0d0d0d;
 }
 
-.site-footer__brand {
+.site-footer__main { display: grid; gap: var(--space-6); padding-bottom: var(--space-7); }
+.site-footer__column { min-width: 0; }
+.site-footer__identity { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-5); }
+.site-footer__logo { font-family: var(--font-display); font-size: 2rem; font-weight: 900; line-height: 0.9; }
+.site-footer__logo span { display: block; color: var(--color-accent); font-size: 0.72rem; letter-spacing: 0.28em; margin-top: 7px; }
+.site-footer__column p { color: var(--color-text-muted); font-size: 0.75rem; line-height: 1.55; margin: 0 0 var(--space-4); }
+.site-footer__column p strong { color: var(--color-text); }
+.site-footer__column em { color: var(--color-accent); font-style: normal; }
+.site-footer__column h2 { color: var(--color-text); font-size: 0.72rem; letter-spacing: 0.06em; margin: 0 0 var(--space-3); }
+.site-footer__column h2:not(:first-child) { margin-top: var(--space-5); }
+.site-footer__socials { display: flex; gap: var(--space-2); margin-top: var(--space-5); }
+.site-footer__socials a { width: 30px; height: 30px; border: 1px solid var(--color-border); border-radius: 50%; display: grid; place-items: center; font-weight: 800; }
+.site-footer__phone { display: block; color: var(--color-text); font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; margin: -10px 0 var(--space-3); }
+.site-footer__contact-btn { display: inline-block; background: var(--color-accent); color: var(--color-accent-text); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 0.68rem; font-weight: 800; margin-top: var(--space-2); }
+.site-footer__notice { background: #191919; border-radius: var(--radius-sm); padding: var(--space-3); }
+.site-footer__bottom { border-top: 1px solid var(--color-border); padding: var(--space-4) 0; }
+.site-footer__bottom .container { display: flex; flex-direction: column; gap: var(--space-3); align-items: center; text-align: center; }
+.site-footer__bottom small { color: var(--color-text-muted); font-size: 0.62rem; }
+.site-footer__bottom > .container > span { color: var(--color-accent); font-family: var(--font-display); font-style: italic; font-size: 0.85rem; }
+.site-footer__bottom nav { display: flex; gap: var(--space-4); font-size: 0.68rem; color: var(--color-text-muted); }
+
+.site-footer:has(.site-footer__main) .site-footer__brand,
+.site-footer:has(.site-footer__main) .site-footer__links,
+.site-footer:has(.site-footer__main) .site-footer__mark,
+.site-footer:has(.site-footer__main) .site-footer__tagline,
+.site-footer:has(.site-footer__main) .site-footer__link { display: none; }
+
+@media (min-width: 768px) {
+  .site-footer__main { grid-template-columns: 1.1fr repeat(3, 1fr); gap: 0; }
+  .site-footer__column { padding: 0 var(--space-5); border-left: 1px solid var(--color-border); }
+  .site-footer__column:first-child { padding-left: 0; border-left: 0; }
+  .site-footer__identity { border-bottom: 0; padding-bottom: 0; }
+  .site-footer__bottom .container { flex-direction: row; justify-content: space-between; text-align: left; }
+}
+
+/* Legacy footer hooks for pages that still use the compact footer. */
+.site-footer:not(:has(.site-footer__main)) .site-footer__brand {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   margin-bottom: var(--space-5);
 }
-
-.site-footer__mark {
+.site-footer:not(:has(.site-footer__main)) .site-footer__mark {
   width: 40px;
   height: 40px;
   border-radius: 999px;
@@ -470,33 +505,13 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--color-accent);
   flex-shrink: 0;
 }
-
-.site-footer__tagline {
-  font-size: var(--text-small);
-  color: var(--color-text-muted);
-}
-
-.site-footer__links {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.site-footer__link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.site-footer__link strong {
-  display: block;
-  color: var(--color-text);
-  font-size: 0.88rem;
-}
+.site-footer:not(:has(.site-footer__main)) .site-footer__tagline { display: block; font-size: var(--text-small); color: var(--color-text-muted); }
+.site-footer:not(:has(.site-footer__main)) .site-footer__links { display: grid; gap: var(--space-4); }
+.site-footer:not(:has(.site-footer__main)) .site-footer__link { display: flex; align-items: center; gap: var(--space-3); font-size: 0.85rem; color: var(--color-text-muted); }
+.site-footer:not(:has(.site-footer__main)) .site-footer__link strong { display: block; color: var(--color-text); font-size: 0.88rem; }
 
 @media (min-width: 768px) {
-  .site-footer__links { grid-template-columns: repeat(3, 1fr); }
+  .site-footer:not(:has(.site-footer__main)) .site-footer__links { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ---------- Utilidades ---------- */

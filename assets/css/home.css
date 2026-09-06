@@ -149,6 +149,54 @@
 .trust-item strong { display: block; font-size: 0.85rem; }
 .trust-item span { font-size: 0.75rem; color: var(--color-text-muted); }
 
+/* ---------- Como comprar ---------- */
+.how-to {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: #0b0b0b;
+}
+
+.how-to__inner {
+  display: grid;
+  gap: var(--space-6);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+}
+
+.how-to__intro { max-width: 280px; }
+.how-to__eyebrow {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 var(--space-2);
+}
+.how-to__intro h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3.2rem);
+  line-height: 0.92;
+  margin: 0 0 var(--space-4);
+}
+.how-to__intro h2 span { color: var(--color-accent); }
+.how-to__intro p:last-child { color: var(--color-text-muted); font-size: 0.82rem; margin: 0; }
+
+.how-to__steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5) var(--space-3); }
+.how-to__step { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.how-to__icon {
+  width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%;
+  background: #171717; border: 1px solid var(--color-border); color: var(--color-accent); font-size: 2rem; margin-bottom: var(--space-2);
+}
+.how-to__step strong { font-family: var(--font-display); font-size: 1.3rem; }
+.how-to__step b { color: var(--color-accent); font-size: 0.72rem; }
+.how-to__step > span:last-child { color: var(--color-text-muted); font-size: 0.7rem; line-height: 1.4; max-width: 125px; }
+.how-to__cta { justify-self: center; background: var(--color-accent); color: var(--color-accent-text); border-radius: var(--radius-sm); padding: 13px 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+
+@media (min-width: 1024px) {
+  .how-to__inner { grid-template-columns: 240px 1fr; align-items: center; column-gap: var(--space-7); }
+  .how-to__steps { grid-template-columns: repeat(4, 1fr); }
+  .how-to__cta { grid-column: 2; justify-self: center; margin-top: -8px; min-width: 280px; text-align: center; }
+}
+
 /* ---------- Tablet ---------- */
 @media (min-width: 640px) and (max-width: 1023px) {
   .style-grid { grid-template-columns: repeat(4, 1fr); }
@@ -180,5 +228,5 @@
 
   .product-grid { grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
 
-  .trust { grid-template-columns: repeat(3, 1fr); }
+  .trust { grid-template-columns: repeat(4, 1fr); }
 }
