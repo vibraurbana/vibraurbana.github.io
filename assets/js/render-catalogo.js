@@ -34,6 +34,19 @@ function normalizar(texto) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function formatearFechaGeneracion(fecha) {
+  if (!fecha) return "";
+  const [anio, mes, dia] = fecha.slice(0, 10).split("-").map(Number);
+  if (!anio || !mes || !dia) return "";
+  const fechaSinZona = new Date(Date.UTC(anio, mes - 1, dia));
+  return `Generado el ${new Intl.DateTimeFormat("es-BO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(fechaSinZona)}`;
+}
+
 function productoCoincide(producto) {
   if (estado.q) {
     const q = normalizar(estado.q);
@@ -303,12 +316,14 @@ async function iniciar() {
   els.panelTalla = document.querySelector("[data-panel-talla]");
   els.resetColor = document.querySelector("[data-reset-color]");
   els.resetTalla = document.querySelector("[data-reset-talla]");
+  els.generado = document.querySelector("[data-catalogo-generado]");
 
   els.chips.innerHTML = skeletonChips(5);
   els.grid.innerHTML = skeletonCards(8);
 
   try {
     catalogoGlobal = await cargarCatalogo();
+    els.generado.textContent = formatearFechaGeneracion(catalogoGlobal.meta?.generado_en);
     iniciarControles();
     actualizar();
   } catch (err) {

@@ -6,6 +6,13 @@
   padding: var(--space-5) 0 var(--space-4);
 }
 
+.catalogo-head__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
 .catalogo-head__title {
   font-family: var(--font-display);
   font-weight: 900;
@@ -13,10 +20,29 @@
   margin: 0 0 2px;
 }
 
+.catalogo-head__date {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .catalogo-head__subtitle {
   color: var(--color-text-muted);
   font-size: 0.85rem;
   margin: 0;
+}
+
+@media (max-width: 639px) {
+  .catalogo-head__row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .catalogo-head__date {
+    text-align: left;
+  }
 }
 
 /* ---------- Buscador propio de la pagina ---------- */
