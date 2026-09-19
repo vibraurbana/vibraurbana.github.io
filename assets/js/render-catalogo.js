@@ -36,15 +36,10 @@ function normalizar(texto) {
 
 function formatearFechaGeneracion(fecha) {
   if (!fecha) return "";
-  const [anio, mes, dia] = fecha.slice(0, 10).split("-").map(Number);
-  if (!anio || !mes || !dia) return "";
-  const fechaSinZona = new Date(Date.UTC(anio, mes - 1, dia));
-  return `Generado el ${new Intl.DateTimeFormat("es-BO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(fechaSinZona)}`;
+  const coincidencia = String(fecha).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if (!coincidencia) return "";
+  const [, anio, mes, dia, hora, minuto] = coincidencia;
+  return `Actualizado: ${dia}/${mes}/${anio} ${hora}:${minuto}`;
 }
 
 function productoCoincide(producto) {

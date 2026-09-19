@@ -21,8 +21,9 @@
 }
 
 .catalogo-head__date {
-  color: var(--color-text-muted);
+  color: #fff;
   font-size: 0.78rem;
+  font-weight: 700;
   text-align: right;
   white-space: nowrap;
 }
