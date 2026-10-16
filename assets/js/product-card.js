@@ -17,8 +17,7 @@ export function tarjetaProductoHTML(catalogo, producto) {
     <a class="product-card${claseCategoria}" href="producto.html?id=${producto.id}">
       <span class="product-card__media">
         ${primeraEtiqueta ? `<span class="product-card__tag">${primeraEtiqueta.nombre}</span>` : ""}
-        <button class="product-card__fav" type="button" aria-label="Guardar en favoritos" onclick="event.preventDefault()">${iconos.corazon}</button>
-        <img src="${imagen}" alt="${producto.nombre}" loading="lazy"
+        <img src="${imagen}" alt="${producto.nombre}" loading="lazy" decoding="async"
              onerror="this.src='${RUTA_PLACEHOLDER}'">
       </span>
       <span class="product-card__body">

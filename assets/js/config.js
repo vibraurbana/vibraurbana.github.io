@@ -14,5 +14,7 @@
 // "Modo remoto (leer directo del CI4)" del README -- un catalogo.json
 // sin CORS o sin HTTPS no va a cargar, y esto no tiene forma de avisar
 // mas que el error silencioso en la consola del navegador.
+// Para pasar a modo local: ejecutar tools/descargar_catalogo.py, luego comentar la linea remota
+// de abajo y descomentar esta.
 //export const CATALOGO_BASE_URL = "";
 export const CATALOGO_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public";

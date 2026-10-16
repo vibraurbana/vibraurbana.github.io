@@ -11,7 +11,7 @@ function tarjetaEstilo(etiqueta) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/\s+/g, "_");
-  const imagenEstilo = `assets/img/${nombreArchivo}.png`;
+  const imagenEstilo = `assets/img/${nombreArchivo}.webp`;
   const productoFallback = etiqueta.imagen_fallback || RUTA_PLACEHOLDER;
 
   return `

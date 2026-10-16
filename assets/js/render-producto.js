@@ -2,6 +2,7 @@ import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, c
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
+import { construirUrlWhatsApp } from "./whatsapp.js";
 
 let catalogo = null;
 let producto = null;
@@ -174,7 +175,7 @@ function renderPrecioYDisponibilidad() {
       ? `<span class="product-card__price-from">Desde</span>${formatearPrecio(desde, moneda)}`
       : "Consultar";
     els.precioHint.hidden = false;
-    els.precioHint.textContent = "Elegí una talla para ver el precio exacto";
+    els.precioHint.textContent = "Elige una talla para ver el precio exacto";
   }
 
   els.disponibilidad.className = "disponibilidad";
@@ -184,7 +185,7 @@ function renderPrecioYDisponibilidad() {
     els.disponibilidad.classList.add("es-agotado");
     els.disponibilidadTexto.textContent = "Agotado en este color por ahora";
   } else if (!variante) {
-    els.disponibilidadTexto.textContent = "Elegí una talla para ver disponibilidad";
+    els.disponibilidadTexto.textContent = "Elige una talla para ver disponibilidad";
   } else if (variante.stock <= 3) {
     els.disponibilidad.classList.add("es-poco");
     els.disponibilidadTexto.textContent = "Últimas unidades";
@@ -272,6 +273,20 @@ function iniciarAgregar() {
   });
 }
 
+/* ---------- Consultar por WhatsApp ---------- */
+function iniciarConsultar() {
+  els.btnConsultar.addEventListener("click", () => {
+    const variante = varianteSeleccionada();
+    const color = infoColor(estado.colorId);
+    const partes = [`Hola, me interesa ${producto.nombre} (código ${producto.codigo})`];
+    if (color) partes.push(`color ${color.nombre}`);
+    if (variante) partes.push(`talla ${variante.talla}`);
+    const url = new URL(`producto.html?id=${producto.id}`, location.href).href;
+    const mensaje = `${partes.join(", ")}.\n¿Está disponible?\n${url}`;
+    window.open(construirUrlWhatsApp(catalogo.meta.whatsapp_numero, mensaje), "_blank", "noopener");
+  });
+}
+
 let toastTimer = null;
 function mostrarToast(mensaje) {
   els.toast.textContent = "✓ " + mensaje;
@@ -308,6 +323,7 @@ async function iniciar() {
   els.stepperMas = document.querySelector("[data-stepper-mas]");
   els.stepperValor = document.querySelector("[data-stepper-valor]");
   els.btnAgregar = document.querySelector("[data-btn-agregar]");
+  els.btnConsultar = document.querySelector("[data-btn-consultar]");
   els.toast = document.querySelector("[data-toast]");
 
   try {
@@ -327,6 +343,7 @@ async function iniciar() {
     renderTodo();
     iniciarStepper();
     iniciarAgregar();
+    iniciarConsultar();
   } catch (err) {
     console.error(err);
     mostrarNoEncontrado();

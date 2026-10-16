@@ -5,6 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VIBRA URBANA — Moda urbana y casual para toda la familia</title>
 <meta name="description" content="Zapatos urbanos y casuales para toda la familia. Explora el catálogo de VIBRA URBANA y consulta tu pedido directo por WhatsApp.">
+<meta name="theme-color" content="#111111">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="canonical" href="https://tiendavibraurbana.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VIBRA URBANA">
+<meta property="og:locale" content="es_BO">
+<meta property="og:title" content="VIBRA URBANA — Moda urbana y casual para toda la familia">
+<meta property="og:description" content="Zapatos urbanos y casuales para toda la familia. Explora el catálogo de VIBRA URBANA y consulta tu pedido directo por WhatsApp.">
+<meta property="og:url" content="https://tiendavibraurbana.com/">
+<meta property="og:image" content="https://tiendavibraurbana.com/assets/img/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ShoeStore",
+  "name": "VIBRA URBANA",
+  "url": "https://tiendavibraurbana.com/",
+  "image": "https://tiendavibraurbana.com/assets/img/og-cover.jpg",
+  "telephone": "+59162441699",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Comercial Cañoto, Local #163",
+    "addressLocality": "Santa Cruz de la Sierra",
+    "addressCountry": "BO"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    "opens": "10:00",
+    "closes": "19:00"
+  },
+  "sameAs": ["https://www.tiktok.com/@StepTrendStore"]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,15 +58,14 @@
 
     <a href="index.html" class="brand">
       <picture class="brand__picture">
-        <source media="(max-width: 639px)" srcset="assets/img/isotipo.png">
-        <img src="assets/img/logo.png" alt="VIBRA URBANA" class="brand__logo">
+        <source media="(max-width: 639px)" srcset="assets/img/isotipo.webp">
+        <img src="assets/img/logo.webp" alt="VIBRA URBANA" class="brand__logo">
       </picture>
     </a>
 
     <nav class="site-header__nav" aria-label="Principal">
       <a href="index.html" class="is-active">Inicio</a>
-      <a href="catalogo.html">Zapatos</a>
-      <a href="catalogo.html">Categorías</a>
+      <a href="catalogo.html">Catalogo Productos</a>
       <a href="#contacto">Contacto</a>
     </nav>
 
@@ -44,7 +78,7 @@
       <a class="site-header__icon-btn" href="catalogo.html" aria-label="Buscar productos">
         <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </a>
-      <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito" title="Carrito — disponible en la Fase 4">
+      <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito" title="Carrito">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.4" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/></svg>
         <span class="cart-badge" data-cart-count hidden>0</span>
       </a>
@@ -59,7 +93,6 @@
   </div>
   <a href="index.html">Inicio</a>
   <a href="catalogo.html">Zapatos</a>
-  <a href="catalogo.html">Categorías</a>
   <a href="#contacto">Contacto</a>
 </nav>
 
@@ -69,15 +102,15 @@
   <section class="hero container">
     <div class="hero__media">
       <picture>
-        <source media="(max-width: 639px)" srcset="assets/img/portada_movil.png">
-        <img src="assets/img/portada_web.png" alt="Zapatillas urbanas VIBRA URBANA sobre escalones">
+        <source media="(max-width: 639px)" srcset="assets/img/portada_movil.webp">
+        <img src="assets/img/portada_web.webp" fetchpriority="high" alt="Zapatillas urbanas VIBRA URBANA sobre escalones">
       </picture>
       <div class="hero__content">
         <p class="hero__eyebrow">VIBRA URBANA</p>
         <h1 class="hero__title">MODA URBANA<br><span>Y CASUAL</span></h1>
         <p class="hero__subtitle">Para toda la familia. <strong>Viste tu estilo con VIBRA URBANA.</strong></p>
         <div class="hero__actions">
-          <a href="catalogo.html" class="btn btn--primary">Ver Catalogo</a>
+          <a href="catalogo.html" class="btn btn--primary">Ver catálogo</a>
         </div>
       </div>
     </div>
@@ -158,7 +191,7 @@
           <span>Coordinamos el pago y la entrega contigo.</span>
         </div>
       </div>
-      <a class="how-to__cta" href="https://wa.me/59177299670" target="_blank" rel="noopener">
+      <a class="how-to__cta" href="https://wa.me/59162441699?text=Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
         <span aria-hidden="true">◌</span> Coordinar por WhatsApp <span aria-hidden="true">→</span>
       </a>
     </div>
@@ -189,7 +222,7 @@
 <footer class="site-footer">
   <div class="container site-footer__main">
     <div class="site-footer__column site-footer__identity">
-      <img src="assets/img/logo.png" alt="VIBRA URBANA" class="site-footer__logo">
+      <img src="assets/img/logo.webp" alt="VIBRA URBANA" class="site-footer__logo" loading="lazy">
       <p>Moda urbana y casual<br>para toda la familia.</p>
       <a class="site-footer__tiktok" href="https://www.tiktok.com/@StepTrendStore" target="_blank" rel="noopener" aria-label="Visitar TikTok de Step Trend Store">
         <img src="assets/img/logotiktok.png" alt="Logo de TikTok">
@@ -207,10 +240,10 @@
     <div class="site-footer__column">
       <h2>CONTÁCTANOS</h2>
       <p>WhatsApp principal</p>
-      <a class="site-footer__phone" href="https://wa.me/59177299670" target="_blank" rel="noopener">77299670</a>
+      <a class="site-footer__phone" href="https://wa.me/59162441699?text=Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">62441699</a>
       <p>WhatsApp alternativo</p>
-      <a class="site-footer__phone" href="https://wa.me/59162441699" target="_blank" rel="noopener">62441699</a>
-      <a class="site-footer__contact-btn" href="https://wa.me/59177299670" target="_blank" rel="noopener">◌ &nbsp; ESCRIBIR POR WHATSAPP →</a>
+      <a class="site-footer__phone" href="https://wa.me/59162441699?text=Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">77299670</a>
+      <a class="site-footer__contact-btn" href="https://wa.me/59162441699?text=Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">◌ &nbsp; ESCRIBIR POR WHATSAPP →</a>
     </div>
     <div class="site-footer__column">
       <h2>ENVÍOS</h2>
@@ -220,10 +253,11 @@
     </div>
   </div>
   <div class="site-footer__bottom">
-    <div class="container"><small>© 2026 VIBRA URBANA · Moda urbana y casual para toda la familia.</small><span>Gracias por ser parte de esta vibra</span><nav><a href="index.html">Inicio</a><a href="catalogo.html">Zapatos</a><a href="catalogo.html">Categorías</a><a href="#contacto">Contacto</a></nav></div>
+    <div class="container"><small>© 2026 VIBRA URBANA · Moda urbana y casual para toda la familia.</small><span>Gracias por ser parte de esta vibra</span><nav><a href="index.html">Inicio</a><a href="catalogo.html">Zapatos</a><a href="#contacto">Contacto</a></nav></div>
   </div>
 </footer>
 
 <script type="module" src="assets/js/render-home.js"></script>
+<a class="wa-float" href="https://wa.me/59162441699?text=Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm5.78 14.24c-.24.68-1.39 1.3-1.92 1.35-.5.06-1.02.26-3.4-.7-2.87-1.15-4.72-4.06-4.87-4.25-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.08 1-2.37.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.6.82 2.06.9 2.2.07.14.11.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.28.7 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.87.28.14.46.2.53.32.07.12.07.68-.17 1.35Z"/></svg></a>
 </body>
 </html>

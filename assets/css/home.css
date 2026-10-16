@@ -41,7 +41,8 @@
 .hero__title span { color: var(--color-accent); }
 
 .hero__subtitle {
-  color: var(--color-text-muted);
+  color: #d9d9d9;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75);
   font-size: 0.95rem;
   max-width: 34ch;
   margin: 0 0 var(--space-5);

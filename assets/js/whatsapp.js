@@ -1,17 +1,24 @@
 // Arma el mensaje de WhatsApp a partir del carrito. Formato basado
 // exactamente en el ejemplo del brief de VIBRA URBANA (sección 23).
 
+function urlProducto(item) {
+  if (!item.productoId) return "";
+  return new URL(`producto.html?id=${item.productoId}`, location.href).href;
+}
+
 export function construirMensajeWhatsApp(carrito, moneda) {
   const lineas = carrito
     .map((item, i) => {
       const subtotal = item.precio * item.cantidad;
       return (
         `${i + 1}. ${item.nombre}\n` +
+        `   Código: ${item.sku}\n` +
         `   Color: ${item.colorNombre}\n` +
         `   Talla: ${item.talla}\n` +
         `   Cantidad: ${item.cantidad}\n` +
         `   Precio unitario: ${moneda} ${item.precio}\n` +
-        `   Subtotal: ${moneda} ${subtotal}`
+        `   Subtotal: ${moneda} ${subtotal}` +
+        (urlProducto(item) ? `\n   Ver: ${urlProducto(item)}` : "")
       );
     })
     .join("\n\n");
