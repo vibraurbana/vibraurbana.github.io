@@ -1,4 +1,5 @@
 import { contarUnidadesCarrito } from "./cart.js";
+import "./api.js";
 
 let ultimoConteo = null;
 

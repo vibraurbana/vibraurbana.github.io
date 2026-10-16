@@ -2,6 +2,7 @@ import { cargarCatalogo, formatearPrecio } from "./data.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { obtenerCarrito, actualizarCantidad, eliminarDelCarrito, calcularTotal } from "./cart.js";
 import { construirMensajeWhatsApp, construirUrlWhatsApp } from "./whatsapp.js";
+import { codigoParaCarrito, enviarPedido } from "./api.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
 
 const els = {};
@@ -140,6 +141,15 @@ async function iniciar() {
   try {
     catalogoGlobal = await cargarCatalogo();
     render();
+    els.btnWhatsapp.addEventListener("click", (e) => {
+      e.preventDefault();
+      const carrito = obtenerCarrito();
+      if (!carrito.length) return;
+      const codigo = codigoParaCarrito(carrito);
+      enviarPedido(carrito, codigo); // en segundo plano; no bloquea WhatsApp
+      const mensaje = construirMensajeWhatsApp(carrito, catalogoGlobal.meta.moneda, codigo);
+      window.open(construirUrlWhatsApp(catalogoGlobal.meta.whatsapp_numero, mensaje), "_blank", "noopener");
+    });
   } catch (err) {
     console.error(err);
     els.lista.hidden = true;

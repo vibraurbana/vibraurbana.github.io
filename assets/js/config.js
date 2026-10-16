@@ -18,3 +18,17 @@
 // de abajo y descomentar esta.
 //export const CATALOGO_BASE_URL = "";
 export const CATALOGO_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public";
+
+// Numero de WhatsApp que usa el formulario de contacto (con codigo de pais, sin +).
+export const WHATSAPP_NUMERO = "59162441699";
+
+// Formulario de contacto: URL donde se guardan los datos del cliente
+// (ver tools/leads-google-sheets.gs). Si queda vacio (""), el formulario
+// abre WhatsApp con los datos ya escritos y no se guarda ningun registro.
+export const FORM_ENDPOINT = "";
+
+// URL base de la API en tu servidor CodeIgniter (sin barra final), por ejemplo:
+// "https://cajasfuertescm.com/kidmodastore/public/api"
+// Si queda vacio (""), no se registran pedidos ni contactos en tu BD y todo
+// sigue funcionando como antes (solo WhatsApp). Es una URL publica, no un secreto.
+export const API_BASE_URL = "";

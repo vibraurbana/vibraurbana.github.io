@@ -270,3 +270,37 @@
 
   .trust { grid-template-columns: repeat(4, 1fr); }
 }
+
+/* ---------- Formulario de contacto ---------- */
+.contact { display: grid; gap: var(--space-5); padding-block: var(--space-7); }
+.contact__intro h2 { font-family: var(--font-display); font-size: var(--text-h1); margin: 0 0 var(--space-2); }
+.contact__intro p { color: var(--color-text-muted); margin: 0; max-width: 46ch; }
+.contact-form {
+  display: grid; gap: var(--space-4);
+  background: var(--color-bg-card); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: var(--space-5);
+}
+.contact-form[hidden], .contact__ok[hidden], .contact-form__error[hidden] { display: none; }
+.contact-form label { display: grid; gap: var(--space-2); font-size: var(--text-small); font-weight: 600; }
+.contact-form label small { color: var(--color-text-muted); font-weight: 400; }
+.contact-form input, .contact-form textarea {
+  width: 100%; font: inherit; font-size: 1rem; color: var(--color-text);
+  background: var(--color-bg-elevated); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm); padding: 12px;
+}
+.contact-form textarea { resize: vertical; min-height: 84px; }
+.contact-form input:focus-visible, .contact-form textarea:focus-visible {
+  outline: 2px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent);
+}
+.contact-form__trampa { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.contact-form__error { color: #ff8a80; font-size: var(--text-small); margin: 0; }
+.contact-form__nota { color: var(--color-text-muted); font-size: var(--text-xs); margin: 0; }
+.contact__ok {
+  display: grid; gap: var(--space-3); justify-items: start;
+  background: var(--color-bg-card); border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md); padding: var(--space-5);
+}
+.contact__ok p { margin: 0; color: var(--color-text-muted); }
+@media (min-width: 1024px) {
+  .contact { grid-template-columns: 1fr 1fr; align-items: start; gap: var(--space-7); }
+}

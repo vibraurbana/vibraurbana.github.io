@@ -6,7 +6,7 @@ function urlProducto(item) {
   return new URL(`producto.html?id=${item.productoId}`, location.href).href;
 }
 
-export function construirMensajeWhatsApp(carrito, moneda) {
+export function construirMensajeWhatsApp(carrito, moneda, codigoPedido = "") {
   const lineas = carrito
     .map((item, i) => {
       const subtotal = item.precio * item.cantidad;
@@ -26,7 +26,7 @@ export function construirMensajeWhatsApp(carrito, moneda) {
   const total = carrito.reduce((t, item) => t + item.precio * item.cantidad, 0);
 
   return (
-    "Hola, quiero consultar el siguiente pedido:\n\n" +
+    `Hola, quiero consultar el siguiente pedido${codigoPedido ? ` (${codigoPedido})` : ""}:\n\n` +
     lineas +
     `\n\nTotal: ${moneda} ${total}` +
     "\n\nQuisiera confirmar disponibilidad y coordinar pago y entrega."
