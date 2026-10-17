@@ -6,13 +6,18 @@ function urlProducto(item) {
   return new URL(`producto.html?id=${item.productoId}`, location.href).href;
 }
 
+// "PUMA 1234": como la gente reconoce el producto. Puede faltar.
+export function referenciaProducto(item) {
+  return [item.marca, item.modelo].map((x) => String(x || "").trim()).filter(Boolean).join(" ");
+}
+
 export function construirMensajeWhatsApp(carrito, moneda, codigoPedido = "") {
   const lineas = carrito
     .map((item, i) => {
       const subtotal = item.precio * item.cantidad;
       return (
         `${i + 1}. ${item.nombre}\n` +
-        `   Código: ${item.sku}\n` +
+        (referenciaProducto(item) ? `   Marca/modelo: ${referenciaProducto(item)}\n` : "") +
         `   Color: ${item.colorNombre}\n` +
         `   Talla: ${item.talla}\n` +
         `   Cantidad: ${item.cantidad}\n` +

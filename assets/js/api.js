@@ -65,10 +65,13 @@ async function postJSON(ruta, cuerpo, ms = 6000) {
 
 // Nunca lanzan error: si el servidor falla, la venta por WhatsApp sigue igual.
 export function enviarPedido(carrito, codigo) {
+  // Carritos guardados antes de existir variante_id no se pueden registrar:
+  // se omiten (WhatsApp funciona igual).
+  if (carrito.some((i) => !i.varianteId)) return Promise.resolve({ ok: false, omitido: true });
   return postJSON("pedidos", {
     codigo,
     origen: origenVisita(),
-    items: carrito.map((i) => ({ sku: i.sku, cantidad: i.cantidad })),
+    items: carrito.map((i) => ({ variante_id: i.varianteId, cantidad: i.cantidad })),
     web: "",
   });
 }

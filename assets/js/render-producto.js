@@ -2,7 +2,7 @@ import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, c
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
-import { construirUrlWhatsApp } from "./whatsapp.js";
+import { construirUrlWhatsApp, referenciaProducto } from "./whatsapp.js";
 
 let catalogo = null;
 let producto = null;
@@ -255,8 +255,11 @@ function iniciarAgregar() {
 
     agregarAlCarrito({
       sku: variante.sku,
+      varianteId: variante.variante_id ?? null,
       productoId: producto.id,
       nombre: producto.nombre,
+      marca: producto.marca || "",
+      modelo: producto.modelo || "",
       colorNombre: color ? color.nombre : "",
       talla: variante.talla,
       precio: variante.precio,
@@ -278,7 +281,8 @@ function iniciarConsultar() {
   els.btnConsultar.addEventListener("click", () => {
     const variante = varianteSeleccionada();
     const color = infoColor(estado.colorId);
-    const partes = [`Hola, me interesa ${producto.nombre} (código ${producto.codigo})`];
+    const ref = referenciaProducto(producto);
+    const partes = [`Hola, me interesa ${producto.nombre}${ref ? ` (${ref})` : ""}`];
     if (color) partes.push(`color ${color.nombre}`);
     if (variante) partes.push(`talla ${variante.talla}`);
     const url = new URL(`producto.html?id=${producto.id}`, location.href).href;
