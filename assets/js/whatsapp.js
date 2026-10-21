@@ -1,3 +1,5 @@
+import { WHATSAPP_NUMERO, WHATSAPP_ALTERNATIVO } from "./config.js";
+
 // Arma el mensaje de WhatsApp a partir del carrito. Formato basado
 // exactamente en el ejemplo del brief de VIBRA URBANA (sección 23).
 
@@ -38,6 +40,47 @@ export function construirMensajeWhatsApp(carrito, moneda, codigoPedido = "") {
   );
 }
 
+const soloDigitos = (x) => String(x || "").replace(/\D+/g, "");
+const valido = (n) => n.length >= 8 && n.length <= 15;
+
+// UNICO lugar donde la web conoce los numeros. Arrancan con el respaldo de config.js y pasan
+// a ser los del sistema en cuanto se lee catalogo.json (data.js llama a fijarNumerosWhatsApp).
+let principal = soloDigitos(WHATSAPP_NUMERO);
+let alternativo = soloDigitos(WHATSAPP_ALTERNATIVO);
+
+export const numeroWhatsApp = () => principal;
+
+/** Escribe los numeros en los enlaces del HTML: <a data-wa="principal|alternativo" data-wa-texto="...">. */
+export function pintarEnlacesWhatsApp() {
+  const aplicar = () => {
+    document.querySelectorAll("a[data-wa]").forEach((a) => {
+      const numero = a.dataset.wa === "alternativo" ? alternativo : principal;
+      if (!valido(numero)) {
+        // Sin numero (ej. no hay alternativo): se oculta el enlace y su rotulo.
+        a.hidden = true;
+        const rotulo = a.previousElementSibling;
+        if (rotulo && rotulo.tagName === "P") rotulo.hidden = true;
+        return;
+      }
+      a.href = `https://wa.me/${numero}?text=${a.dataset.waTexto || ""}`;
+      if (a.hasAttribute("data-wa-visible")) a.textContent = numero.replace(/^591/, "");
+    });
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", aplicar, { once: true });
+  else aplicar();
+}
+
+/** Recibe meta de catalogo.json ({ whatsapp_numero, whatsapp_alternativo }) y actualiza todo. */
+export function fijarNumerosWhatsApp(meta = {}) {
+  const p = soloDigitos(meta.whatsapp_numero);
+  const a = soloDigitos(meta.whatsapp_alternativo);
+  if (valido(p)) principal = p;
+  if (valido(a)) alternativo = a;
+  pintarEnlacesWhatsApp();
+}
+
+pintarEnlacesWhatsApp(); // con el respaldo, por si catalogo.json tarda o falla
+
 export function construirUrlWhatsApp(numero, mensaje) {
-  return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+  return `https://wa.me/${soloDigitos(numero) || principal}?text=${encodeURIComponent(mensaje)}`;
 }

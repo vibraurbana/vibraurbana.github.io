@@ -313,12 +313,23 @@ WhatsApp, para que la tienda lo encuentre en *Pedidos → Web*.
   abre WhatsApp. Si el servidor no responde (o hay límite de pedidos), WhatsApp se abre
   igual, sin código: la venta nunca depende de la API.
 - Cada pedido y contacto lleva `origen` (`?utm_source=` o el referrer). Para medir redes
-  comparte enlaces como `https://tiendavibraurbana.com/?utm_source=instagram`.
+  comparte enlaces como `https://vibraurbana.github.io/?utm_source=instagram`.
 - `catalogo.json` debe incluir `variante_id` en cada variante (lo genera el sistema).
   La copia local `data/catalogo.json` es antigua y no lo trae: úsala solo para maquetar;
   en modo local los pedidos no se registran.
-- Requisito en el sistema (`.env`): `CatalogoWeb.origin = https://tiendavibraurbana.com`
+- Requisito en el sistema (archivo `app/Config/CatalogoWeb.php`): `$origin = 'https://vibraurbana.github.io'`
   (varios dominios separados por coma). Sin eso el navegador bloquea las llamadas.
+
+## Número de WhatsApp: una sola fuente
+
+- **Principal:** viene en `catalogo.json` (`meta.whatsapp_numero`). La web lo usa en el carrito,
+  las consultas de producto, el formulario de contacto y **todos** los botones y enlaces de
+  WhatsApp (flotante, pies de página, «cómo comprar»), incluido el número visible en el pie.
+- **Respaldo:** `WHATSAPP_NUMERO` en `assets/js/config.js`, solo si `catalogo.json` no se puede leer.
+- **Alternativo:** `WHATSAPP_ALTERNATIVO` en `assets/js/config.js` (se usa `meta.whatsapp_alternativo`
+  del JSON si algún día lo trae). Se muestra en el pie de `index.html`.
+- Los `.html` **no tienen ningún número escrito**: cada enlace es `<a data-wa="principal|alternativo"
+  data-wa-texto="...">` y `assets/js/whatsapp.js` le pone el número. Para un enlace nuevo copia ese formato.
 
 ## Medición con Google Analytics 4 (gratuito)
 
@@ -353,13 +364,13 @@ Algunos bloqueadores de anuncios impiden que GA cuente; por eso el sistema es la
 
 ## Requisitos del sistema para publicar en github.io
 
-- `.env` del sistema: `CatalogoWeb.origin = https://TU-USUARIO.github.io` (solo el dominio, sin ruta ni `/` final).
+- Sistema (`app/Config/CatalogoWeb.php`): `$origin = 'https://vibraurbana.github.io'` (solo el dominio, sin ruta ni `/` final; agrega `,http://localhost` para probar en local).
 - El navegador también bloquea leer `catalogo.json` desde otro dominio si no trae CORS. En `public/.htaccess` del sistema:
   ```
   <IfModule mod_headers.c>
     <FilesMatch "^catalogo\.json$">
-      Header set Access-Control-Allow-Origin "https://TU-USUARIO.github.io"
+      Header set Access-Control-Allow-Origin "https://vibraurbana.github.io"
     </FilesMatch>
   </IfModule>
   ```
-- `canonical`, `og:url`, `sitemap.xml` y `robots.txt` dicen `tiendavibraurbana.com`: cámbialos por la URL real de github.io.
+- `canonical`, `og:url`, `og:image`, `sitemap.xml` y `robots.txt` apuntan a `https://vibraurbana.github.io`. Cuando tengas dominio propio, reemplaza esa URL en esos archivos (búsqueda y reemplazo) y actualiza `origin` en el sistema.

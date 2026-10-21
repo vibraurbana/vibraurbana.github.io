@@ -1,5 +1,5 @@
-import { WHATSAPP_NUMERO, FORM_ENDPOINT, API_BASE_URL } from "./config.js";
-import { construirUrlWhatsApp } from "./whatsapp.js";
+import { FORM_ENDPOINT, API_BASE_URL } from "./config.js";
+import { construirUrlWhatsApp, numeroWhatsApp } from "./whatsapp.js";
 import { origenVisita, enviarContacto, precargarToken } from "./api.js";
 import { track } from "./analytics.js";
 
@@ -44,7 +44,7 @@ if (form) {
     const mensaje =
       `Hola, soy ${nombre}. Quiero que me escriban.\nMi celular: ${telefono}` +
       (interes ? `\nMe interesa: ${interes}` : "");
-    const urlWa = construirUrlWhatsApp(WHATSAPP_NUMERO, mensaje);
+    const urlWa = construirUrlWhatsApp(numeroWhatsApp(), mensaje);
     els.okWa.href = urlWa;
 
     const lead = {

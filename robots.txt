@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /carrito.html
 
-Sitemap: https://tiendavibraurbana.com/sitemap.xml
+Sitemap: https://vibraurbana.github.io/sitemap.xml

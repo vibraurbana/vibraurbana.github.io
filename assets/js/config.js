@@ -19,8 +19,13 @@
 //export const CATALOGO_BASE_URL = "";
 export const CATALOGO_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public";
 
-// Numero de WhatsApp que usa el formulario de contacto (con codigo de pais, sin +).
-export const WHATSAPP_NUMERO = "59178446615"; //78446615
+// WhatsApp de RESPALDO (con codigo de pais, sin +). El numero principal se toma de
+// catalogo.json (meta.whatsapp_numero) y se usa en TODA la web: carrito, consultas,
+// formulario, botones y pies de pagina. Estos valores solo se usan si catalogo.json no se
+// puede leer (y el alternativo, mientras catalogo.json no traiga meta.whatsapp_alternativo).
+export const WHATSAPP_NUMERO = "59162441699";
+export const WHATSAPP_ALTERNATIVO = "59177299670";
+
 
 // Formulario de contacto: URL donde se guardan los datos del cliente
 // (ver tools/leads-google-sheets.gs). Si queda vacio (""), el formulario
@@ -38,5 +43,5 @@ export const GA_MEASUREMENT_ID = "";
 // Si queda vacio (""), no se registran pedidos ni contactos en el sistema y todo
 // sigue funcionando como antes (solo WhatsApp). Si el sistema no responde, tambien:
 // la venta por WhatsApp nunca depende de la API. Es una URL publica, no un secreto.
-// El sistema debe tener en su .env: CatalogoWeb.origin = <el dominio de esta web>.
+// En el sistema, app/Config/CatalogoWeb.php debe tener $origin = <el dominio de esta web>.
 export const API_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public/index.php/api/web";

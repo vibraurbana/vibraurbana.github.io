@@ -1,4 +1,5 @@
 import { CATALOGO_BASE_URL } from "./config.js";
+import { fijarNumerosWhatsApp } from "./whatsapp.js";
 
 // Único punto de acceso a los datos del catálogo. En modo local lee un
 // JSON mock; en modo remoto (ver config.js) apunta al catalogo.json que
@@ -19,6 +20,7 @@ export async function cargarCatalogo() {
     throw new Error("No se pudo cargar el catalogo (" + res.status + ")");
   }
   catalogoCache = await res.json();
+  fijarNumerosWhatsApp(catalogoCache.meta); // los numeros los define el sistema
   return catalogoCache;
 }
 
