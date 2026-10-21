@@ -296,3 +296,70 @@ próximas líneas ya guarden la URL resuelta correctamente.
   bien desde las Fases 2-4; esta fase los dejó visualmente más pulidos
   (mismo lenguaje visual, sin inconsistencias entre páginas) en vez de
   rehacerlos.
+
+## Conexión con el sistema: pedidos y contactos (API)
+
+Al pulsar «Consultar pedido por WhatsApp», la web registra el pedido en el sistema
+CI4 y recibe un **código de seguimiento** (`W-XXXXXX`) que viaja en el mensaje de
+WhatsApp, para que la tienda lo encuentre en *Pedidos → Web*.
+
+- `API_BASE_URL` (en `assets/js/config.js`) apunta a `<sistema>/index.php/api/web` (con `index.php`, como el resto de URLs del sistema).
+  Vacío = la web funciona solo con WhatsApp, como antes.
+- Protocolo (`assets/js/api.js`): `GET /token`, luego `POST /pedido` o `/contacto`
+  con ese token. El servidor rechaza tokens de menos de 3 s o de más de 1 h; la web
+  espera y renueva sola. El código lo genera el servidor.
+- Solo se envían `variante_id` y `cantidad`; **precios y stock los decide el servidor**.
+  Si algo se agotó desde la última actualización del catálogo, el carrito avisa y no
+  abre WhatsApp. Si el servidor no responde (o hay límite de pedidos), WhatsApp se abre
+  igual, sin código: la venta nunca depende de la API.
+- Cada pedido y contacto lleva `origen` (`?utm_source=` o el referrer). Para medir redes
+  comparte enlaces como `https://tiendavibraurbana.com/?utm_source=instagram`.
+- `catalogo.json` debe incluir `variante_id` en cada variante (lo genera el sistema).
+  La copia local `data/catalogo.json` es antigua y no lo trae: úsala solo para maquetar;
+  en modo local los pedidos no se registran.
+- Requisito en el sistema (`.env`): `CatalogoWeb.origin = https://tiendavibraurbana.com`
+  (varios dominios separados por coma). Sin eso el navegador bloquea las llamadas.
+
+## Medición con Google Analytics 4 (gratuito)
+
+1. En analytics.google.com crea una propiedad → *Flujos de datos* → *Web* → URL de la web.
+2. Copia el **ID de medición** (`G-XXXXXXXXXX`) y pégalo en `GA_MEASUREMENT_ID` (`assets/js/config.js`).
+   Vacío = no se mide nada. En localhost nunca se envía nada (los eventos salen en la consola).
+3. En *Administrar → Eventos*, marca como **evento clave** `generate_lead` (pedido registrado)
+   y, si quieres, `formulario_contacto` y `consulta_producto`.
+
+No se envía ningún dato personal (ni nombre, ni celular). `utm_source` lo atribuye GA solo.
+
+| Evento | Cuándo | Para qué sirve |
+|---|---|---|
+| `page_view` | cada página | visitas, de dónde vienen |
+| `select_item` | clic en una tarjeta de producto | qué productos llaman la atención |
+| `view_item` | abre un producto | interés real por producto |
+| `add_to_cart` / `remove_from_cart` | carrito | intención de compra |
+| `view_cart` | abre el carrito | |
+| `begin_checkout` | clic en «Consultar pedido por WhatsApp» | quién intenta pedir |
+| `generate_lead` | el sistema registró el pedido (`transaction_id` = código `W-…`) | **pedidos reales**; el código cruza con *Pedidos → Web* |
+| `pedido_no_registrado` | pidió por WhatsApp pero la API no lo registró (`motivo`) | fugas de medición |
+| `pedido_sin_stock` | el producto se agotó antes de pedir | stock publicado desactualizado |
+| `consulta_producto` | «Consultar por WhatsApp» en un producto (`agotado` si no había stock) | demanda, incluso de lo agotado |
+| `whatsapp_click` | cualquier enlace a WhatsApp (flotante, footer…) | qué botón convierte (`ubicacion`) |
+| `formulario_contacto` | envía el formulario | |
+| `search` / `busqueda_sin_resultados` | busca en el catálogo | **qué piden y no tienes** |
+| `filtro_catalogo` | filtra por estilo, color o talla | tallas y colores más buscados |
+
+Para leerlo: GA muestra visitas → producto visto → carrito → `generate_lead`; el sistema
+(*Pedidos → Web → Embudo*) continúa con: escribieron por WhatsApp → confirmados → entregados.
+Algunos bloqueadores de anuncios impiden que GA cuente; por eso el sistema es la cifra de ventas.
+
+## Requisitos del sistema para publicar en github.io
+
+- `.env` del sistema: `CatalogoWeb.origin = https://TU-USUARIO.github.io` (solo el dominio, sin ruta ni `/` final).
+- El navegador también bloquea leer `catalogo.json` desde otro dominio si no trae CORS. En `public/.htaccess` del sistema:
+  ```
+  <IfModule mod_headers.c>
+    <FilesMatch "^catalogo\.json$">
+      Header set Access-Control-Allow-Origin "https://TU-USUARIO.github.io"
+    </FilesMatch>
+  </IfModule>
+  ```
+- `canonical`, `og:url`, `sitemap.xml` y `robots.txt` dicen `tiendavibraurbana.com`: cámbialos por la URL real de github.io.

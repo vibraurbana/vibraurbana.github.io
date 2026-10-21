@@ -27,8 +27,16 @@ export const WHATSAPP_NUMERO = "59162441699";
 // abre WhatsApp con los datos ya escritos y no se guarda ningun registro.
 export const FORM_ENDPOINT = "";
 
-// URL base de la API en tu servidor CodeIgniter (sin barra final), por ejemplo:
-// "https://cajasfuertescm.com/kidmodastore/public/api"
-// Si queda vacio (""), no se registran pedidos ni contactos en tu BD y todo
-// sigue funcionando como antes (solo WhatsApp). Es una URL publica, no un secreto.
-export const API_BASE_URL = "";
+// Google Analytics 4 (gratuito). Pega aqui tu ID de medicion (empieza con "G-").
+// Se crea en analytics.google.com > Administrar > Flujos de datos > Web.
+// Vacio = no se mide nada. En localhost nunca se envia nada (los eventos salen en consola).
+export const GA_MEASUREMENT_ID = "";
+
+// URL base de la API publica del sistema CI4 (sin barra final). Termina en /api/web:
+// expone /token, /pedido y /contacto. Lleva "index.php" porque asi son todas las URLs del
+// sistema (Config\App::$indexPage); sin el, el servidor responde "No input file specified".
+// Si queda vacio (""), no se registran pedidos ni contactos en el sistema y todo
+// sigue funcionando como antes (solo WhatsApp). Si el sistema no responde, tambien:
+// la venta por WhatsApp nunca depende de la API. Es una URL publica, no un secreto.
+// El sistema debe tener en su .env: CatalogoWeb.origin = <el dominio de esta web>.
+export const API_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public/index.php/api/web";

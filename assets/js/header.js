@@ -1,5 +1,6 @@
 import { contarUnidadesCarrito } from "./cart.js";
 import "./api.js";
+import "./analytics.js"; // GA4 en todas las paginas
 
 let ultimoConteo = null;
 

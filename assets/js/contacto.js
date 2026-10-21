@@ -1,6 +1,7 @@
 import { WHATSAPP_NUMERO, FORM_ENDPOINT, API_BASE_URL } from "./config.js";
 import { construirUrlWhatsApp } from "./whatsapp.js";
-import { origenVisita, enviarContacto } from "./api.js";
+import { origenVisita, enviarContacto, precargarToken } from "./api.js";
+import { track } from "./analytics.js";
 
 const form = document.querySelector("[data-contact-form]");
 
@@ -24,6 +25,9 @@ if (form) {
     els.error.textContent = texto;
     els.error.hidden = false;
   };
+
+  // El servidor exige un token de al menos 3 segundos: se pide en cuanto la persona toca el formulario.
+  form.addEventListener("focusin", precargarToken, { once: true });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -49,7 +53,7 @@ if (form) {
       interes,
       origen: origenVisita(),
       pagina: location.href,
-      web: "",
+      hp: "", // campo trampa (ya se descarto arriba si venia lleno)
     };
 
     // 1) API propia (tu servidor). Si falla, no se pierde el contacto: abre WhatsApp.
@@ -57,6 +61,7 @@ if (form) {
       els.boton.disabled = true;
       const resultado = await enviarContacto(lead);
       els.boton.disabled = false;
+      track("formulario_contacto", { registrado: resultado.ok, motivo: resultado.ok ? undefined : `http_${resultado.status || "red"}` });
       if (resultado.ok) {
         form.hidden = true;
         els.ok.hidden = false;
@@ -68,6 +73,7 @@ if (form) {
 
     // 2) Sin API ni Google: solo abre WhatsApp con los datos escritos.
     if (!FORM_ENDPOINT) {
+      track("formulario_contacto", { registrado: false, motivo: "sin_api" });
       window.open(urlWa, "_blank", "noopener");
       return;
     }

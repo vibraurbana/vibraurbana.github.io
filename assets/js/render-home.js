@@ -1,5 +1,6 @@
 import { cargarCatalogo, resolverImagen } from "./data.js";
 import { iniciarHeader } from "./header.js";
+import { medirSeleccionDeProductos } from "./analytics.js";
 import { tarjetaProductoHTML, RUTA_PLACEHOLDER } from "./product-card.js";
 import { skeletonCards, skeletonStyleCards } from "./skeleton.js";
 
@@ -34,6 +35,7 @@ async function iniciar() {
 
   try {
     const catalogo = await cargarCatalogo();
+    medirSeleccionDeProductos(catalogo, "destacados");
 
     if (estiloGrid) {
       const visibles = (catalogo.etiquetas || [])

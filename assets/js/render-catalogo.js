@@ -1,5 +1,6 @@
 import { cargarCatalogo, precioDesde } from "./data.js";
 import { iniciarHeader } from "./header.js";
+import { track, medirSeleccionDeProductos } from "./analytics.js";
 import { tarjetaProductoHTML } from "./product-card.js";
 import { skeletonCards, skeletonChips } from "./skeleton.js";
 
@@ -17,6 +18,37 @@ let primerRenderGrid = true;
 const PRODUCTOS_POR_PAGINA = 12;
 
 const els = {};
+
+// --- Medicion: que busca y filtra la gente (sin datos personales) ---
+const filtroPrevio = { etiquetaId: null, colorId: null, talla: null };
+let temporizadorBusqueda = null;
+
+function medirFiltros() {
+  const nombres = {
+    etiquetaId: (id) => (catalogoGlobal.etiquetas || []).find((e) => e.id === id)?.nombre,
+    colorId: (id) => (catalogoGlobal.colores || []).find((c) => c.id === id)?.nombre,
+    talla: (t) => t,
+  };
+  for (const tipo of Object.keys(filtroPrevio)) {
+    const valor = estado[tipo];
+    if (valor !== null && valor !== filtroPrevio[tipo]) {
+      track("filtro_catalogo", { tipo: tipo.replace("Id", ""), valor: String(nombres[tipo](valor) ?? valor) });
+    }
+    filtroPrevio[tipo] = valor;
+  }
+}
+
+/** Mide la busqueda cuando la persona deja de escribir (1 s). Las sin resultados son demanda no atendida. */
+function medirBusqueda() {
+  clearTimeout(temporizadorBusqueda);
+  temporizadorBusqueda = setTimeout(() => {
+    const termino = estado.q.trim().toLowerCase();
+    if (termino.length < 2) return;
+    const resultados = (catalogoGlobal.productos || []).filter(productoCoincide).length;
+    track("search", { search_term: termino, resultados });
+    if (resultados === 0) track("busqueda_sin_resultados", { search_term: termino });
+  }, 1000);
+}
 
 function leerParamsIniciales() {
   const params = new URLSearchParams(location.search);
@@ -208,6 +240,7 @@ function pintarPaginacion(total) {
 
 function actualizar(resetPagina = true) {
   if (resetPagina) estado.pagina = 1;
+  medirFiltros();
   const filtrados = ordenar((catalogoGlobal.productos || []).filter(productoCoincide));
   const totalPaginas = Math.max(1, Math.ceil(filtrados.length / PRODUCTOS_POR_PAGINA));
   estado.pagina = Math.min(estado.pagina, totalPaginas);
@@ -253,6 +286,7 @@ function limpiarFiltros() {
 function iniciarControles() {
   els.search.addEventListener("input", () => {
     estado.q = els.search.value;
+    medirBusqueda();
     actualizar();
   });
 
@@ -320,6 +354,7 @@ async function iniciar() {
     catalogoGlobal = await cargarCatalogo();
     els.generado.textContent = formatearFechaGeneracion(catalogoGlobal.meta?.generado_en);
     iniciarControles();
+    medirSeleccionDeProductos(catalogoGlobal, "catalogo");
     actualizar();
   } catch (err) {
     console.error(err);

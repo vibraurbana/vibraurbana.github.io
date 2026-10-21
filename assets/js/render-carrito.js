@@ -2,11 +2,19 @@ import { cargarCatalogo, formatearPrecio } from "./data.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { obtenerCarrito, actualizarCantidad, eliminarDelCarrito, calcularTotal } from "./cart.js";
 import { construirMensajeWhatsApp, construirUrlWhatsApp } from "./whatsapp.js";
-import { codigoParaCarrito, enviarPedido } from "./api.js";
+import { precargarToken } from "./api.js";
+import { solicitarPorWhatsApp, textoSinStock } from "./solicitud.js";
+import { track, itemCarrito, valorCarrito, MONEDA_GA } from "./analytics.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
 
 const els = {};
 let catalogoGlobal = null;
+let enviando = false;
+
+function mostrarError(texto) {
+  els.error.textContent = texto;
+  els.error.hidden = false;
+}
 
 /** Busca el stock actual de un SKU en el catálogo (para no dejar sumar
  *  más unidades de las que realmente hay). Si no lo encuentra, no limita. */
@@ -60,6 +68,8 @@ function iniciarEventosItems() {
   els.lista.querySelectorAll("[data-quitar]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const sku = btn.dataset.quitar;
+      const quitado = obtenerCarrito().find((i) => i.sku === sku);
+      if (quitado) track("remove_from_cart", { currency: MONEDA_GA, value: quitado.precio * quitado.cantidad, items: [itemCarrito(quitado)] });
       const fila = els.lista.querySelector(`[data-sku="${sku}"]`);
 
       if (!fila) {
@@ -137,18 +147,41 @@ async function iniciar() {
   els.subtotal = document.querySelector("[data-cart-subtotal]");
   els.total = document.querySelector("[data-cart-total]");
   els.btnWhatsapp = document.querySelector("[data-cart-whatsapp]");
+  els.error = document.querySelector("[data-cart-error]");
 
   try {
     catalogoGlobal = await cargarCatalogo();
     render();
-    els.btnWhatsapp.addEventListener("click", (e) => {
+    const inicial = obtenerCarrito();
+    if (inicial.length) {
+      precargarToken();
+      track("view_cart", { currency: MONEDA_GA, value: valorCarrito(inicial), items: inicial.map(itemCarrito) });
+    }
+
+    els.btnWhatsapp.addEventListener("click", async (e) => {
       e.preventDefault();
+      if (enviando) return;
       const carrito = obtenerCarrito();
       if (!carrito.length) return;
-      const codigo = codigoParaCarrito(carrito);
-      enviarPedido(carrito, codigo); // en segundo plano; no bloquea WhatsApp
-      const mensaje = construirMensajeWhatsApp(carrito, catalogoGlobal.meta.moneda, codigo);
-      window.open(construirUrlWhatsApp(catalogoGlobal.meta.whatsapp_numero, mensaje), "_blank", "noopener");
+
+      els.error.hidden = true;
+      enviando = true;
+      const textoOriginal = els.btnWhatsapp.innerHTML;
+      els.btnWhatsapp.setAttribute("aria-disabled", "true");
+      els.btnWhatsapp.lastChild.textContent = " Registrando tu pedido…";
+
+      const res = await solicitarPorWhatsApp({
+        carrito,
+        moneda: catalogoGlobal.meta.moneda,
+        numero: catalogoGlobal.meta.whatsapp_numero,
+        ubicacion: "carrito",
+      });
+
+      enviando = false;
+      els.btnWhatsapp.removeAttribute("aria-disabled");
+      els.btnWhatsapp.innerHTML = textoOriginal;
+
+      if (res.sinStock) mostrarError(`${textoSinStock(carrito, res.sinStock)} Ajusta tu carrito y vuelve a intentar.`);
     });
   } catch (err) {
     console.error(err);

@@ -17,65 +17,83 @@ export function origenVisita() {
 }
 origenVisita();
 
-// Codigo de pedido tipo VU-261016-4K7M (fecha + 4 caracteres al azar).
-export function generarCodigoPedido() {
-  const d = new Date();
-  const dos = (n) => String(n).padStart(2, "0");
-  const fecha = String(d.getFullYear()).slice(2) + dos(d.getMonth() + 1) + dos(d.getDate());
-  const alfabeto = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // sin caracteres que se confunden
-  const azar = crypto.getRandomValues(new Uint8Array(4));
-  const sufijo = Array.from(azar, (n) => alfabeto[n % alfabeto.length]).join("");
-  return `VU-${fecha}-${sufijo}`;
-}
+// ---------------------------------------------------------------------------
+// API del sistema (CI4). Protocolo:
+//   1) GET  /token   -> token firmado por el servidor.
+//   2) POST /pedido  o  /contacto con ese token. El servidor rechaza tokens de
+//      menos de 3 segundos (bots) o de mas de 1 hora, por eso se espera si hace
+//      falta y se renueva si vencio.
+// El CODIGO del pedido (W-XXXXXX) lo genera el servidor, no esta web.
+// Nada de esto lanza error: si la API falla, WhatsApp sigue funcionando.
+// ---------------------------------------------------------------------------
+const MADURO_MS = 3500;            // el servidor exige >= 3 s desde que emitio el token
+const VIDA_MS = 50 * 60 * 1000;    // se renueva antes de la hora de vigencia
+let tokenActual = null;            // { valor, emitidoEn }
 
-// El mismo carrito conserva el mismo codigo (si el cliente pulsa dos veces no
-// se duplica el pedido); si el carrito cambia, se genera un codigo nuevo.
-export function codigoParaCarrito(carrito) {
-  const firma = carrito.map((i) => `${i.sku}x${i.cantidad}`).sort().join("|");
-  try {
-    const guardado = JSON.parse(sessionStorage.getItem("vu_pedido"));
-    if (guardado && guardado.firma === firma) return guardado.codigo;
-  } catch {}
-  const codigo = generarCodigoPedido();
-  try { sessionStorage.setItem("vu_pedido", JSON.stringify({ firma, codigo })); } catch {}
-  return codigo;
-}
+const base = () => API_BASE_URL.replace(/\/+$/, "");
 
-async function postJSON(ruta, cuerpo, ms = 6000) {
-  const base = API_BASE_URL.replace(/\/+$/, "");
-  if (!base) return { ok: false, omitido: true };
+async function fetchJSON(url, opciones = {}, ms = 8000) {
   const control = new AbortController();
   const temporizador = setTimeout(() => control.abort(), ms);
   try {
-    const resp = await fetch(`${base}/${ruta}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cuerpo),
-      keepalive: true,
-      signal: control.signal,
-    });
+    const resp = await fetch(url, { ...opciones, signal: control.signal });
     const datos = await resp.json().catch(() => ({}));
-    return { ok: resp.ok && datos.ok === true, datos };
-  } catch {
-    return { ok: false };
+    return { resp, datos };
   } finally {
     clearTimeout(temporizador);
   }
 }
 
-// Nunca lanzan error: si el servidor falla, la venta por WhatsApp sigue igual.
-export function enviarPedido(carrito, codigo) {
+async function pedirToken() {
+  const { resp, datos } = await fetchJSON(`${base()}/token`);
+  if (!resp.ok || !datos.ok || !datos.token) throw new Error("token");
+  tokenActual = { valor: datos.token, emitidoEn: Date.now() };
+}
+
+/** Pide el token por adelantado (al abrir el carrito o enfocar el formulario). */
+export function precargarToken() {
+  if (!base()) return;
+  if (!tokenActual || Date.now() - tokenActual.emitidoEn > VIDA_MS) pedirToken().catch(() => {});
+}
+
+async function tokenListo() {
+  if (!tokenActual || Date.now() - tokenActual.emitidoEn > VIDA_MS) await pedirToken();
+  const espera = MADURO_MS - (Date.now() - tokenActual.emitidoEn);
+  if (espera > 0) await new Promise((r) => setTimeout(r, espera));
+  return tokenActual.valor;
+}
+
+// Devuelve { ok, status, datos } o { ok:false, omitido:true } si no hay API configurada.
+async function postJSON(ruta, cuerpo) {
+  if (!base()) return { ok: false, omitido: true };
+  try {
+    for (let intento = 0; intento < 2; intento++) {
+      const token = await tokenListo();
+      const { resp, datos } = await fetchJSON(`${base()}/${ruta}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...cuerpo, token }),
+      });
+      // 400 = token vencido o invalido: se pide uno nuevo y se reintenta una vez.
+      if (resp.status === 400 && intento === 0) { tokenActual = null; continue; }
+      return { ok: resp.ok && datos.ok === true, status: resp.status, datos };
+    }
+  } catch {}
+  return { ok: false };
+}
+
+/** Registra el pedido en el sistema. Respuesta: { ok, datos: { codigo, total, items } }. */
+export function enviarPedido(carrito) {
   // Carritos guardados antes de existir variante_id no se pueden registrar:
   // se omiten (WhatsApp funciona igual).
   if (carrito.some((i) => !i.varianteId)) return Promise.resolve({ ok: false, omitido: true });
-  return postJSON("pedidos", {
-    codigo,
+  return postJSON("pedido", {
     origen: origenVisita(),
+    hp: "", // campo trampa: un bot lo rellena, una persona nunca
     items: carrito.map((i) => ({ variante_id: i.varianteId, cantidad: i.cantidad })),
-    web: "",
   });
 }
 
 export function enviarContacto(lead) {
-  return postJSON("contactos", lead);
+  return postJSON("contacto", lead);
 }

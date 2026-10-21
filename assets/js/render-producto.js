@@ -3,6 +3,7 @@ import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
 import { construirUrlWhatsApp, referenciaProducto } from "./whatsapp.js";
+import { track, itemProducto, MONEDA_GA } from "./analytics.js";
 
 let catalogo = null;
 let producto = null;
@@ -188,7 +189,7 @@ function renderPrecioYDisponibilidad() {
     els.disponibilidadTexto.textContent = "Elige una talla para ver disponibilidad";
   } else if (variante.stock <= 3) {
     els.disponibilidad.classList.add("es-poco");
-    els.disponibilidadTexto.textContent = "Últimas unidades";
+    els.disponibilidadTexto.textContent = variante.stock === 1 ? "¡Queda solo 1!" : `¡Quedan solo ${variante.stock}!`;
   } else {
     els.disponibilidad.classList.add("es-disponible");
     els.disponibilidadTexto.textContent = "En stock";
@@ -269,6 +270,12 @@ function iniciarAgregar() {
         : RUTA_PLACEHOLDER,
     });
 
+    track("add_to_cart", {
+      currency: MONEDA_GA,
+      value: variante.precio * estado.cantidad,
+      items: [itemProducto(producto, { variante, colorNombre: color ? color.nombre : "", cantidad: estado.cantidad })],
+    });
+
     pintarContadorCarrito();
     mostrarToast(`Agregado: ${producto.nombre} · ${variante.talla}`);
     estado.cantidad = 1;
@@ -287,6 +294,10 @@ function iniciarConsultar() {
     if (variante) partes.push(`talla ${variante.talla}`);
     const url = new URL(`producto.html?id=${producto.id}`, location.href).href;
     const mensaje = `${partes.join(", ")}.\n¿Está disponible?\n${url}`;
+    track("consulta_producto", {
+      items: [itemProducto(producto, { variante, colorNombre: color ? color.nombre : "" })],
+      agotado: variante ? variante.stock <= 0 : false,
+    });
     window.open(construirUrlWhatsApp(catalogo.meta.whatsapp_numero, mensaje), "_blank", "noopener");
   });
 }
@@ -348,6 +359,13 @@ async function iniciar() {
     iniciarStepper();
     iniciarAgregar();
     iniciarConsultar();
+
+    const precios = (producto.colores || []).flatMap((c) => (c.variantes || []).map((v) => v.precio));
+    track("view_item", {
+      currency: MONEDA_GA,
+      value: precios.length ? Math.min(...precios) : undefined,
+      items: [itemProducto(producto)],
+    });
   } catch (err) {
     console.error(err);
     mostrarNoEncontrado();

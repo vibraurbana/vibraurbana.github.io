@@ -154,6 +154,21 @@
   margin-top: var(--space-4);
 }
 
+.cart-summary__error {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3);
+  border: 1px solid #c0392b;
+  border-radius: 10px;
+  background: rgba(192, 57, 43, 0.12);
+  color: #ff8a7a;
+  font-size: 0.85rem;
+}
+
+.cart-summary__whatsapp[aria-disabled="true"] {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 .cart-summary__nota {
   font-size: 0.72rem;
   color: var(--color-text-muted);
