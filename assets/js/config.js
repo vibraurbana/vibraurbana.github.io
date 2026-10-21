@@ -20,7 +20,7 @@
 export const CATALOGO_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public";
 
 // Numero de WhatsApp que usa el formulario de contacto (con codigo de pais, sin +).
-export const WHATSAPP_NUMERO = "59178446615"; //62441699
+export const WHATSAPP_NUMERO = "59178446615"; //78446615
 
 // Formulario de contacto: URL donde se guardan los datos del cliente
 // (ver tools/leads-google-sheets.gs). Si queda vacio (""), el formulario
