@@ -35,7 +35,7 @@ export const FORM_ENDPOINT = "";
 // Google Analytics 4 (gratuito). Pega aqui tu ID de medicion (empieza con "G-").
 // Se crea en analytics.google.com > Administrar > Flujos de datos > Web.
 // Vacio = no se mide nada. En localhost nunca se envia nada (los eventos salen en consola).
-export const GA_MEASUREMENT_ID = "";
+export const GA_MEASUREMENT_ID = "G-32HD6ZQ0NG";
 
 // URL base de la API publica del sistema CI4 (sin barra final). Termina en /api/web:
 // expone /token, /pedido y /contacto. Lleva "index.php" porque asi son todas las URLs del
