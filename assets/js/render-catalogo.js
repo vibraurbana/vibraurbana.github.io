@@ -77,7 +77,7 @@ function formatearFechaGeneracion(fecha) {
 function productoCoincide(producto) {
   if (estado.q) {
     const q = normalizar(estado.q);
-    const enTexto = [producto.nombre, producto.marca, producto.modelo, producto.codigo]
+    const enTexto = [producto.nombre]
       .some((campo) => normalizar(campo).includes(q));
     if (!enTexto) return false;
   }

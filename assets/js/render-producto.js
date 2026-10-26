@@ -215,7 +215,7 @@ function renderTodo() {
 function renderInfoFija() {
   document.title = `${producto.nombre} — VIBRA URBANA`;
   els.miga.textContent = producto.nombre;
-  els.marca.textContent = producto.marca || "";
+  els.marca.textContent = "";
   els.nombre.textContent = producto.nombre;
   els.descripcion.textContent = producto.descripcion ||
     "Diseño urbano y versátil, pensado para acompañarte todos los días.";

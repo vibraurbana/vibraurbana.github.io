@@ -54,7 +54,6 @@
 
     <a href="index.html" class="brand">
       <picture class="brand__picture">
-        <source media="(max-width: 639px)" srcset="assets/img/isotipo-t.webp">
         <img src="assets/img/logo-t.webp" alt="VIBRA URBANA" class="brand__logo">
       </picture>
     </a>
@@ -124,52 +123,25 @@
   </section>
 
   <!-- NUEVOS INGRESOS -->
-  <section class="section section--tight container" aria-labelledby="nuevos-title">
+  <div class="band">
+  <section class="section container" aria-labelledby="nuevos-title">
     <div class="section__head">
       <h2 class="section__title" id="nuevos-title">Nuevos ingresos</h2>
       <a class="section__link" href="catalogo.html">Ver todo</a>
     </div>
     <div class="product-grid" data-nuevos-grid></div>
   </section>
+  </div>
 
   <!-- COMO COMPRAR -->
-  <section class="how-to" id="como-comprar" aria-labelledby="how-to-title">
-    <div class="container how-to__inner">
-      <div class="how-to__intro">
-        <p class="how-to__eyebrow">ASÍ DE SIMPLE</p>
-        <h2 id="how-to-title">¿CÓMO<br><span>COMPRAR?</span></h2>
-        <p>Explora, elige y coordina tu pedido por WhatsApp. Nosotros te ayudamos en todo el proceso.</p>
-      </div>
-      <div class="how-to__steps">
-        <div class="how-to__step">
-          <span class="how-to__icon" aria-hidden="true">⌕</span>
-          <strong>01</strong>
-          <b>EXPLORA</b>
-          <span>Mira el catálogo y encuentra tu estilo.</span>
-        </div>
-        <div class="how-to__step">
-          <span class="how-to__icon" aria-hidden="true">＋</span>
-          <strong>02</strong>
-          <b>ELIGE</b>
-          <span>Selecciona el modelo, talla, color y cantidad.</span>
-        </div>
-        <div class="how-to__step">
-          <span class="how-to__icon" aria-hidden="true">◌</span>
-          <strong>03</strong>
-          <b>COORDINA</b>
-          <span>Envíanos tu pedido por WhatsApp y te asesoramos.</span>
-        </div>
-        <div class="how-to__step">
-          <span class="how-to__icon" aria-hidden="true">↗</span>
-          <strong>04</strong>
-          <b>RECIBE</b>
-          <span>Coordinamos el pago y la entrega contigo.</span>
-        </div>
-      </div>
-      <a class="how-to__cta" href="#" data-wa="principal" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
-        <span aria-hidden="true">◌</span> Coordinar por WhatsApp <span aria-hidden="true">→</span>
-      </a>
-    </div>
+  <section class="how container" id="como-comprar" aria-labelledby="how-title">
+    <h2 class="section__title" id="how-title">¿Cómo comprar?</h2>
+    <ol class="how__steps">
+      <li><span class="how__num">1</span><div><strong>Explora</strong><span>Mira el catálogo y encuentra tu estilo.</span></div></li>
+      <li><span class="how__num">2</span><div><strong>Elige</strong><span>Selecciona talla, color y cantidad.</span></div></li>
+      <li><span class="how__num">3</span><div><strong>Consulta</strong><span>Envíanos tu pedido por WhatsApp.</span></div></li>
+      <li><span class="how__num">4</span><div><strong>Recibe o retira</strong><span>Coordinamos pago y entrega contigo.</span></div></li>
+    </ol>
   </section>
 
   <!-- VISITANOS -->

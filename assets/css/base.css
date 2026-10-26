@@ -91,7 +91,7 @@ button { font-family: inherit; cursor: pointer; }
 .brand__picture { display: block; }
 
 @media (max-width: 639px) {
-  .brand__logo { width: 42px; height: 42px; object-fit: contain; }
+  .brand__logo { width: 96px; height: auto; }
 }
 
 .brand__main {

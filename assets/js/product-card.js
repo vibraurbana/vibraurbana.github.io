@@ -21,7 +21,6 @@ export function tarjetaProductoHTML(catalogo, producto) {
              onerror="this.src='${RUTA_PLACEHOLDER}'">
       </span>
       <span class="product-card__body">
-        <span class="product-card__brand">${producto.marca || ""}</span>
         <span class="product-card__name">${producto.nombre}</span>
         <span class="product-card__price">
           ${desde !== null ? `<span class="product-card__price-from">Desde</span>${formatearPrecio(desde, catalogo.meta.moneda)}` : "Consultar"}

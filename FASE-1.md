@@ -6,4 +6,5 @@
 - Pie, menú y barra inferior viven en un solo archivo: `assets/js/layout.js`.
 - `assets/js/config.js` > `ENLACES`: maps, tiktok, facebook, instagram. Si uno está vacío, no se muestra (Maps, Facebook e Instagram están vacíos hasta que los envíes).
 - Quitado por no tener respaldo: "Calidad/Estilo/Comodidad", "Compra segura", "Cambios fáciles", "Rápidos y seguros".
-- Pendiente (Fase 2): nombres de producto en 2 líneas y modelo visible en tarjetas.
+- Ajustes v2: solo se usa el nombre del producto (sin modelo ni marca en tarjetas, ficha, mensaje de WhatsApp ni Analytics; el buscador busca solo por nombre). Logo completo también en móvil. Portada más baja. Nuevos ingresos en banda gris. "Cómo comprar" ahora es una lista clara y compacta.
+- Pendiente (Fase 2): nombres de producto en 2 líneas.

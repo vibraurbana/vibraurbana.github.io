@@ -19,7 +19,6 @@ export function construirMensajeWhatsApp(carrito, moneda, codigoPedido = "") {
       const subtotal = item.precio * item.cantidad;
       return (
         `${i + 1}. ${item.nombre}\n` +
-        (referenciaProducto(item) ? `   Marca/modelo: ${referenciaProducto(item)}\n` : "") +
         `   Color: ${item.colorNombre}\n` +
         `   Talla: ${item.talla}\n` +
         `   Cantidad: ${item.cantidad}\n` +

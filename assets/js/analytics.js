@@ -27,15 +27,14 @@ export function track(evento, params = {}) {
   } catch {}
 }
 
-// "PUMA A35127": como la gente reconoce el producto (nombre + modelo).
-const nombreGA = (nombre, modelo) => [nombre, modelo].map((x) => String(x || "").trim()).filter(Boolean).join(" ");
+// Solo el nombre del producto (sin modelo ni marca).
+const nombreGA = (nombre) => String(nombre || "").trim();
 
 /** Item GA4 desde un producto del catalogo. item_id = id del producto (igual en vista, carrito y pedido). */
 export function itemProducto(producto, { variante = null, colorNombre = "", cantidad = 1 } = {}) {
   return {
     item_id: String(producto.id),
-    item_name: nombreGA(producto.nombre, producto.modelo),
-    item_brand: producto.marca || undefined,
+    item_name: nombreGA(producto.nombre),
     item_variant: variante ? `${colorNombre} / ${variante.talla}` : undefined,
     price: variante ? variante.precio : undefined,
     quantity: cantidad,
@@ -46,8 +45,7 @@ export function itemProducto(producto, { variante = null, colorNombre = "", cant
 export function itemCarrito(i) {
   return {
     item_id: String(i.productoId ?? i.sku),
-    item_name: nombreGA(i.nombre, i.modelo),
-    item_brand: i.marca || undefined,
+    item_name: nombreGA(i.nombre),
     item_variant: `${i.colorNombre} / ${i.talla}`,
     price: i.precio,
     quantity: i.cantidad,

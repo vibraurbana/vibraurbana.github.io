@@ -73,3 +73,20 @@ body { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
   .mobile-nav { display: none !important; }
   .wa-float { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* Banda gris: separa "Nuevos ingresos" de "Destacados" */
+.band { background: var(--color-skeleton); border-block: 1px solid var(--color-border); }
+.band .section { padding-block: var(--space-6); }
+.band .product-card { box-shadow: 0 1px 0 rgba(0,0,0,.05); }
+
+/* Como comprar (compacto, claro) */
+.how { padding-block: var(--space-6); }
+.how__steps { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-3); }
+.how__steps li { display: flex; gap: var(--space-3); align-items: flex-start; }
+.how__num {
+  flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--color-accent);
+  color: var(--color-accent-text); display: grid; place-items: center; font: 800 0.95rem var(--font-display);
+}
+.how__steps strong { display: block; font-size: 0.95rem; }
+.how__steps span:not(.how__num) { font-size: 0.84rem; color: var(--color-text-muted); }
+@media (min-width: 768px) { .how__steps { grid-template-columns: repeat(4, 1fr); } }
