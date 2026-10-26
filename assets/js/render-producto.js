@@ -2,8 +2,11 @@ import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, c
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
-import { construirUrlWhatsApp, referenciaProducto } from "./whatsapp.js";
-import { track, itemProducto, MONEDA_GA } from "./analytics.js";
+import { construirUrlWhatsApp } from "./whatsapp.js";
+import { tarjetaProductoHTML, stockTotal } from "./product-card.js";
+import { GUIA_TALLAS } from "./config.js";
+import { urlPublicaProducto } from "./slug.js";
+import { track, itemProducto, MONEDA_GA, medirSeleccionDeProductos } from "./analytics.js";
 
 let catalogo = null;
 let producto = null;
@@ -259,8 +262,6 @@ function iniciarAgregar() {
       varianteId: variante.variante_id ?? null,
       productoId: producto.id,
       nombre: producto.nombre,
-      marca: producto.marca || "",
-      modelo: producto.modelo || "",
       colorNombre: color ? color.nombre : "",
       talla: variante.talla,
       precio: variante.precio,
@@ -283,16 +284,80 @@ function iniciarAgregar() {
   });
 }
 
+const urlDelProducto = () => urlPublicaProducto(producto.id, producto.nombre);
+
+/* ---------- Compartir ---------- */
+/** Canonical y titulo con el enlace amigable (aunque se haya entrado por producto.html?id=). */
+function fijarMetaSEO() {
+  const url = urlDelProducto();
+  let link = document.querySelector('link[rel="canonical"]');
+  if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
+  link.href = url;
+  document.title = `${producto.nombre} — VIBRA URBANA`;
+}
+
+function iniciarCompartir() {
+  const url = urlDelProducto();
+  const texto = `${producto.nombre} — VIBRA URBANA`;
+  const medir = (metodo) => track("product_share", { method: metodo, items: [itemProducto(producto)] });
+  document.querySelectorAll("[data-share]").forEach((el) => {
+    const tipo = el.dataset.share;
+    if (tipo === "whatsapp") el.href = `https://wa.me/?text=${encodeURIComponent(`${texto}\n${url}`)}`;
+    if (tipo === "facebook") el.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    el.addEventListener("click", async () => {
+      medir(tipo);
+      if (tipo !== "copiar") return;
+      try {
+        await navigator.clipboard.writeText(url);
+        mostrarToast("Enlace copiado");
+      } catch {
+        window.prompt("Copia este enlace:", url);
+      }
+    });
+  });
+}
+
+/* ---------- Guia de tallas (texto en config.js; sin texto, no se muestra) ---------- */
+function iniciarGuiaTallas() {
+  const btn = document.querySelector("[data-guia-tallas]");
+  const dlg = document.querySelector("[data-guia-dialog]");
+  if (!btn || !dlg || !String(GUIA_TALLAS).trim()) return;
+  const texto = dlg.querySelector("[data-guia-texto]");
+  texto.textContent = GUIA_TALLAS;
+  texto.style.whiteSpace = "pre-line";
+  btn.hidden = false;
+  btn.addEventListener("click", () => dlg.showModal());
+  dlg.querySelector("[data-guia-cerrar]").addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+}
+
+/* ---------- Productos similares: mismo estilo, con stock ---------- */
+function renderSimilares() {
+  const seccion = document.querySelector("[data-similares]");
+  const grid = document.querySelector("[data-similares-grid]");
+  if (!seccion || !grid) return;
+  const mias = new Set(producto.etiquetas_ids || []);
+  const candidatos = (catalogo.productos || []).filter((p) => p.id !== producto.id && stockTotal(p) > 0);
+  // Mas peso al mismo estilo (etiquetas); si no hay, se usa la misma categoria.
+  const puntaje = (p) => (p.etiquetas_ids || []).filter((e) => mias.has(e)).length * 2
+    + (p.categoria_id === producto.categoria_id ? 1 : 0);
+  const lista = candidatos.filter((p) => puntaje(p) > 0)
+    .sort((a, b) => puntaje(b) - puntaje(a)).slice(0, 4);
+  if (!lista.length) return;
+  grid.innerHTML = lista.map((p) => tarjetaProductoHTML(catalogo, p)).join("");
+  seccion.hidden = false;
+  medirSeleccionDeProductos(catalogo, "similares");
+}
+
 /* ---------- Consultar por WhatsApp ---------- */
 function iniciarConsultar() {
   els.btnConsultar.addEventListener("click", () => {
     const variante = varianteSeleccionada();
     const color = infoColor(estado.colorId);
-    const ref = referenciaProducto(producto);
-    const partes = [`Hola, me interesa ${producto.nombre}${ref ? ` (${ref})` : ""}`];
+    const partes = [`Hola, me interesa ${producto.nombre}`];
     if (color) partes.push(`color ${color.nombre}`);
     if (variante) partes.push(`talla ${variante.talla}`);
-    const url = new URL(`producto.html?id=${producto.id}`, location.href).href;
+    const url = urlDelProducto();
     const mensaje = `${partes.join(", ")}.\n¿Está disponible?\n${url}`;
     track("product_inquiry", {
       items: [itemProducto(producto, { variante, colorNombre: color ? color.nombre : "" })],
@@ -343,7 +408,8 @@ async function iniciar() {
 
   try {
     catalogo = await cargarCatalogo();
-    const id = Number(new URLSearchParams(location.search).get("id"));
+    // La pagina estatica publicada (producto/<nombre>-<id>/) define window.PRODUCTO_ID.
+    const id = Number(window.PRODUCTO_ID || new URLSearchParams(location.search).get("id"));
     producto = (catalogo.productos || []).find((p) => p.id === id) || null;
 
     if (!producto) {
@@ -354,11 +420,15 @@ async function iniciar() {
     estado.colorId = elegirColorInicial();
     estado.talla = elegirTallaInicial(estado.colorId);
 
+    fijarMetaSEO();
     renderInfoFija();
     renderTodo();
     iniciarStepper();
     iniciarAgregar();
     iniciarConsultar();
+    iniciarCompartir();
+    iniciarGuiaTallas();
+    renderSimilares();
 
     const precios = (producto.colores || []).flatMap((c) => (c.variantes || []).map((v) => v.precio));
     track("view_item", {

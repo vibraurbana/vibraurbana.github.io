@@ -176,7 +176,7 @@
 .filtro-pop__color.is-active { border-color: var(--color-accent); color: var(--color-accent-ink); }
 .filtro-pop__swatch {
   width: 16px; height: 16px; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(0,0,0,0.3);
   flex-shrink: 0;
 }
 

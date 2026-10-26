@@ -1,0 +1,45 @@
+name: Publicar sitio
+
+on:
+  push:
+    branches: [main]          # cada vez que subes cambios al codigo
+  schedule:
+    - cron: "0 */3 * * *"     # y cada 3 horas, para tomar productos nuevos del sistema (hora UTC)
+  workflow_dispatch:           # boton manual: Actions > Publicar sitio > Run workflow
+  repository_dispatch:
+    types: [catalogo-actualizado]   # opcional: para que el sistema lo dispare al guardar cambios
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow
+      - name: Generar paginas de producto
+        run: python tools/generar_paginas.py --out _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,3 +1,4 @@
+import { urlPublicaProducto } from "./slug.js";
 import { WHATSAPP_NUMERO, WHATSAPP_ALTERNATIVO } from "./config.js";
 
 // Arma el mensaje de WhatsApp a partir del carrito. Formato basado
@@ -5,7 +6,7 @@ import { WHATSAPP_NUMERO, WHATSAPP_ALTERNATIVO } from "./config.js";
 
 function urlProducto(item) {
   if (!item.productoId) return "";
-  return new URL(`producto.html?id=${item.productoId}`, location.href).href;
+  return urlPublicaProducto(item.productoId, item.nombre);
 }
 
 // "PUMA 1234": como la gente reconoce el producto. Puede faltar.

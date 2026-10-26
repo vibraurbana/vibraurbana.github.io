@@ -38,8 +38,10 @@
 
     <nav class="site-header__nav" aria-label="Principal">
       <a href="index.html">Inicio</a>
-      <a href="catalogo.html" class="is-active">Catálogo</a>
-      <a href="index.html#contacto">Contacto</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="como-comprar.html">Cómo comprar</a>
+      <a href="visitanos.html">Visítanos</a>
+      <a href="contacto.html">Contacto</a>
     </nav>
 
     <div class="site-header__search">
@@ -63,7 +65,7 @@
       <h1 class="catalogo-head__title">Catálogo</h1>
       <time class="catalogo-head__date" data-catalogo-generado></time>
     </div>
-    <p class="catalogo-head__subtitle">Encuentra tu próximo par.</p>
+    <p class="catalogo-head__subtitle">Encuentra tu próximo estilo.</p>
   </div>
 
   <div class="catalogo-search" id="buscador">
@@ -84,11 +86,14 @@
         Ordenar
         <select data-catalogo-orden>
           <option value="destacados">Destacados</option>
+          <option value="recientes">Más recientes</option>
           <option value="nombre_asc">Nombre A-Z</option>
           <option value="precio_asc">Precio: menor a mayor</option>
           <option value="precio_desc">Precio: mayor a menor</option>
         </select>
       </label>
+
+      <button type="button" class="chip" data-catalogo-solo-stock aria-pressed="false">Disponibles</button>
 
       <details class="filtro-pop" id="popColor">
         <summary>Color</summary>

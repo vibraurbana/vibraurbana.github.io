@@ -417,11 +417,15 @@ button { font-family: inherit; cursor: pointer; }
 .product-card__name {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
+  line-height: 1.25;
   color: var(--color-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  min-height: 2.5em;   /* todas las tarjetas igual de altas */
 }
 
 .product-card__price {
@@ -654,3 +658,17 @@ button { font-family: inherit; cursor: pointer; }
 }
 .wa-float:hover { transform: scale(1.06); }
 .wa-float:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
+
+/* Tarjeta: puntos de color + insignias de stock */
+.product-card__colors { display: flex; align-items: center; gap: 4px; margin-top: 8px; }
+.product-card__colors i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); display: block; }
+.product-card__colors em { font-style: normal; font-size: var(--text-xs); color: var(--color-text-muted); font-weight: 700; }
+.product-card__stock {
+  position: absolute; right: var(--space-2); bottom: var(--space-2); z-index: 1;
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.03em; padding: 3px 7px; border-radius: 4px;
+}
+.product-card__stock--ultimas { background: var(--color-accent); color: var(--color-accent-text); }
+.product-card__stock--agotado { background: #3a3d41; color: #fff; }
+.product-card.is-agotado .product-card__media img { opacity: .55; filter: grayscale(.6); }
+.product-card.is-agotado .product-card__name,
+.product-card.is-agotado .product-card__price { color: var(--color-text-muted); }

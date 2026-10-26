@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generador de enlaces — VIBRA URBANA</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#111111">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/paginas.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+
+    <a href="index.html" class="brand">
+      <picture class="brand__picture">
+        <img src="assets/img/logo-t.webp" alt="VIBRA URBANA" class="brand__logo">
+      </picture>
+    </a>
+
+    <nav class="site-header__nav" aria-label="Principal">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="como-comprar.html">Cómo comprar</a>
+      <a href="visitanos.html">Visítanos</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+
+    <div class="site-header__search">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="search" placeholder="Buscar productos..." aria-label="Buscar productos" onfocus="location.href='catalogo.html'" readonly>
+    </div>
+
+    <div class="site-header__icons">
+      <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.4" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+        <span class="cart-badge" data-cart-count hidden>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="container pagina">
+  <h1 class="pagina__titulo">Generador de enlaces</h1>
+  <p class="pagina__intro">Crea el enlace con su origen (TikTok, Facebook, Instagram…) para que Google Analytics sepa de dónde llegó cada visita. Herramienta interna: no aparece en el menú ni en Google.</p>
+
+  <div class="tarjeta enlaces">
+    <label>¿A dónde lleva el enlace?
+      <select data-en-destino><option value="inicio">Inicio</option><option value="catalogo">Catálogo</option><option value="producto" selected>Un producto</option></select>
+    </label>
+    <label data-en-bloque-producto>Producto
+      <input type="search" data-en-buscar placeholder="Escribe el nombre para filtrar…">
+      <select data-en-producto size="5"></select>
+    </label>
+    <label>¿Dónde lo vas a publicar?
+      <select data-en-red>
+        <option value="tiktok|social">TikTok</option>
+        <option value="facebook|social">Facebook</option>
+        <option value="instagram|social">Instagram</option>
+        <option value="marketplace|marketplace">Marketplace</option>
+        <option value="whatsapp|chat">WhatsApp (estados o difusión)</option>
+      </select>
+    </label>
+    <label>Campaña (opcional, ej. live-semana-4)
+      <input type="text" data-en-campana placeholder="live-semana-4" maxlength="40">
+    </label>
+
+    <div class="enlaces__salida">
+      <strong>Enlace</strong>
+      <input type="text" readonly data-en-url>
+      <div class="pagina__acciones">
+        <button type="button" class="btn btn--primary" data-en-copiar-url>Copiar enlace</button>
+        <button type="button" class="btn btn--outline" data-en-copiar-texto>Copiar texto para publicar</button>
+        <a class="btn btn--outline" data-en-abrir href="#" target="_blank" rel="noopener">Abrir</a>
+      </div>
+      <pre class="enlaces__texto" data-en-texto></pre>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer"></footer>
+
+<script type="module" src="assets/js/render-enlaces.js"></script>
+</body>
+</html>

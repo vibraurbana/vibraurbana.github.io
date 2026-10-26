@@ -1,6 +1,6 @@
 import { cargarCatalogo, formatearPrecio } from "./data.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
-import { obtenerCarrito, actualizarCantidad, eliminarDelCarrito, calcularTotal } from "./cart.js";
+import { obtenerCarrito, actualizarCantidad, eliminarDelCarrito, calcularTotal, vaciarCarrito } from "./cart.js";
 import { construirMensajeWhatsApp, construirUrlWhatsApp } from "./whatsapp.js";
 import { precargarToken } from "./api.js";
 import { solicitarPorWhatsApp, textoSinStock } from "./solicitud.js";
@@ -118,6 +118,7 @@ function render() {
 
   if (vacio) {
     els.count.textContent = "";
+    els.lista.innerHTML = "";
     return;
   }
 
@@ -180,6 +181,19 @@ async function iniciar() {
       enviando = false;
       els.btnWhatsapp.removeAttribute("aria-disabled");
       els.btnWhatsapp.innerHTML = textoOriginal;
+
+      if (res.registrado) {
+        // Como el carrito del catalogo de WhatsApp: una vez enviado el pedido, se vacia.
+        vaciarCarrito();
+        pintarContadorCarrito();
+        render();
+        const bloque = document.querySelector("[data-cart-enviado]");
+        document.querySelector("[data-cart-enviado-codigo]").textContent = res.codigo ? `Código de tu pedido: ${res.codigo}` : "";
+        els.vacio.hidden = true;
+        bloque.hidden = false;
+        bloque.scrollIntoView({ block: "center" });
+        return;
+      }
 
       if (res.sinStock) mostrarError(`${textoSinStock(carrito, res.sinStock)} Ajusta tu carrito y vuelve a intentar.`);
     });

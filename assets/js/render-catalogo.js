@@ -1,7 +1,7 @@
 import { cargarCatalogo, precioDesde } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { track, medirSeleccionDeProductos } from "./analytics.js";
-import { tarjetaProductoHTML } from "./product-card.js";
+import { tarjetaProductoHTML, stockTotal } from "./product-card.js";
 import { skeletonCards, skeletonChips } from "./skeleton.js";
 
 const estado = {
@@ -10,12 +10,13 @@ const estado = {
   colorId: null,
   talla: null,
   orden: "destacados",
-  pagina: 1,
+  soloStock: false,
+  mostrar: 12,
 };
 
 let catalogoGlobal = null;
 let primerRenderGrid = true;
-const PRODUCTOS_POR_PAGINA = 12;
+const PRODUCTOS_POR_TANDA = 12;
 
 const els = {};
 
@@ -76,10 +77,9 @@ function formatearFechaGeneracion(fecha) {
 
 function productoCoincide(producto) {
   if (estado.q) {
-    const q = normalizar(estado.q);
-    const enTexto = [producto.nombre]
-      .some((campo) => normalizar(campo).includes(q));
-    if (!enTexto) return false;
+    const nombre = normalizar(producto.nombre);
+    const palabras = normalizar(estado.q).split(/\s+/).filter(Boolean);
+    if (!palabras.every((w) => nombre.includes(w))) return false;
   }
 
   if (estado.etiquetaId !== null) {
@@ -87,16 +87,19 @@ function productoCoincide(producto) {
   }
 
   if (estado.colorId !== null) {
-    const tieneColor = (producto.colores || []).some((c) => c.color_id === estado.colorId);
+    const tieneColor = (producto.colores || []).some((c) => c.color_id === estado.colorId &&
+      (!estado.soloStock || (c.variantes || []).some((v) => v.stock > 0)));
     if (!tieneColor) return false;
   }
 
   if (estado.talla !== null) {
     const tieneTalla = (producto.colores || []).some((c) =>
-      (c.variantes || []).some((v) => v.talla === estado.talla)
+      (c.variantes || []).some((v) => v.talla === estado.talla && (!estado.soloStock || v.stock > 0))
     );
     if (!tieneTalla) return false;
   }
+
+  if (estado.soloStock && stockTotal(producto) === 0) return false;
 
   return true;
 }
@@ -104,6 +107,8 @@ function productoCoincide(producto) {
 function ordenar(lista) {
   const copia = [...lista];
   switch (estado.orden) {
+    case "recientes": // sin fecha en el JSON: id mas alto = creado despues
+      return copia.sort((a, b) => (stockTotal(a) === 0) - (stockTotal(b) === 0) || b.id - a.id);
     case "nombre_asc":
       return copia.sort((a, b) => a.nombre.localeCompare(b.nombre));
     case "precio_asc":
@@ -111,7 +116,8 @@ function ordenar(lista) {
     case "precio_desc":
       return copia.sort((a, b) => (precioDesde(b) ?? -Infinity) - (precioDesde(a) ?? -Infinity));
     default:
-      return copia; // "destacados" = orden original del catalogo
+      // "destacados" = orden del catalogo, pero lo agotado va al final (orden estable)
+      return copia.sort((a, b) => (stockTotal(a) === 0) - (stockTotal(b) === 0));
   }
 }
 
@@ -206,46 +212,27 @@ function marcarPopoverActivo(id, tieneValor) {
   if (el) el.classList.toggle("tiene-valor", tieneValor);
 }
 
-function pintarPaginacion(total) {
-  const totalPaginas = Math.ceil(total / PRODUCTOS_POR_PAGINA);
-  els.pagination.hidden = totalPaginas <= 1;
+function pintarVerMas(total) {
+  const restantes = total - estado.mostrar;
+  els.pagination.hidden = restantes <= 0;
   els.pagination.innerHTML = "";
-  if (totalPaginas <= 1) return;
-
-  const crearBoton = (texto, pagina, etiqueta, deshabilitado = false) => {
-    const boton = document.createElement("button");
-    boton.type = "button";
-    boton.className = "catalogo-pagination__button";
-    boton.textContent = texto;
-    boton.setAttribute("aria-label", etiqueta);
-    boton.disabled = deshabilitado;
-    if (pagina === estado.pagina) {
-      boton.classList.add("is-active");
-      boton.setAttribute("aria-current", "page");
-    }
-    boton.addEventListener("click", () => {
-      estado.pagina = pagina;
-      actualizar(false);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-    return boton;
-  };
-
-  els.pagination.append(crearBoton("Anterior", estado.pagina - 1, "Página anterior", estado.pagina === 1));
-  for (let pagina = 1; pagina <= totalPaginas; pagina += 1) {
-    els.pagination.append(crearBoton(String(pagina), pagina, `Ir a la página ${pagina}`));
-  }
-  els.pagination.append(crearBoton("Siguiente", estado.pagina + 1, "Página siguiente", estado.pagina === totalPaginas));
+  if (restantes <= 0) return;
+  const boton = document.createElement("button");
+  boton.type = "button";
+  boton.className = "btn btn--outline catalogo-vermas";
+  boton.textContent = `Ver más productos (${restantes})`;
+  boton.addEventListener("click", () => {
+    estado.mostrar += PRODUCTOS_POR_TANDA;
+    actualizar(false);
+  });
+  els.pagination.append(boton);
 }
 
 function actualizar(resetPagina = true) {
-  if (resetPagina) estado.pagina = 1;
+  if (resetPagina) estado.mostrar = PRODUCTOS_POR_TANDA;
   medirFiltros();
   const filtrados = ordenar((catalogoGlobal.productos || []).filter(productoCoincide));
-  const totalPaginas = Math.max(1, Math.ceil(filtrados.length / PRODUCTOS_POR_PAGINA));
-  estado.pagina = Math.min(estado.pagina, totalPaginas);
-  const inicio = (estado.pagina - 1) * PRODUCTOS_POR_PAGINA;
-  const paginaActual = filtrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA);
+  const paginaActual = filtrados.slice(0, estado.mostrar);
 
   els.grid.innerHTML = paginaActual.length
     ? paginaActual.map((p) => tarjetaProductoHTML(catalogoGlobal, p)).join("")
@@ -260,7 +247,9 @@ function actualizar(resetPagina = true) {
 
   const n = filtrados.length;
   els.count.textContent = n === 1 ? "1 producto" : `${n} productos`;
-  pintarPaginacion(n);
+  pintarVerMas(n);
+  els.soloStock.classList.toggle("is-active", estado.soloStock);
+  els.soloStock.setAttribute("aria-pressed", String(estado.soloStock));
 
   els.search.value = estado.q;
   els.searchClear.classList.toggle("is-visible", estado.q.length > 0);
@@ -278,6 +267,7 @@ function limpiarFiltros() {
   estado.etiquetaId = null;
   estado.colorId = null;
   estado.talla = null;
+  estado.soloStock = false;
   estado.orden = "destacados";
   els.orden.value = "destacados";
   actualizar();
@@ -315,6 +305,11 @@ function iniciarControles() {
     actualizar();
   });
 
+  els.soloStock.addEventListener("click", () => {
+    estado.soloStock = !estado.soloStock;
+    actualizar();
+  });
+
   els.emptyReset.addEventListener("click", limpiarFiltros);
 
   // Cerrar el popover que no se toco cuando se abre el otro
@@ -340,6 +335,7 @@ async function iniciar() {
   els.search = document.querySelector("[data-catalogo-search]");
   els.searchClear = document.querySelector("[data-catalogo-search-clear]");
   els.orden = document.querySelector("[data-catalogo-orden]");
+  els.soloStock = document.querySelector("[data-catalogo-solo-stock]");
   els.pagination = document.querySelector("[data-catalogo-pagination]");
   els.panelColor = document.querySelector("[data-panel-color]");
   els.panelTalla = document.querySelector("[data-panel-talla]");

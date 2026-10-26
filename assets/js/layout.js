@@ -17,7 +17,7 @@ const svg = (k) => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" 
 
 const pagina = () => (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
 
-function redes(clase = "") {
+export function redes(clase = "") {
   const defs = [["tiktok", "TikTok"], ["facebook", "Facebook"], ["instagram", "Instagram"]];
   const items = defs.filter(([k]) => ENLACES[k]).map(([k, n]) =>
     `<a href="${ENLACES[k]}" target="_blank" rel="noopener" data-social="${k}">${n}</a>`);
@@ -52,10 +52,12 @@ function pieHTML() {
     </div>
     <div class="site-footer__column">
       <h2>COMPRAR Y ENVÍOS</h2>
-      <p><a href="index.html#como-comprar">Cómo comprar</a></p>
-      <p><strong>Retiro en tienda</strong><br>Local #163</p>
-      <p><strong>Delivery local</strong><br>Coordinamos contigo.</p>
-      <p><strong>Encomiendas</strong><br>A otros departamentos.<br>Recepción hasta las <em>17:00</em></p>
+      <p><a href="como-comprar.html">Cómo comprar</a></p>
+      <p><a href="envios.html">Envíos y entregas</a></p>
+      <p><a href="cambios-devoluciones.html">Cambios y devoluciones</a></p>
+      <p><a href="visitanos.html">Visítanos</a></p>
+      <p><a href="contacto.html">Contacto</a></p>
+      <p class="site-footer__small">Retiro en tienda · Delivery local · Encomiendas hasta las <em>17:00</em></p>
     </div>
   </div>
   <div class="site-footer__bottom">
@@ -68,9 +70,10 @@ function menuHTML() {
   return `
   <a href="index.html">Inicio</a>
   <a href="catalogo.html">Catálogo</a>
-  <a href="index.html#como-comprar">Cómo comprar</a>
-  <a href="index.html#visitanos">Visítanos</a>
-  <a href="index.html#contacto">Contacto</a>
+  <a href="como-comprar.html">Cómo comprar</a>
+  <a href="envios.html">Envíos y entregas</a>
+  <a href="visitanos.html">Visítanos</a>
+  <a href="contacto.html">Contacto</a>
   ${redes("social-links--menu")}`;
 }
 

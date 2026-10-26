@@ -54,13 +54,25 @@ export function itemCarrito(i) {
 
 export const valorCarrito = (carrito) => carrito.reduce((t, i) => t + i.precio * i.cantidad, 0);
 
-// --- Clics en cualquier enlace a WhatsApp (boton flotante, footer, portada...). ---
+// --- Clics en enlaces a WhatsApp, mapa y redes (boton flotante, pie, portada, paginas...). ---
 // El boton del carrito se mide aparte (begin_checkout / generate_lead).
+// Parametros: link_location (dentro de la pagina), page_path y, en WhatsApp, attendant
+// (principal / alternativo: sirve para ver quien atiende mas consultas).
+const ubicacionDelEnlace = (a) =>
+  a.classList.contains("wa-float") ? "floating" : a.closest("footer") ? "footer" : a.closest("header") ? "header" : "content";
+
 document.addEventListener("click", (e) => {
-  const a = e.target.closest?.('a[href*="wa.me"]');
-  if (!a || a.hasAttribute("data-cart-whatsapp")) return;
-  const ubicacion = a.classList.contains("wa-float") ? "flotante" : a.closest("footer") ? "footer" : "contenido";
-  track("whatsapp_click", { ubicacion, pagina: location.pathname });
+  const base = (a) => ({ link_location: ubicacionDelEnlace(a), page_path: location.pathname });
+
+  const wa = e.target.closest?.('a[href*="wa.me"]');
+  if (wa && !wa.hasAttribute("data-cart-whatsapp")) {
+    track("whatsapp_click", { ...base(wa), attendant: wa.dataset.wa || "otro" });
+    return;
+  }
+  const mapa = e.target.closest?.("a[data-map-link]");
+  if (mapa) { track("map_click", base(mapa)); return; }
+  const red = e.target.closest?.("a[data-social]");
+  if (red) track("social_click", { ...base(red), network: red.dataset.social });
 });
 
 /** Mide el clic en tarjetas de producto (select_item). Llamar una vez con el catalogo cargado. */

@@ -30,7 +30,9 @@
     <nav class="site-header__nav" aria-label="Principal">
       <a href="index.html">Inicio</a>
       <a href="catalogo.html">Catálogo</a>
-      <a href="index.html#contacto">Contacto</a>
+      <a href="como-comprar.html">Cómo comprar</a>
+      <a href="visitanos.html">Visítanos</a>
+      <a href="contacto.html">Contacto</a>
     </nav>
 
     <div class="site-header__search">
@@ -76,8 +78,15 @@
         Consultar pedido por WhatsApp
       </a>
       <p class="cart-summary__error" data-cart-error role="alert" hidden></p>
-      <p class="cart-summary__nota">Se abre WhatsApp con tu pedido ya armado — tú confirmas y coordinas el pago y la entrega ahí.</p>
+      <p class="cart-summary__nota">Se abre WhatsApp con tu pedido ya armado — tú confirmas y coordinas el pago y la entrega ahí. Más en <a href="envios.html">Envíos y entregas</a> y <a href="cambios-devoluciones.html">Cambios y devoluciones</a>.</p>
     </aside>
+  </div>
+
+  <div class="cart-sent" data-cart-enviado hidden role="status">
+    <strong>¡Pedido enviado!</strong>
+    <p data-cart-enviado-codigo></p>
+    <p>Seguimos la conversación por WhatsApp: ahí confirmamos disponibilidad, pago y entrega. Tu carrito quedó vacío.</p>
+    <a href="catalogo.html" class="btn btn--primary">Seguir comprando</a>
   </div>
 
   <div class="cart-empty" data-cart-vacio hidden>
