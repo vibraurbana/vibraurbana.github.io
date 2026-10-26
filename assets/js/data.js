@@ -20,6 +20,11 @@ export async function cargarCatalogo() {
     throw new Error("No se pudo cargar el catalogo (" + res.status + ")");
   }
   catalogoCache = await res.json();
+  // Campo opcional del sistema: visible_web=false (o 0) oculta el producto de la web.
+  // Si el sistema aun no lo envia, se muestran todos los activos como hasta ahora.
+  catalogoCache.productos = (catalogoCache.productos || []).filter(
+    (p) => p.activo !== false && p.visible_web !== false && p.visible_web !== 0 && p.visible_web !== "0"
+  );
   fijarNumerosWhatsApp(catalogoCache.meta); // los numeros los define el sistema
   return catalogoCache;
 }

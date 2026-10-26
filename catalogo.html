@@ -8,40 +8,38 @@
 <meta name="theme-color" content="#111111">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<link rel="canonical" href="https://vibraurbana.github.io/catalogo.html">
+<link rel="canonical" href="https://tiendavibraurbana.com/catalogo.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VIBRA URBANA">
 <meta property="og:locale" content="es_BO">
 <meta property="og:title" content="Catálogo de zapatos — VIBRA URBANA">
 <meta property="og:description" content="Explora el catálogo de zapatos VIBRA URBANA: filtra por estilo, color y talla, y consulta tu pedido por WhatsApp.">
-<meta property="og:url" content="https://vibraurbana.github.io/catalogo.html">
-<meta property="og:image" content="https://vibraurbana.github.io/assets/img/og-cover.jpg">
+<meta property="og:url" content="https://tiendavibraurbana.com/catalogo.html">
+<meta property="og:image" content="https://tiendavibraurbana.com/assets/img/og-cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/catalogo.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <button class="site-header__menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobileNav" aria-label="Abrir menú">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
 
     <a href="index.html" class="brand">
       <picture class="brand__picture">
-        <source media="(max-width: 639px)" srcset="assets/img/isotipo.webp">
-        <img src="assets/img/logo.webp" alt="VIBRA URBANA" class="brand__logo">
+        <source media="(max-width: 639px)" srcset="assets/img/isotipo-t.webp">
+        <img src="assets/img/logo-t.webp" alt="VIBRA URBANA" class="brand__logo">
       </picture>
     </a>
 
     <nav class="site-header__nav" aria-label="Principal">
       <a href="index.html">Inicio</a>
-      <a href="catalogo.html" class="is-active">Catálogo de productos</a>
+      <a href="catalogo.html" class="is-active">Catálogo</a>
       <a href="index.html#contacto">Contacto</a>
     </nav>
 
@@ -51,9 +49,6 @@
     </div>
 
     <div class="site-header__icons">
-      <a class="site-header__icon-btn" href="#buscador" aria-label="Buscar productos" onclick="document.querySelector('[data-catalogo-search]').focus()">
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      </a>
       <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito" title="Carrito">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.4" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/></svg>
         <span class="cart-badge" data-cart-count hidden>0</span>
@@ -61,12 +56,6 @@
     </div>
   </div>
 </header>
-
-<nav class="mobile-nav" id="mobileNav" data-mobile-nav aria-label="Menú móvil">
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Catálogo de productos</a>
-  <a href="index.html#contacto">Contacto</a>
-</nav>
 
 <main class="container">
 
@@ -135,33 +124,8 @@
 
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="site-footer__brand">
-      <span class="site-footer__mark">VU</span>
-      <div>
-        <strong>Tienda oficial VIBRA URBANA</strong>
-        <div class="site-footer__tagline">Moda urbana y casual para toda la familia.</div>
-      </div>
-    </div>
-    <div class="site-footer__links">
-      <a class="site-footer__link" href="#" data-wa="principal" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm5.78 14.24c-.24.68-1.39 1.3-1.92 1.35-.5.06-1.02.26-3.4-.7-2.87-1.15-4.72-4.06-4.87-4.25-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.08 1-2.37.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.6.82 2.06.9 2.2.07.14.11.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.28.7 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.87.28.14.46.2.53.32.07.12.07.68-.17 1.35Z"/></svg>
-        <span><strong>Consultas por WhatsApp</strong>Respondemos rápido</span>
-      </a>
-      <a class="site-footer__link" href="#">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16.5 2h-2.7v13.6a3.4 3.4 0 1 1-2.4-3.25V9.2a6.2 6.2 0 1 0 4.5 5.96V8.9a7.6 7.6 0 0 0 4.4 1.4V7.6a4.9 4.9 0 0 1-3.8-3.8V2Z"/></svg>
-        <span><strong>Síguenos en redes</strong>Novedades y lanzamientos</span>
-      </a>
-      <a class="site-footer__link" href="#">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg>
-        <span><strong>Santa Cruz, Bolivia</strong>Comercial Cañoto, local #163 · Atención de lunes a sábado</span>
-      </a>
-    </div>
-  </div>
-</footer>
+<footer class="site-footer"></footer>
 
 <script type="module" src="assets/js/render-catalogo.js"></script>
-<a class="wa-float" href="#" data-wa="principal" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm5.78 14.24c-.24.68-1.39 1.3-1.92 1.35-.5.06-1.02.26-3.4-.7-2.87-1.15-4.72-4.06-4.87-4.25-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.08 1-2.37.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.6.82 2.06.9 2.2.07.14.11.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.28.7 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.87.28.14.46.2.53.32.07.12.07.68-.17 1.35Z"/></svg></a>
 </body>
 </html>

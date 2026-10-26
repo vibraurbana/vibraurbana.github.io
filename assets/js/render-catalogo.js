@@ -32,7 +32,7 @@ function medirFiltros() {
   for (const tipo of Object.keys(filtroPrevio)) {
     const valor = estado[tipo];
     if (valor !== null && valor !== filtroPrevio[tipo]) {
-      track("filtro_catalogo", { tipo: tipo.replace("Id", ""), valor: String(nombres[tipo](valor) ?? valor) });
+      track("filter_used", { tipo: tipo.replace("Id", ""), valor: String(nombres[tipo](valor) ?? valor) });
     }
     filtroPrevio[tipo] = valor;
   }
@@ -46,7 +46,7 @@ function medirBusqueda() {
     if (termino.length < 2) return;
     const resultados = (catalogoGlobal.productos || []).filter(productoCoincide).length;
     track("search", { search_term: termino, resultados });
-    if (resultados === 0) track("busqueda_sin_resultados", { search_term: termino });
+    if (resultados === 0) track("search_no_results", { search_term: termino });
   }, 1000);
 }
 
@@ -365,3 +365,12 @@ async function iniciar() {
 }
 
 iniciar();
+
+// Acceso directo desde la barra inferior: catalogo.html#buscar enfoca el buscador.
+function enfocarBuscador() {
+  if (location.hash !== "#buscar") return;
+  const el = document.querySelector("[data-catalogo-search]");
+  if (el) { el.scrollIntoView({ block: "center" }); el.focus(); }
+}
+window.addEventListener("hashchange", enfocarBuscador);
+setTimeout(enfocarBuscador, 400);

@@ -294,7 +294,7 @@ function iniciarConsultar() {
     if (variante) partes.push(`talla ${variante.talla}`);
     const url = new URL(`producto.html?id=${producto.id}`, location.href).href;
     const mensaje = `${partes.join(", ")}.\n¿Está disponible?\n${url}`;
-    track("consulta_producto", {
+    track("product_inquiry", {
       items: [itemProducto(producto, { variante, colorNombre: color ? color.nombre : "" })],
       agotado: variante ? variante.stock <= 0 : false,
     });

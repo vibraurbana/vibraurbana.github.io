@@ -313,11 +313,11 @@ WhatsApp, para que la tienda lo encuentre en *Pedidos → Web*.
   abre WhatsApp. Si el servidor no responde (o hay límite de pedidos), WhatsApp se abre
   igual, sin código: la venta nunca depende de la API.
 - Cada pedido y contacto lleva `origen` (`?utm_source=` o el referrer). Para medir redes
-  comparte enlaces como `https://vibraurbana.github.io/?utm_source=instagram`.
+  comparte enlaces como `https://tiendavibraurbana.com/?utm_source=instagram`.
 - `catalogo.json` debe incluir `variante_id` en cada variante (lo genera el sistema).
   La copia local `data/catalogo.json` es antigua y no lo trae: úsala solo para maquetar;
   en modo local los pedidos no se registran.
-- Requisito en el sistema (archivo `app/Config/CatalogoWeb.php`): `$origin = 'https://vibraurbana.github.io'`
+- Requisito en el sistema (archivo `app/Config/CatalogoWeb.php`): `$origin = 'https://tiendavibraurbana.com'`
   (varios dominios separados por coma). Sin eso el navegador bloquea las llamadas.
 
 ## Número de WhatsApp: una sola fuente
@@ -337,7 +337,7 @@ WhatsApp, para que la tienda lo encuentre en *Pedidos → Web*.
 2. Copia el **ID de medición** (`G-XXXXXXXXXX`) y pégalo en `GA_MEASUREMENT_ID` (`assets/js/config.js`).
    Vacío = no se mide nada. En localhost nunca se envía nada (los eventos salen en la consola).
 3. En *Administrar → Eventos*, marca como **evento clave** `generate_lead` (pedido registrado)
-   y, si quieres, `formulario_contacto` y `consulta_producto`.
+   y, si quieres, `contact_form_submit` y `product_inquiry`.
 
 No se envía ningún dato personal (ni nombre, ni celular). `utm_source` lo atribuye GA solo.
 
@@ -350,13 +350,13 @@ No se envía ningún dato personal (ni nombre, ni celular). `utm_source` lo atri
 | `view_cart` | abre el carrito | |
 | `begin_checkout` | clic en «Consultar pedido por WhatsApp» | quién intenta pedir |
 | `generate_lead` | el sistema registró el pedido (`transaction_id` = código `W-…`) | **pedidos reales**; el código cruza con *Pedidos → Web* |
-| `pedido_no_registrado` | pidió por WhatsApp pero la API no lo registró (`motivo`) | fugas de medición |
-| `pedido_sin_stock` | el producto se agotó antes de pedir | stock publicado desactualizado |
-| `consulta_producto` | «Consultar por WhatsApp» en un producto (`agotado` si no había stock) | demanda, incluso de lo agotado |
+| `lead_not_registered` | pidió por WhatsApp pero la API no lo registró (`motivo`) | fugas de medición |
+| `out_of_stock_attempt` | el producto se agotó antes de pedir | stock publicado desactualizado |
+| `product_inquiry` | «Consultar por WhatsApp» en un producto (`agotado` si no había stock) | demanda, incluso de lo agotado |
 | `whatsapp_click` | cualquier enlace a WhatsApp (flotante, footer…) | qué botón convierte (`ubicacion`) |
-| `formulario_contacto` | envía el formulario | |
-| `search` / `busqueda_sin_resultados` | busca en el catálogo | **qué piden y no tienes** |
-| `filtro_catalogo` | filtra por estilo, color o talla | tallas y colores más buscados |
+| `contact_form_submit` | envía el formulario | |
+| `search` / `search_no_results` | busca en el catálogo | **qué piden y no tienes** |
+| `filter_used` | filtra por estilo, color o talla | tallas y colores más buscados |
 
 Para leerlo: GA muestra visitas → producto visto → carrito → `generate_lead`; el sistema
 (*Pedidos → Web → Embudo*) continúa con: escribieron por WhatsApp → confirmados → entregados.
@@ -364,13 +364,13 @@ Algunos bloqueadores de anuncios impiden que GA cuente; por eso el sistema es la
 
 ## Requisitos del sistema para publicar en github.io
 
-- Sistema (`app/Config/CatalogoWeb.php`): `$origin = 'https://vibraurbana.github.io'` (solo el dominio, sin ruta ni `/` final; agrega `,http://localhost` para probar en local).
+- Sistema (`app/Config/CatalogoWeb.php`): `$origin = 'https://tiendavibraurbana.com'` (solo el dominio, sin ruta ni `/` final; agrega `,http://localhost` para probar en local).
 - El navegador también bloquea leer `catalogo.json` desde otro dominio si no trae CORS. En `public/.htaccess` del sistema:
   ```
   <IfModule mod_headers.c>
     <FilesMatch "^catalogo\.json$">
-      Header set Access-Control-Allow-Origin "https://vibraurbana.github.io"
+      Header set Access-Control-Allow-Origin "https://tiendavibraurbana.com"
     </FilesMatch>
   </IfModule>
   ```
-- `canonical`, `og:url`, `og:image`, `sitemap.xml` y `robots.txt` apuntan a `https://vibraurbana.github.io`. Cuando tengas dominio propio, reemplaza esa URL en esos archivos (búsqueda y reemplazo) y actualiza `origin` en el sistema.
+- `canonical`, `og:url`, `og:image`, `sitemap.xml` y `robots.txt` apuntan a `https://tiendavibraurbana.com`. Cuando tengas dominio propio, reemplaza esa URL en esos archivos (búsqueda y reemplazo) y actualiza `origin` en el sistema.

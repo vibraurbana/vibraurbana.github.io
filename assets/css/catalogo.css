@@ -21,7 +21,7 @@
 }
 
 .catalogo-head__date {
-  color: #fff;
+  color: var(--color-text-muted);
   font-size: 0.78rem;
   font-weight: 700;
   text-align: right;
@@ -132,7 +132,7 @@
 .filtro-pop[open] > summary,
 .filtro-pop.tiene-valor > summary {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 
 .filtro-pop__panel {
@@ -145,7 +145,7 @@
   border-radius: var(--radius-md);
   padding: var(--space-3);
   min-width: 200px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
   animation: filtroPopIn 160ms var(--ease);
 }
 
@@ -173,7 +173,7 @@
   color: var(--color-text);
   font-size: 0.75rem;
 }
-.filtro-pop__color.is-active { border-color: var(--color-accent); color: var(--color-accent); }
+.filtro-pop__color.is-active { border-color: var(--color-accent); color: var(--color-accent-ink); }
 .filtro-pop__swatch {
   width: 16px; height: 16px; border-radius: 50%;
   border: 1px solid rgba(255,255,255,0.25);
@@ -191,7 +191,7 @@
   font-size: 0.78rem;
   font-weight: 700;
 }
-.filtro-pop__talla.is-active { border-color: var(--color-accent); color: var(--color-accent); }
+.filtro-pop__talla.is-active { border-color: var(--color-accent); color: var(--color-accent-ink); }
 
 .filtro-pop__reset {
   display: block;
@@ -207,7 +207,7 @@
 .catalogo-toolbar__orden select {
   background: none;
   border: none;
-  color: var(--color-accent);
+  color: var(--color-accent-ink);
   font-weight: 700;
   font-size: 0.78rem;
   font-family: inherit;
@@ -259,7 +259,7 @@
 
 .catalogo-pagination__button:hover:not(:disabled) {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 
 .catalogo-pagination__button.is-active {

@@ -45,3 +45,13 @@ export const GA_MEASUREMENT_ID = "G-32HD6ZQ0NG";
 // la venta por WhatsApp nunca depende de la API. Es una URL publica, no un secreto.
 // En el sistema, app/Config/CatalogoWeb.php debe tener $origin = <el dominio de esta web>.
 export const API_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public/index.php/api/web";
+
+// Enlaces publicos de la tienda (UN solo lugar). Si uno queda vacio (""), su boton/enlace
+// simplemente no se muestra en la web.
+// MAPS: enlace EXACTO del local en Google Maps (compartir > copiar enlace), no una busqueda generica.
+export const ENLACES = {
+  maps: "",
+  tiktok: "https://www.tiktok.com/@StepTrendStore",
+  facebook: "",
+  instagram: "",
+};

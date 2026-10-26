@@ -39,7 +39,7 @@ export async function solicitarPorWhatsApp({ carrito, moneda, numero, ubicacion 
   // El producto se agoto desde la ultima actualizacion del catalogo: no se abre WhatsApp.
   if (r.status === 422 && r.datos?.no_disponibles?.length) {
     if (ventana) ventana.close();
-    track("pedido_sin_stock", { ubicacion });
+    track("out_of_stock_attempt", { ubicacion });
     return { sinStock: r.datos.no_disponibles };
   }
 
@@ -52,7 +52,7 @@ export async function solicitarPorWhatsApp({ carrito, moneda, numero, ubicacion 
     track("generate_lead", { currency: MONEDA_GA, value: r.datos.total, transaction_id: codigo, ubicacion, items });
   } else {
     // Motivo para detectar fugas: sin API, sin variante_id en el catalogo, limite, red...
-    track("pedido_no_registrado", { ubicacion, motivo: r.omitido ? "omitido" : `http_${r.status || "red"}` });
+    track("lead_not_registered", { ubicacion, motivo: r.omitido ? "omitido" : `http_${r.status || "red"}` });
   }
 
   const url = construirUrlWhatsApp(numero, construirMensajeWhatsApp(lineas, moneda, codigo));

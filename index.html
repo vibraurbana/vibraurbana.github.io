@@ -8,22 +8,22 @@
 <meta name="theme-color" content="#111111">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<link rel="canonical" href="https://vibraurbana.github.io/">
+<link rel="canonical" href="https://tiendavibraurbana.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VIBRA URBANA">
 <meta property="og:locale" content="es_BO">
 <meta property="og:title" content="VIBRA URBANA — Moda urbana y casual para toda la familia">
 <meta property="og:description" content="Zapatos urbanos y casuales para toda la familia. Explora el catálogo de VIBRA URBANA y consulta tu pedido directo por WhatsApp.">
-<meta property="og:url" content="https://vibraurbana.github.io/">
-<meta property="og:image" content="https://vibraurbana.github.io/assets/img/og-cover.jpg">
+<meta property="og:url" content="https://tiendavibraurbana.com/">
+<meta property="og:image" content="https://tiendavibraurbana.com/assets/img/og-cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ShoeStore",
   "name": "VIBRA URBANA",
-  "url": "https://vibraurbana.github.io/",
-  "image": "https://vibraurbana.github.io/assets/img/og-cover.jpg",
+  "url": "https://tiendavibraurbana.com/",
+  "image": "https://tiendavibraurbana.com/assets/img/og-cover.jpg",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Comercial Cañoto, Local #163",
@@ -41,31 +41,30 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
 <link rel="stylesheet" href="assets/css/home.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <button class="site-header__menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobileNav" aria-label="Abrir menú">
-      <!-- menu icon inyectado por header.js quedaría sobre-ingenieria; se deja inline -->
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
 
     <a href="index.html" class="brand">
       <picture class="brand__picture">
-        <source media="(max-width: 639px)" srcset="assets/img/isotipo.webp">
-        <img src="assets/img/logo.webp" alt="VIBRA URBANA" class="brand__logo">
+        <source media="(max-width: 639px)" srcset="assets/img/isotipo-t.webp">
+        <img src="assets/img/logo-t.webp" alt="VIBRA URBANA" class="brand__logo">
       </picture>
     </a>
 
     <nav class="site-header__nav" aria-label="Principal">
       <a href="index.html" class="is-active">Inicio</a>
-      <a href="catalogo.html">Catálogo de productos</a>
-      <a href="#contacto">Contacto</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="index.html#como-comprar">Cómo comprar</a>
+      <a href="index.html#visitanos">Visítanos</a>
+      <a href="index.html#contacto">Contacto</a>
     </nav>
 
     <div class="site-header__search">
@@ -74,9 +73,6 @@
     </div>
 
     <div class="site-header__icons">
-      <a class="site-header__icon-btn" href="catalogo.html" aria-label="Buscar productos">
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      </a>
       <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito" title="Carrito">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="21" r="1.4" fill="currentColor" stroke="none"/><path d="M2.5 3h2l2.6 12.6a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/></svg>
         <span class="cart-badge" data-cart-count hidden>0</span>
@@ -84,16 +80,6 @@
     </div>
   </div>
 </header>
-
-<nav class="mobile-nav" id="mobileNav" data-mobile-nav aria-label="Menú móvil">
-  <div class="mobile-nav__search">
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-    <input type="search" placeholder="Buscar productos..." onfocus="location.href='catalogo.html'" readonly>
-  </div>
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Catálogo de productos</a>
-  <a href="#contacto">Contacto</a>
-</nav>
 
 <main>
 
@@ -115,25 +101,6 @@
     </div>
   </section>
 
-  <!-- FEATURES (solo mobile; en desktop la trust-bar de abajo cumple este rol) -->
-  <section class="features container" aria-label="Por qué elegirnos">
-    <div class="feature">
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 16.9 6.4 20l1.4-6.3-4.8-4.3 6.4-.6L12 3z"/></svg>
-      <strong>Calidad</strong>
-      <span>Que se siente</span>
-    </div>
-    <div class="feature">
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15l4-8 4 8M6.5 11h3"/><path d="M14 15l6-9M14 15l3-9"/></svg>
-      <strong>Estilo</strong>
-      <span>Que te define</span>
-    </div>
-    <div class="feature">
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c0-3 1-5 3-6"/><path d="M8 15c3-1 3-4 3-6a3 3 0 1 1 6 0c0 3 1 5 3 6"/><path d="M11 21c1-2 1-4 1-6"/></svg>
-      <strong>Comodidad</strong>
-      <span>En cada paso</span>
-    </div>
-  </section>
-
   <!-- CATEGORIAS / ESTILOS (etiquetas como acceso rapido) -->
   <section class="section container">
     <div class="section__head">
@@ -148,7 +115,7 @@
   <!-- DESTACADOS -->
   <section class="section container">
     <div class="section__head">
-      <h2 class="section__title">Zapatos destacados</h2>
+      <h2 class="section__title">Destacados</h2>
       <a class="section__link" href="catalogo.html">Ver catálogo completo</a>
     </div>
     <div class="product-grid" data-destacados-grid>
@@ -156,8 +123,17 @@
     </div>
   </section>
 
+  <!-- NUEVOS INGRESOS -->
+  <section class="section section--tight container" aria-labelledby="nuevos-title">
+    <div class="section__head">
+      <h2 class="section__title" id="nuevos-title">Nuevos ingresos</h2>
+      <a class="section__link" href="catalogo.html">Ver todo</a>
+    </div>
+    <div class="product-grid" data-nuevos-grid></div>
+  </section>
+
   <!-- COMO COMPRAR -->
-  <section class="how-to" aria-labelledby="how-to-title">
+  <section class="how-to" id="como-comprar" aria-labelledby="how-to-title">
     <div class="container how-to__inner">
       <div class="how-to__intro">
         <p class="how-to__eyebrow">ASÍ DE SIMPLE</p>
@@ -169,7 +145,7 @@
           <span class="how-to__icon" aria-hidden="true">⌕</span>
           <strong>01</strong>
           <b>EXPLORA</b>
-          <span>Mira nuestros zapatos y encuentra tu estilo.</span>
+          <span>Mira el catálogo y encuentra tu estilo.</span>
         </div>
         <div class="how-to__step">
           <span class="how-to__icon" aria-hidden="true">＋</span>
@@ -194,6 +170,24 @@
         <span aria-hidden="true">◌</span> Coordinar por WhatsApp <span aria-hidden="true">→</span>
       </a>
     </div>
+  </section>
+
+  <!-- VISITANOS -->
+  <section class="visit container" id="visitanos" aria-labelledby="visit-title">
+    <div class="visit__card">
+      <h2 id="visit-title">Visítanos</h2>
+      <p class="visit__addr"><strong>Comercial Cañoto — Local #163</strong><br>Santa Cruz de la Sierra, Bolivia</p>
+      <p class="visit__hours">Lunes a sábado · 10:00 – 19:00</p>
+      <div class="visit__actions" data-visit-actions>
+        <a class="btn btn--wa" href="#" data-wa="principal" data-wa-texto="Hola%2C%20quiero%20ir%20a%20la%20tienda.%20%C2%BFEst%C3%A1n%20atendiendo%3F" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      </div>
+    </div>
+    <ul class="trust-list" aria-label="Por qué comprar con nosotros">
+      <li><strong>Atención cercana</strong><span>Consulta talla y disponibilidad antes de comprar.</span></li>
+      <li><strong>Retiro en tienda</strong><span>Comercial Cañoto, Local #163.</span></li>
+      <li><strong>Delivery local</strong><span>Coordinamos la entrega contigo.</span></li>
+      <li><strong>Envíos a otros departamentos</strong><span>Por encomienda, coordinado por WhatsApp.</span></li>
+    </ul>
   </section>
 
   <!-- FORMULARIO DE CONTACTO -->
@@ -224,68 +218,11 @@
     </div>
   </section>
 
-  <!-- TRUST BAR -->
-  <section class="trust container">
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v9H2z"/><path d="M13 10h4l4 3v3h-8z"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="17" cy="18.5" r="1.8"/></svg>
-      <span><strong>Envíos en Bolivia</strong><span>Rápidos y seguros</span></span>
-    </div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/></svg>
-      <span><strong>Cambios fáciles</strong><span>Sin complicaciones</span></span>
-    </div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7L12 3z"/></svg>
-      <span><strong>Productos variados</strong><span>Opciones para todos</span></span>
-    </div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm5.78 14.24c-.24.68-1.39 1.3-1.92 1.35-.5.06-1.02.26-3.4-.7-2.87-1.15-4.72-4.06-4.87-4.25-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.08 1-2.37.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.6.82 2.06.9 2.2.07.14.11.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.28.7 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.87.28.14.46.2.53.32.07.12.07.68-.17 1.35Z"/></svg>
-      <span><strong>Atención por WhatsApp</strong><span>Estamos para ayudarte</span></span>
-    </div>
-  </section>
-
 </main>
 
-<footer class="site-footer">
-  <div class="container site-footer__main">
-    <div class="site-footer__column site-footer__identity">
-      <img src="assets/img/logo.webp" alt="VIBRA URBANA" class="site-footer__logo" loading="lazy">
-      <p>Moda urbana y casual<br>para toda la familia.</p>
-      <a class="site-footer__tiktok" href="https://www.tiktok.com/@StepTrendStore" target="_blank" rel="noopener" aria-label="Visitar TikTok de Step Trend Store">
-        <img src="assets/img/logotiktok.png" alt="Logo de TikTok">
-        <span><small>También somos</small><strong>STEP TREND STORE</strong><em>@StepTrendStore</em></span>
-        <b aria-hidden="true">→</b>
-      </a>
-    </div>
-    <div class="site-footer__column">
-      <h2>VISÍTANOS</h2>
-      <p><strong>Comercial Cañoto<br><em>Local #163</em></strong><br>Tienda VIBRA URBANA</p>
-      <p>Santa Cruz de la Sierra</p>
-      <h2>HORARIO DE ATENCIÓN</h2>
-      <p>Lunes a sábado<br>10:00 - 19:00</p>
-    </div>
-    <div class="site-footer__column">
-      <h2>CONTÁCTANOS</h2>
-      <p>WhatsApp principal</p>
-      <a class="site-footer__phone" href="#" data-wa="principal" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." data-wa-visible target="_blank" rel="noopener">…</a>
-      <p>WhatsApp alternativo</p>
-      <a class="site-footer__phone" href="#" data-wa="alternativo" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." data-wa-visible target="_blank" rel="noopener">…</a>
-      <a class="site-footer__contact-btn" href="#" data-wa="principal" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">◌ &nbsp; ESCRIBIR POR WHATSAPP →</a>
-    </div>
-    <div class="site-footer__column">
-      <h2>ENVÍOS</h2>
-      <p><strong>Delivery local</strong><br>Coordinamos contigo.</p>
-      <p><strong>Encomiendas</strong><br>Envíos a otros departamentos<br>y a nivel nacional.</p>
-      <p class="site-footer__notice">Recepción de encomiendas<br>hasta las <em>17:00</em></p>
-    </div>
-  </div>
-  <div class="site-footer__bottom">
-    <div class="container"><small>© 2026 VIBRA URBANA · Moda urbana y casual para toda la familia.</small><span>Gracias por ser parte de esta vibra</span><nav><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo de productos</a><a href="#contacto">Contacto</a></nav></div>
-  </div>
-</footer>
+<footer class="site-footer"></footer>
 
 <script type="module" src="assets/js/render-home.js"></script>
 <script type="module" src="assets/js/contacto.js"></script>
-<a class="wa-float" href="#" data-wa="principal" data-wa-texto="Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M12.02 2C6.5 2 2 6.48 2 12c0 1.85.5 3.58 1.35 5.08L2 22l5.06-1.32A9.94 9.94 0 0 0 12.02 22C17.55 22 22 17.52 22 12S17.55 2 12.02 2Zm5.78 14.24c-.24.68-1.39 1.3-1.92 1.35-.5.06-1.02.26-3.4-.7-2.87-1.15-4.72-4.06-4.87-4.25-.14-.19-1.16-1.55-1.16-2.95 0-1.4.73-2.08 1-2.37.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.6.82 2.06.9 2.2.07.14.11.31.02.5-.09.19-.14.31-.28.47-.14.16-.29.36-.42.48-.14.14-.28.28-.12.55.16.28.7 1.17 1.52 1.9 1.05.93 1.93 1.22 2.2 1.36.28.14.44.12.6-.07.16-.2.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.55.73 1.82.87.28.14.46.2.53.32.07.12.07.68-.17 1.35Z"/></svg></a>
 </body>
 </html>

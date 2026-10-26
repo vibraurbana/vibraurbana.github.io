@@ -61,7 +61,7 @@ if (form) {
       els.boton.disabled = true;
       const resultado = await enviarContacto(lead);
       els.boton.disabled = false;
-      track("formulario_contacto", { registrado: resultado.ok, motivo: resultado.ok ? undefined : `http_${resultado.status || "red"}` });
+      track("contact_form_submit", { registrado: resultado.ok, motivo: resultado.ok ? undefined : `http_${resultado.status || "red"}` });
       if (resultado.ok) {
         form.hidden = true;
         els.ok.hidden = false;
@@ -73,7 +73,7 @@ if (form) {
 
     // 2) Sin API ni Google: solo abre WhatsApp con los datos escritos.
     if (!FORM_ENDPOINT) {
-      track("formulario_contacto", { registrado: false, motivo: "sin_api" });
+      track("contact_form_submit", { registrado: false, motivo: "sin_api" });
       window.open(urlWa, "_blank", "noopener");
       return;
     }

@@ -1,0 +1,75 @@
+/* =====================================================================
+   VIBRA URBANA — Navegacion movil, Visitanos, enlaces sociales
+   ===================================================================== */
+
+/* Barra inferior (solo celular/tablet) */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--color-bg); border-top: 1px solid var(--color-border);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.bottom-nav a, .bottom-nav button {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  height: 58px; background: none; border: 0; color: var(--color-text-muted);
+  font: 600 0.68rem/1 var(--font-body); position: relative;
+}
+.bottom-nav [aria-current="page"], .bottom-nav [aria-expanded="true"] { color: var(--color-text); }
+.bottom-nav [aria-current="page"]::before {
+  content: ""; position: absolute; top: 0; left: 28%; right: 28%; height: 3px;
+  background: var(--color-accent); border-radius: 0 0 3px 3px;
+}
+body { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+
+/* Menu desplegable: sube desde la barra inferior */
+.mobile-nav {
+  top: auto; bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--color-border); border-bottom: 0;
+  border-radius: 14px 14px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.25);
+}
+.mobile-nav a { font-size: 1rem; }
+
+/* WhatsApp flotante: solo en la ficha; sube para no tapar la barra */
+.wa-float { bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+
+/* Enlaces sociales */
+.social-links { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+.social-links a {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 var(--space-4);
+  border: 1px solid var(--color-border); border-radius: 999px;
+  font-size: 0.78rem; font-weight: 700; color: var(--color-text);
+}
+.social-links a:hover { border-color: var(--color-accent); }
+.site-footer__contact-btn--sec { background: transparent; color: var(--color-text); border: 1px solid var(--color-border); margin-bottom: var(--space-4); }
+.site-footer__column p a { text-decoration: underline 2px var(--color-accent); text-underline-offset: 3px; color: var(--color-text); font-weight: 700; }
+
+/* Boton WhatsApp solido (verde 5:1 con texto blanco) */
+.btn--wa { background: var(--color-wa); color: #fff; }
+.btn--wa:hover { background: #166f35; }
+
+/* Visitanos + confianza */
+.visit { display: grid; gap: var(--space-5); padding-block: var(--space-7); }
+.visit__card {
+  background: var(--color-bg-card); border: 1px solid var(--color-border);
+  border-left: 5px solid var(--color-accent); border-radius: var(--radius-md); padding: var(--space-5);
+}
+.visit__card h2 { font-family: var(--font-display); font-weight: 800; font-size: var(--text-h1); margin: 0 0 var(--space-3); }
+.visit__card p { margin: 0 0 var(--space-2); }
+.visit__hours { color: var(--color-text-muted); }
+.visit__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+.trust-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.trust-list li { padding-left: var(--space-4); border-left: 3px solid var(--color-accent); }
+.trust-list strong { display: block; font-size: 0.92rem; }
+.trust-list span { font-size: 0.82rem; color: var(--color-text-muted); }
+.section--tight { padding-top: 0; }
+@media (min-width: 1024px) {
+  .visit { grid-template-columns: 1fr 1fr; align-items: center; gap: var(--space-7); }
+}
+
+/* Escritorio: sin barra inferior, WhatsApp flotante vuelve a su sitio */
+@media (min-width: 1024px) {
+  .bottom-nav { display: none; }
+  body { padding-bottom: 0; }
+  .mobile-nav { display: none !important; }
+  .wa-float { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+}

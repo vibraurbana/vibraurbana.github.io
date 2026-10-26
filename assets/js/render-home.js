@@ -5,6 +5,7 @@ import { tarjetaProductoHTML, RUTA_PLACEHOLDER } from "./product-card.js";
 import { skeletonCards, skeletonStyleCards } from "./skeleton.js";
 
 const MAX_DESTACADOS = 4;
+const MAX_NUEVOS = 4;
 
 function tarjetaEstilo(etiqueta) {
   const nombreArchivo = etiqueta.nombre
@@ -29,13 +30,15 @@ async function iniciar() {
 
   const estiloGrid = document.querySelector("[data-style-grid]");
   const productoGrid = document.querySelector("[data-destacados-grid]");
+  const nuevosGrid = document.querySelector("[data-nuevos-grid]");
 
   if (estiloGrid) estiloGrid.innerHTML = skeletonStyleCards(5);
   if (productoGrid) productoGrid.innerHTML = skeletonCards(MAX_DESTACADOS);
+  if (nuevosGrid) nuevosGrid.innerHTML = skeletonCards(MAX_NUEVOS);
 
   try {
     const catalogo = await cargarCatalogo();
-    medirSeleccionDeProductos(catalogo, "destacados");
+    medirSeleccionDeProductos(catalogo, "home");
 
     if (estiloGrid) {
       const visibles = (catalogo.etiquetas || [])
@@ -71,6 +74,16 @@ async function iniciar() {
         .slice(0, MAX_DESTACADOS);
       productoGrid.innerHTML = destacados.map((p) => tarjetaProductoHTML(catalogo, p)).join("");
       productoGrid.classList.add("fade-in");
+    }
+
+    if (nuevosGrid) {
+      // Sin fecha en el JSON, "nuevo" = ultimos productos creados (id mas alto), con stock primero.
+      const nuevos = (catalogo.productos || [])
+        .filter((p) => p.activo !== false)
+        .sort((a, b) => b.id - a.id)
+        .slice(0, MAX_NUEVOS);
+      nuevosGrid.innerHTML = nuevos.map((p) => tarjetaProductoHTML(catalogo, p)).join("");
+      nuevosGrid.classList.add("fade-in");
     }
   } catch (err) {
     console.error(err);
