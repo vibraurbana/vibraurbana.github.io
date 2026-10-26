@@ -5,7 +5,7 @@
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  padding: 0 0 var(--space-5);
+  padding-block: 0;
   overflow: hidden;
 }
 
@@ -32,7 +32,7 @@
 .hero__title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: var(--text-hero);
+  font-size: clamp(1.7rem, 7vw, 3.4rem);
   line-height: 1.02;
   letter-spacing: -0.01em;
   margin: 0 0 var(--space-3);
@@ -59,7 +59,7 @@
 .hero__media {
   position: relative;
   margin: 0 calc(var(--space-4) * -1);
-  height: clamp(340px, 56svh, 460px);
+  height: clamp(250px, 38svh, 360px);
   background: #0c0c0c;
   overflow: hidden;
 }
@@ -305,4 +305,18 @@
 .contact__ok p { margin: 0; color: var(--color-text-muted); }
 @media (min-width: 1024px) {
   .contact { grid-template-columns: 1fr 1fr; align-items: start; gap: var(--space-7); }
+}
+
+/* Movil: portada compacta para que asome la primera fila de estilos */
+@media (max-width: 639px) {
+  .hero__content { padding: var(--space-4); }
+  .hero__eyebrow { margin-bottom: 4px; }
+  .hero__title { margin-bottom: var(--space-2); }
+  .hero__subtitle { font-size: 0.85rem; margin-bottom: var(--space-3); }
+  .hero__subtitle strong { display: none; }
+  .hero__actions .btn { height: 42px; }
+  .hero + .section { padding-top: var(--space-4); }
+  .hero + .section .section__head { margin-bottom: var(--space-3); }
+  .hero + .section .section__title { font-size: 1.25rem; }
+  .style-card__media { aspect-ratio: 1 / 1; }
 }
