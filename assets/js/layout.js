@@ -92,7 +92,7 @@ export function iniciarLayout() {
   }
   menu.innerHTML = menuHTML();
 
-  // Barra inferior (solo celular): Inicio | Catalogo | Buscar | Menu. El carrito vive arriba.
+  // Barra inferior (solo celular): Inicio | Catalogo | Buscar. Menu y carrito viven arriba.
   const barra = document.createElement("nav");
   barra.className = "bottom-nav";
   barra.setAttribute("aria-label", "Principal");
@@ -101,9 +101,22 @@ export function iniciarLayout() {
   barra.innerHTML =
     item("index.html", "inicio", "Inicio", activa === "index") +
     item("catalogo.html", "catalogo", "Catálogo", activa === "catalogo") +
-    item("catalogo.html#buscar", "buscar", "Buscar", false) +
-    `<button type="button" data-menu-toggle aria-expanded="false" aria-controls="mobileNav">${svg("menu")}<span>Menú</span></button>`;
+    item("catalogo.html#buscar", "buscar", "Buscar", false);
   document.body.appendChild(barra);
+
+  // Hamburguesa arriba a la izquierda (solo celular/tablet; en escritorio se ve el menu horizontal)
+  const interior = document.querySelector(".site-header__inner");
+  if (interior && !interior.querySelector("[data-menu-toggle]")) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "site-header__menu-btn";
+    btn.setAttribute("data-menu-toggle", "");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", "mobileNav");
+    btn.setAttribute("aria-label", "Abrir menú");
+    btn.innerHTML = `<span data-ico-abrir>${svg("menu")}</span><span data-ico-cerrar hidden>${svg("cerrar")}</span>`;
+    interior.insertBefore(btn, interior.firstChild);
+  }
 
   const acc = document.querySelector("[data-visit-actions]");
   if (acc && ENLACES.maps) acc.insertAdjacentHTML("afterbegin", comoLlegar("btn btn--primary"));
