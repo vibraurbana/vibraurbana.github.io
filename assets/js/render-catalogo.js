@@ -24,6 +24,13 @@ const els = {};
 const filtroPrevio = { etiquetaId: null, colorId: null, talla: null };
 let temporizadorBusqueda = null;
 
+const ICONOS_ESTILO = { casuales: "casuales", casual: "casuales", deportivos: "deportivos", deportivo: "deportivos",
+  "todo terreno": "todoterreno", todoterreno: "todoterreno", botines: "botines", botin: "botines" };
+const iconoEstilo = (nombre) => {
+  const n = String(nombre).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  return ICONOS_ESTILO[n] ? `<span class="ico ico--${ICONOS_ESTILO[n]}" aria-hidden="true"></span>` : "";
+};
+
 function medirFiltros() {
   const nombres = {
     etiquetaId: (id) => (catalogoGlobal.etiquetas || []).find((e) => e.id === id)?.nombre,
@@ -130,7 +137,7 @@ function pintarChips() {
   const chipsEtiquetas = activas
     .map(
       (e) =>
-        `<button type="button" class="chip${estado.etiquetaId === e.id ? " is-active" : ""}" data-etiqueta="${e.id}">${e.nombre}</button>`
+        `<button type="button" class="chip${estado.etiquetaId === e.id ? " is-active" : ""}" data-etiqueta="${e.id}">${iconoEstilo(e.nombre)}${e.nombre}</button>`
     )
     .join("");
 

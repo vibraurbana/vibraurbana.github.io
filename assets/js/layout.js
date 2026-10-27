@@ -6,49 +6,49 @@ import { pintarEnlacesWhatsApp } from "./whatsapp.js";
 
 const WA_TXT = "Hola%2C%20vengo%20de%20la%20web%20de%20VIBRA%20URBANA%20y%20quiero%20hacer%20una%20consulta.";
 
-const ico = {
-  inicio: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
-  catalogo: '<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/>',
-  buscar: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
-  menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
-  cerrar: '<path d="M6 6l12 12M18 6L6 18"/>',
-};
-const svg = (k) => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ico[k]}</svg>`;
+const ico = (n, extra = "") => `<span class="ico ico--${n} ${extra}" aria-hidden="true"></span>`;
 
 const pagina = () => (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
 
 export function redes(clase = "") {
   const defs = [["tiktok", "TikTok"], ["facebook", "Facebook"], ["instagram", "Instagram"]];
   const items = defs.filter(([k]) => ENLACES[k]).map(([k, n]) =>
-    `<a href="${ENLACES[k]}" target="_blank" rel="noopener" data-social="${k}">${n}</a>`);
+    `<a href="${ENLACES[k]}" target="_blank" rel="noopener" data-social="${k}" aria-label="${n}"><img class="ico-color" src="assets/icons/color/${k}.svg" alt="" width="28" height="28"><span>${n}</span></a>`);
   return items.length ? `<div class="social-links ${clase}">${items.join("")}</div>` : "";
 }
 
 const comoLlegar = (clase) => ENLACES.maps
-  ? `<a class="${clase}" href="${ENLACES.maps}" target="_blank" rel="noopener" data-map-link>📍 Cómo llegar</a>` : "";
+  ? `<a class="${clase}" href="${ENLACES.maps}" target="_blank" rel="noopener" data-map-link>${ico("como-llegar")} Cómo llegar</a>` : "";
 
 function pieHTML() {
   return `
+  <div class="trust-strip"><div class="container">
+    <span>${ico("envio-pais")} Envíos a todo el país</span>
+    <span>${ico("retiro")} Retiro en tienda</span>
+    <span>${ico("delivery")} Delivery local</span>
+    <span>${ico("atencion")} Atención personalizada</span>
+  </div></div>
   <div class="container site-footer__main">
     <div class="site-footer__column site-footer__identity">
       <img src="assets/img/logo-t.webp" alt="VIBRA URBANA" class="site-footer__logo" loading="lazy" width="150" height="63">
       <p>Moda urbana y casual<br>para toda la familia.</p>
+      <img class="site-footer__brush" src="assets/img/mas-cerca-de-ti.png" alt="Más cerca de ti" width="140" height="40" loading="lazy">
       ${redes("social-links--footer")}
     </div>
     <div class="site-footer__column">
-      <h2>VISÍTANOS</h2>
+      <h2>${ico("mapa")} VISÍTANOS</h2>
       <p><strong>Comercial Cañoto<br><em>Local #163</em></strong><br>Santa Cruz de la Sierra, Bolivia</p>
       ${comoLlegar("site-footer__contact-btn site-footer__contact-btn--sec")}
-      <h2>HORARIO</h2>
+      <h2>${ico("horario")} HORARIO</h2>
       <p>Lunes a sábado<br>10:00 - 19:00</p>
     </div>
     <div class="site-footer__column">
-      <h2>CONTÁCTANOS</h2>
+      <h2>${ico("llamar")} CONTÁCTANOS</h2>
       <p>WhatsApp</p>
       <a class="site-footer__phone" href="#" data-wa="principal" data-wa-texto="${WA_TXT}" data-wa-visible target="_blank" rel="noopener">…</a>
       <p>WhatsApp alternativo</p>
       <a class="site-footer__phone" href="#" data-wa="alternativo" data-wa-texto="${WA_TXT}" data-wa-visible target="_blank" rel="noopener">…</a>
-      <a class="site-footer__contact-btn" href="#" data-wa="principal" data-wa-texto="${WA_TXT}" target="_blank" rel="noopener">ESCRIBIR POR WHATSAPP →</a>
+      <a class="site-footer__contact-btn" href="#" data-wa="principal" data-wa-texto="${WA_TXT}" target="_blank" rel="noopener"><img class="ico-color" src="assets/icons/color/whatsapp-mini.svg" alt="" width="22" height="22"> ESCRIBIR POR WHATSAPP</a>
     </div>
     <div class="site-footer__column">
       <h2>COMPRAR Y ENVÍOS</h2>
@@ -67,13 +67,16 @@ function pieHTML() {
 }
 
 function menuHTML() {
+  const it = (href, icono, txt) => `<a href="${href}">${ico(icono)}<span>${txt}</span></a>`;
   return `
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Catálogo</a>
-  <a href="como-comprar.html">Cómo comprar</a>
-  <a href="envios.html">Envíos y entregas</a>
-  <a href="visitanos.html">Visítanos</a>
-  <a href="contacto.html">Contacto</a>
+  ${it("index.html", "inicio", "Inicio")}
+  ${it("catalogo.html", "catalogo", "Catálogo")}
+  ${it("como-comprar.html", "documento", "Cómo comprar")}
+  ${it("envios.html", "delivery", "Envíos y entregas")}
+  ${it("cambios-devoluciones.html", "transferencia", "Cambios y devoluciones")}
+  ${it("visitanos.html", "mapa", "Visítanos")}
+  ${it("contacto.html", "llamar", "Contacto")}
+  <p class="mobile-nav__titulo">Síguenos</p>
   ${redes("social-links--menu")}`;
 }
 
@@ -100,7 +103,7 @@ export function iniciarLayout() {
   barra.className = "bottom-nav";
   barra.setAttribute("aria-label", "Principal");
   const item = (href, k, txt, on) =>
-    `<a href="${href}"${on ? ' aria-current="page"' : ""}>${svg(k)}<span>${txt}</span></a>`;
+    `<a href="${href}"${on ? ' aria-current="page"' : ""}>${ico(k)}<span>${txt}</span></a>`;
   barra.innerHTML =
     item("index.html", "inicio", "Inicio", activa === "index") +
     item("catalogo.html", "catalogo", "Catálogo", activa === "catalogo") +
@@ -117,7 +120,7 @@ export function iniciarLayout() {
     btn.setAttribute("aria-expanded", "false");
     btn.setAttribute("aria-controls", "mobileNav");
     btn.setAttribute("aria-label", "Abrir menú");
-    btn.innerHTML = `<span data-ico-abrir>${svg("menu")}</span><span data-ico-cerrar hidden>${svg("cerrar")}</span>`;
+    btn.innerHTML = `<span data-ico-abrir>${ico("menu")}</span><span data-ico-cerrar hidden>${ico("cerrar")}</span>`;
     interior.insertBefore(btn, interior.firstChild);
   }
 

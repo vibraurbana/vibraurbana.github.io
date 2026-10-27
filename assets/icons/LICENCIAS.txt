@@ -1,0 +1,4 @@
+Iconos de linea (assets/icons/ui/*.svg): Lucide (https://lucide.dev), licencia ISC. Uso comercial permitido.
+Logos de marca (assets/icons/color/*.svg): glifos de Simple Icons (https://simpleicons.org), dominio publico CC0.
+  Los logos de TikTok, Facebook, Instagram y WhatsApp pertenecen a sus empresas; se usan solo para enlazar a sus perfiles.
+Recortes propios de tu hoja de iconografia (PNG en assets/icons/ui): casuales, deportivos, todoterreno, botines, accesorios.

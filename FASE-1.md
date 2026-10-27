@@ -35,3 +35,14 @@
 - Enlaces compartidos usan siempre el dominio oficial (SITIO en config.js) y la ruta amigable. 404.html redirige productos nuevos que aún no tienen su página.
 - enlaces.html: generador de enlaces con utm (interno, noindex).
 - Eventos: whatsapp_click (link_location, attendant), map_click, social_click, product_share. Ver GUIA-MEDICION.md.
+
+# Iconos de la hoja de iconografía
+- 65 íconos recortados de `iconografia.png`: `assets/icons/ui/*.png` (línea, toman el color del texto) y `assets/icons/color/*.png` (marca: TikTok, Facebook, Instagram, WhatsApp, etc.). Se usan con `<span class="ico ico--NOMBRE">` o `<img class="ico-color">`. Estilos en `assets/css/iconos.css`.
+- Aplicados en: encabezado (carrito, menú), barra inferior, menú desplegable (con "Síguenos"), pie (franja de confianza, eslogan en pincelada, redes), tarjetas ("En stock" con check), chips de estilo, ficha (precio en etiqueta amarilla, compartir con íconos de color, enlaces a Envíos y Cambios), páginas de envíos/visítanos/contacto y la lista de confianza del Inicio.
+- Eslogan "Más cerca de ti" recortado de la barra inferior de la hoja: `assets/img/mas-cerca-de-ti.png`.
+
+# Iconos vectoriales, foto del local y Maps
+- Los iconos recortados (baja resolución) se reemplazaron por vectores SVG nítidos (Lucide e iconos de marca de Simple Icons), alojados en el propio sitio (más rápido y sin depender de un CDN). Se conservan como recorte propio los iconos de calzado de tu hoja (casuales, deportivos, todoterreno, botines, accesorios). Licencias en assets/icons/LICENCIAS.txt.
+- Foto del local (Local 163) en Visítanos y en el Inicio: assets/img/local-163.webp/.jpg.
+- Maps exacto (Comercial Cañoto) en ENLACES.maps: aparece "Cómo llegar" en Inicio, Visítanos y pie. JSON-LD con coordenadas.
+- Incorporados tus indicadores especiales (HORMA CHICA, etc.) de product-card.js, render-producto.js, producto.html y base.css.

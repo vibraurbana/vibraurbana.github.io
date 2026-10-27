@@ -1,0 +1,124 @@
+/* Iconos recortados de la hoja de iconografia de VIBRA URBANA.
+   .ico = icono de linea que toma el color del texto (currentColor). .ico-color = icono de marca con sus colores. */
+.ico { display: inline-block; flex: none; width: 1.25em; height: 1.25em; vertical-align: -0.26em;
+  background-color: currentColor; -webkit-mask: var(--i) center / contain no-repeat; mask: var(--i) center / contain no-repeat; }
+.ico-color { display: inline-block; flex: none; width: 1.5em; height: 1.5em; vertical-align: -0.4em; }
+.ico--accesorios { --i: url("../icons/ui/accesorios.png"); }
+.ico--advertencia { --i: url("../icons/ui/advertencia.svg"); }
+.ico--atencion { --i: url("../icons/ui/atencion.svg"); }
+.ico--botines { --i: url("../icons/ui/botines.png"); }
+.ico--buscar { --i: url("../icons/ui/buscar.svg"); }
+.ico--calendario { --i: url("../icons/ui/calendario.svg"); }
+.ico--calificacion { --i: url("../icons/ui/calificacion.svg"); }
+.ico--calzado { --i: url("../icons/ui/calzado.svg"); }
+.ico--carrito { --i: url("../icons/ui/carrito.svg"); }
+.ico--casuales { --i: url("../icons/ui/casuales.png"); }
+.ico--catalogo { --i: url("../icons/ui/catalogo.svg"); }
+.ico--cerrar { --i: url("../icons/ui/cerrar.svg"); }
+.ico--como-llegar { --i: url("../icons/ui/como-llegar.svg"); }
+.ico--compartir { --i: url("../icons/ui/compartir.svg"); }
+.ico--correo { --i: url("../icons/ui/correo.svg"); }
+.ico--cuenta { --i: url("../icons/ui/cuenta.svg"); }
+.ico--delivery { --i: url("../icons/ui/delivery.svg"); }
+.ico--deportivos { --i: url("../icons/ui/deportivos.png"); }
+.ico--descarga { --i: url("../icons/ui/descarga.svg"); }
+.ico--documento { --i: url("../icons/ui/documento.svg"); }
+.ico--efectivo { --i: url("../icons/ui/efectivo.svg"); }
+.ico--encomienda { --i: url("../icons/ui/encomienda.svg"); }
+.ico--enlace { --i: url("../icons/ui/enlace.svg"); }
+.ico--envio-pais { --i: url("../icons/ui/envio-pais.svg"); }
+.ico--envios-pais { --i: url("../icons/ui/envios-pais.svg"); }
+.ico--etiqueta { --i: url("../icons/ui/etiqueta.svg"); }
+.ico--externo { --i: url("../icons/ui/externo.svg"); }
+.ico--filtros { --i: url("../icons/ui/filtros.svg"); }
+.ico--fotos { --i: url("../icons/ui/fotos.svg"); }
+.ico--galeria { --i: url("../icons/ui/galeria.svg"); }
+.ico--giro-360 { --i: url("../icons/ui/giro-360.svg"); }
+.ico--horario { --i: url("../icons/ui/horario.svg"); }
+.ico--imagen { --i: url("../icons/ui/imagen.svg"); }
+.ico--inicio { --i: url("../icons/ui/inicio.svg"); }
+.ico--llamar { --i: url("../icons/ui/llamar.svg"); }
+.ico--local { --i: url("../icons/ui/local.svg"); }
+.ico--mapa { --i: url("../icons/ui/mapa.svg"); }
+.ico--menu { --i: url("../icons/ui/menu.svg"); }
+.ico--ocultar { --i: url("../icons/ui/ocultar.svg"); }
+.ico--ordenar { --i: url("../icons/ui/ordenar.svg"); }
+.ico--qr { --i: url("../icons/ui/qr.svg"); }
+.ico--retiro { --i: url("../icons/ui/retiro.svg"); }
+.ico--retiro-tienda { --i: url("../icons/ui/retiro-tienda.svg"); }
+.ico--ropa { --i: url("../icons/ui/ropa.svg"); }
+.ico--seguro { --i: url("../icons/ui/seguro.svg"); }
+.ico--tarjeta { --i: url("../icons/ui/tarjeta.svg"); }
+.ico--tienda { --i: url("../icons/ui/tienda.svg"); }
+.ico--todoterreno { --i: url("../icons/ui/todoterreno.png"); }
+.ico--transferencia { --i: url("../icons/ui/transferencia.svg"); }
+.ico--ubicacion { --i: url("../icons/ui/ubicacion.svg"); }
+.ico--ver { --i: url("../icons/ui/ver.svg"); }
+.ico--video { --i: url("../icons/ui/video.svg"); }
+.ico--vista-cuadricula { --i: url("../icons/ui/vista-cuadricula.svg"); }
+.ico--vista-lista { --i: url("../icons/ui/vista-lista.svg"); }
+.ico--lg { width: 1.9em; height: 1.9em; } .ico--xl { width: 2.6em; height: 2.6em; }
+
+/* Encabezado: carrito con el icono de la hoja */
+.site-header__icon-btn .ico { font-size: 1.35rem; }
+/* WhatsApp flotante = icono de la hoja */
+body .wa-float { background: none; box-shadow: none; width: 58px; height: 58px; padding: 0; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+body .wa-float img { width: 100%; height: 100%; display: block; }
+
+/* ---- Barra inferior ---- */
+.bottom-nav .ico { width: 24px; height: 24px; vertical-align: 0; }
+
+/* ---- Menu desplegable con iconos ---- */
+.mobile-nav a { display: flex; align-items: center; gap: var(--space-3); }
+.mobile-nav a .ico { width: 22px; height: 22px; vertical-align: 0; color: var(--color-accent-ink); }
+.mobile-nav__titulo { margin: var(--space-4) 0 var(--space-2); font: 800 0.78rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-muted); }
+.site-header__menu-btn .ico { width: 26px; height: 26px; vertical-align: 0; }
+
+/* ---- Redes con iconos de color ---- */
+.social-links a { gap: var(--space-2); padding: 0 var(--space-3) 0 var(--space-2); height: 40px; }
+.social-links .ico-color { width: 26px; height: 26px; vertical-align: 0; }
+.mobile-nav .social-links { margin-top: 0; }
+.mobile-nav .social-links a { border-bottom: 0; padding: 0 var(--space-3) 0 var(--space-2); font-size: .8rem; }
+
+/* ---- Pie: franja de confianza, eslogan, titulos con icono ---- */
+.trust-strip { background: #0b0b0b; border-bottom: 1px solid var(--color-border); }
+.trust-strip .container { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-4); padding-block: var(--space-4); }
+.trust-strip span { display: flex; align-items: center; gap: var(--space-2); font-size: .78rem; font-weight: 700; color: var(--color-text); }
+.trust-strip .ico { width: 24px; height: 24px; vertical-align: 0; color: var(--color-accent-ink); }
+@media (min-width: 768px) { .trust-strip .container { grid-template-columns: repeat(4, 1fr); } }
+.site-footer__brush { display: block; width: 140px; height: auto; margin-top: var(--space-3); }
+.site-footer__column h2 .ico { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; color: var(--color-accent-ink); }
+.site-footer__contact-btn .ico-color { width: 20px; height: 20px; vertical-align: -5px; margin-right: 4px; }
+
+/* ---- Tarjeta: En stock ---- */
+.product-card__instock { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; font-size: .72rem; font-weight: 700; color: var(--color-ok); }
+.product-card__instock .ico-color { width: 14px; height: 14px; vertical-align: 0; }
+
+/* ---- Chips de estilo con icono ---- */
+.chip .ico { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; }
+
+/* ---- Ficha: precio destacado, compartir, enlaces ---- */
+.producto-info__precio span[data-producto-precio] { display: inline-block; background: var(--color-accent); color: var(--color-accent-text); padding: 4px 14px; border-radius: 8px; font-weight: 800; }
+.compartir__ico { width: 40px; height: 40px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 50%; display: inline-grid; place-items: center; }
+.compartir__ico img { width: 40px; height: 40px; display: block; }
+.compartir__ico:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.producto-info__links { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-2); }
+.producto-info__links a { display: inline-flex; align-items: center; gap: var(--space-2); font-size: .85rem; font-weight: 600; color: var(--color-text); }
+.producto-info__links .ico { width: 22px; height: 22px; vertical-align: 0; }
+
+/* ---- Tarjetas informativas con icono ---- */
+.tarjeta > .ico, .tarjeta > .ico-color { display: block; margin-bottom: var(--space-2); }
+.tarjeta > .ico--lg, .tarjeta > .ico-color.ico--lg { width: 40px; height: 40px; }
+.trust-list li { display: flex; align-items: flex-start; gap: var(--space-3); border-left: 0; padding-left: 0; }
+.trust-list li > .ico { width: 34px; height: 34px; vertical-align: 0; flex: none; color: var(--color-text); }
+
+/* Iconos de calzado (recortes anchos de tu hoja) */
+.ico--casuales, .ico--deportivos, .ico--todoterreno, .ico--botines, .ico--accesorios { width: 1.75em; }
+.chip .ico--casuales, .chip .ico--deportivos, .chip .ico--todoterreno, .chip .ico--botines { width: 28px; height: 20px; vertical-align: -5px; }
+
+/* Foto del local */
+.local-foto { margin: 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-media); }
+.local-foto img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.local-foto figcaption { padding: var(--space-2) var(--space-3); font-size: .78rem; color: var(--color-text-muted); }
+.visit__foto { margin-bottom: var(--space-4); }
+@media (min-width: 1024px) { .visit { align-items: stretch; } }

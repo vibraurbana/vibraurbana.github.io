@@ -105,6 +105,7 @@ export function tarjetaProductoHTML(catalogo, producto) {
         <span class="product-card__name">${producto.nombre}</span>
         ${indicadores ? `<span class="product-card__inds">${indicadores}</span>` : ""}
         <span class="product-card__price">${precioHTML(catalogo, producto)}</span>
+        ${estado === "ok" ? `<span class="product-card__instock"><img class="ico-color" src="assets/icons/color/confirmado.svg" alt="" width="16" height="16">En stock</span>` : ""}
         ${puntosColorHTML(catalogo, producto)}
         ${tallasHTML(producto)}
       </span>

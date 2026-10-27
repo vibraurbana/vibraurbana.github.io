@@ -50,7 +50,7 @@ export const API_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public/inde
 // simplemente no se muestra en la web.
 // MAPS: enlace EXACTO del local en Google Maps (compartir > copiar enlace), no una busqueda generica.
 export const ENLACES = {
-  maps: "",
+  maps: "https://maps.app.goo.gl/sFHzAmppaFfAgxqMA",
   tiktok: "https://www.tiktok.com/@tiendavibraurbana",
   facebook: "https://www.facebook.com/tiendavibraurbana",
   instagram: "https://www.instagram.com/tiendavibraurbana",
