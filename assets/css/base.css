@@ -672,3 +672,39 @@ button { font-family: inherit; cursor: pointer; }
 .product-card.is-agotado .product-card__media img { opacity: .55; filter: grayscale(.6); }
 .product-card.is-agotado .product-card__name,
 .product-card.is-agotado .product-card__price { color: var(--color-text-muted); }
+
+/* ---------- Indicadores especiales (ej. HORMA CHICA): usan el color de la etiqueta ---------- */
+.web-ind {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--ind-color, #002760);
+  background: color-mix(in srgb, var(--ind-color, #002760) 14%, #fff);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.web-ind__icon {
+  width: 1.1em;
+  height: 1.1em;
+  fill: currentColor;
+  flex: none;
+}
+.product-card__inds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.producto-info__indicadores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.producto-info__indicadores[hidden] { display: none; }

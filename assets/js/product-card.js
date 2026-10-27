@@ -2,6 +2,32 @@ import { formatearPrecio, precioDesde, imagenPrincipal, resolverImagen, categori
 
 export const RUTA_PLACEHOLDER = "assets/icons/shoe-placeholder.svg";
 
+const ICONO_HUELLAS = `<svg class="web-ind__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><ellipse cx="7.5" cy="7.5" rx="3.1" ry="5" transform="rotate(-10 7.5 7.5)"/><ellipse cx="8.2" cy="16" rx="2.2" ry="2.6" transform="rotate(-5 8.2 16)"/><ellipse cx="16.5" cy="11.5" rx="3.1" ry="5" transform="rotate(10 16.5 11.5)"/><ellipse cx="15.8" cy="19.8" rx="2.2" ry="2.6" transform="rotate(5 15.8 19.8)"/></svg>`;
+
+function escaparHTML(texto) {
+  return String(texto ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/**
+ * Indicadores especiales del producto (ej. HORMA CHICA con huellas), tal como los
+ * entrega el sistema en producto.indicadores. Usan el color de la etiqueta.
+ * Mismo diseno que "stock-ind" del sistema.
+ */
+export function indicadoresHTML(producto) {
+  return (producto.indicadores || [])
+    .map((ind) => {
+      const color = /^#[0-9A-Fa-f]{6}$/.test(ind.color || "") ? ind.color : "#002760";
+      const texto = escaparHTML(ind.texto);
+      return `<span class="web-ind" style="--ind-color:${color}" title="${texto}">${ind.icono === "huellas" ? ICONO_HUELLAS : ""}${texto}</span>`;
+    })
+    .join("");
+}
+
+/** IDs de etiquetas que se muestran como indicador (no como etiqueta normal). */
+export function idsIndicadores(producto) {
+  return new Set((producto.indicadores || []).map((i) => i.etiqueta_id));
+}
+
 const MAX_PUNTOS_COLOR = 5;
 const MAX_TALLAS = 6;
 const ORDEN_LETRAS = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -56,8 +82,11 @@ function puntosColorHTML(catalogo, producto) {
 export function tarjetaProductoHTML(catalogo, producto) {
   const rutaImagen = imagenPrincipal(producto);
   const imagen = rutaImagen ? resolverImagen(rutaImagen) : RUTA_PLACEHOLDER;
-  const primeraEtiquetaId = (producto.etiquetas_ids || [])[0];
+  // Las etiquetas especiales (indicadores) no van como insignia sobre la foto: se dibujan aparte.
+  const esIndicador = idsIndicadores(producto);
+  const primeraEtiquetaId = (producto.etiquetas_ids || []).find((id) => !esIndicador.has(id));
   const primeraEtiqueta = (catalogo.etiquetas || []).find((e) => e.id === primeraEtiquetaId);
+  const indicadores = indicadoresHTML(producto);
   const categoria = categoriaDeProducto(catalogo, producto);
   const claseCategoria = categoria?.nombre === "Zapato" ? " product-card--shoe" : "";
   const estado = estadoStock(producto);
@@ -74,6 +103,7 @@ export function tarjetaProductoHTML(catalogo, producto) {
       </span>
       <span class="product-card__body">
         <span class="product-card__name">${producto.nombre}</span>
+        ${indicadores ? `<span class="product-card__inds">${indicadores}</span>` : ""}
         <span class="product-card__price">${precioHTML(catalogo, producto)}</span>
         ${puntosColorHTML(catalogo, producto)}
         ${tallasHTML(producto)}

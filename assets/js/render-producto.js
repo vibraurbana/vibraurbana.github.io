@@ -3,7 +3,7 @@ import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
 import { construirUrlWhatsApp } from "./whatsapp.js";
-import { tarjetaProductoHTML, stockTotal } from "./product-card.js";
+import { tarjetaProductoHTML, stockTotal, indicadoresHTML, idsIndicadores } from "./product-card.js";
 import { GUIA_TALLAS } from "./config.js";
 import { urlPublicaProducto } from "./slug.js";
 import { track, itemProducto, MONEDA_GA, medirSeleccionDeProductos } from "./analytics.js";
@@ -223,7 +223,11 @@ function renderInfoFija() {
   els.descripcion.textContent = producto.descripcion ||
     "Diseño urbano y versátil, pensado para acompañarte todos los días.";
 
-  const etiquetas = etiquetasDeProducto(catalogo, producto);
+  els.indicadores.innerHTML = indicadoresHTML(producto);
+  els.indicadores.hidden = !els.indicadores.innerHTML;
+
+  const esIndicador = idsIndicadores(producto);
+  const etiquetas = etiquetasDeProducto(catalogo, producto).filter((e) => !esIndicador.has(e.id));
   els.etiquetas.innerHTML = etiquetas
     .map((e) => `<span class="chip chip--static">${e.nombre}</span>`)
     .join("");
@@ -395,6 +399,7 @@ async function iniciar() {
   els.nombre = document.querySelector("[data-producto-nombre]");
   els.descripcion = document.querySelector("[data-producto-desc]");
   els.etiquetas = document.querySelector("[data-producto-etiquetas]");
+  els.indicadores = document.querySelector("[data-producto-indicadores]");
   els.precio = document.querySelector("[data-producto-precio]");
   els.precioHint = document.querySelector("[data-producto-precio-hint]");
   els.disponibilidad = document.querySelector("[data-disponibilidad]");
