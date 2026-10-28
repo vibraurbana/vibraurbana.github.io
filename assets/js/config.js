@@ -51,9 +51,9 @@ export const API_BASE_URL = "https://cajasfuertescm.com/kidmodastore/public/inde
 // MAPS: enlace EXACTO del local en Google Maps (compartir > copiar enlace), no una busqueda generica.
 export const ENLACES = {
   maps: "https://maps.app.goo.gl/sFHzAmppaFfAgxqMA",
-  tiktok: "https://www.tiktok.com/@tiendavibraurbana",
-  facebook: "https://www.facebook.com/tiendavibraurbana",
-  instagram: "https://www.instagram.com/tiendavibraurbana",
+  tiktok: "https://www.tiktok.com/@vibra_urbana_zapatos",
+  facebook: "https://www.facebook.com/vibraurbanastore",
+  instagram: "https://www.instagram.com/vibraurbanastore",
 };
 
 // Guia de tallas: texto que se muestra al tocar "Guia de tallas" en la ficha del producto.
