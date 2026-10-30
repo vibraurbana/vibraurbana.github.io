@@ -20,7 +20,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 EXCLUIR = {".git", ".github", "tools", "data", "_site", "node_modules", "__pycache__", ".gitignore"}
 PAGINAS = ["", "catalogo.html", "como-comprar.html", "envios.html", "visitanos.html",
-           "cambios-devoluciones.html", "contacto.html"]
+           "cambios-devoluciones.html", "contacto.html",
+           "quienes-somos.html", "politica-de-privacidad.html", "terminos-y-condiciones.html"]
 UA = {"User-Agent": "Mozilla/5.0 (VibraUrbana-SiteBuilder)"}
 
 
@@ -131,7 +132,7 @@ def pagina_producto(plantilla, p, sitio, moneda, con_og):
     hay = stock(p) > 0
     partes = [f"{nombre}" + (f" a {moneda} {precio:,.0f}".replace(",", ".") if precio else "")]
     if tallas: partes.append("Tallas " + (tallas[0] if len(tallas) == 1 else f"{tallas[0]}–{tallas[-1]}"))
-    partes.append("Consulta por WhatsApp. Comercial Cañoto, Local #163, Santa Cruz de la Sierra.")
+    partes.append("Consulta por WhatsApp. Comercial Cañoto, Pasillo Toborochi, Local #163, Av. Busch, Santa Cruz de la Sierra.")
     desc = ". ".join(partes)
     titulo = f"{nombre}" + (f" — {moneda} {precio:,.0f}".replace(",", ".") if precio else "") + " | VIBRA URBANA"
     img = f"{sitio}/og/{p['id']}.jpg" if con_og else f"{sitio}/assets/img/og-cover.jpg"

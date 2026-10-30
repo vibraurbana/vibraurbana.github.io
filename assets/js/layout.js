@@ -37,7 +37,7 @@ function pieHTML() {
     </div>
     <div class="site-footer__column">
       <h2>${ico("mapa")} VISÍTANOS</h2>
-      <p><strong>Comercial Cañoto<br><em>Local #163</em></strong><br>Santa Cruz de la Sierra, Bolivia</p>
+      <p><strong>Comercial Cañoto<br><em>Pasillo Toborochi · Local #163</em></strong><br>Av. Busch, primer anillo<br>Santa Cruz de la Sierra, Bolivia</p>
       ${comoLlegar("site-footer__contact-btn site-footer__contact-btn--sec")}
       <h2>${ico("horario")} HORARIO</h2>
       <p>Lunes a sábado<br>10:00 - 19:00</p>
@@ -55,6 +55,7 @@ function pieHTML() {
       <p><a href="como-comprar.html">Cómo comprar</a></p>
       <p><a href="envios.html">Envíos y entregas</a></p>
       <p><a href="cambios-devoluciones.html">Cambios y devoluciones</a></p>
+      <p><a href="quienes-somos.html">Quiénes somos</a></p>
       <p><a href="visitanos.html">Visítanos</a></p>
       <p><a href="contacto.html">Contacto</a></p>
       <p class="site-footer__small">Retiro en tienda · Delivery local · Encomiendas hasta las <em>17:00</em></p>
@@ -62,7 +63,7 @@ function pieHTML() {
   </div>
   <div class="site-footer__bottom">
     <div class="container"><small>© 2026 VIBRA URBANA · Moda urbana y casual para toda la familia.</small><span>Más cerca de ti</span>
-    <nav><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="index.html#visitanos">Visítanos</a><a href="index.html#contacto">Contacto</a></nav></div>
+    <nav><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="index.html#visitanos">Visítanos</a><a href="index.html#contacto">Contacto</a><a href="politica-de-privacidad.html">Privacidad</a><a href="terminos-y-condiciones.html">Términos</a></nav></div>
   </div>`;
 }
 
@@ -74,6 +75,7 @@ function menuHTML() {
   ${it("como-comprar.html", "documento", "Cómo comprar")}
   ${it("envios.html", "delivery", "Envíos y entregas")}
   ${it("cambios-devoluciones.html", "transferencia", "Cambios y devoluciones")}
+  ${it("quienes-somos.html", "tienda", "Quiénes somos")}
   ${it("visitanos.html", "mapa", "Visítanos")}
   ${it("contacto.html", "llamar", "Contacto")}
   <p class="mobile-nav__titulo">Síguenos</p>

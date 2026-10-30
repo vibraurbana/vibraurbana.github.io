@@ -539,7 +539,7 @@ button { font-family: inherit; cursor: pointer; }
 .site-footer__bottom .container { display: flex; flex-direction: column; gap: var(--space-3); align-items: center; text-align: center; }
 .site-footer__bottom small { color: var(--color-text-muted); font-size: 0.62rem; }
 .site-footer__bottom > .container > span { color: var(--color-accent-ink); font-family: var(--font-display); font-style: italic; font-size: 0.85rem; }
-.site-footer__bottom nav { display: flex; gap: var(--space-4); font-size: 0.68rem; color: var(--color-text-muted); }
+.site-footer__bottom nav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2) var(--space-4); font-size: 0.68rem; color: var(--color-text-muted); }
 
 .site-footer:has(.site-footer__main) .site-footer__brand,
 .site-footer:has(.site-footer__main) .site-footer__links,
