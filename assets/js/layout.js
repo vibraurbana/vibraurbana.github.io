@@ -37,7 +37,7 @@ function pieHTML() {
     </div>
     <div class="site-footer__column">
       <h2>${ico("mapa")} VISÍTANOS</h2>
-      <p><strong>Comercial Cañoto<br><em>Pasillo Toborochi · Local #163</em></strong><br>Av. Busch, primer anillo<br>Santa Cruz de la Sierra, Bolivia</p>
+      <p><strong>Comercial Cañoto<br><em>Pasillo Toborochi · Local #163</em></strong><br>Calle Buenos Aires, cerca de la Av. Cañoto<br>Santa Cruz de la Sierra, Bolivia</p>
       ${comoLlegar("site-footer__contact-btn site-footer__contact-btn--sec")}
       <h2>${ico("horario")} HORARIO</h2>
       <p>Lunes a sábado<br>10:00 - 19:00</p>

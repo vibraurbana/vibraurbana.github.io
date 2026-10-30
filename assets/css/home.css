@@ -320,3 +320,12 @@
   .hero + .section .section__title { font-size: 1.25rem; }
   .style-card__media { aspect-ratio: 1 / 1; }
 }
+
+
+/* Bloque de texto "Que es VIBRA URBANA" (SEO/AEO) */
+.intro-seo__texto { max-width: 860px; }
+.intro-seo__texto p { color: var(--color-text-muted); line-height: 1.6; margin: 0 0 var(--space-3); }
+.intro-seo__lista { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-3); font-size: 0.92rem; }
+.intro-seo__lista li { position: relative; padding-left: var(--space-5); line-height: 1.45; }
+.intro-seo__lista li::before { content: "\2713"; position: absolute; left: 0; font-weight: 700; }
+@media (min-width: 768px) { .intro-seo__lista { grid-template-columns: repeat(3, 1fr); gap: var(--space-5); } }

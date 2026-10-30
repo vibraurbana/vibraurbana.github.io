@@ -103,6 +103,16 @@ def url_imagen(ruta, base):
     return f"{base}/{ruta.lstrip('/')}" if base else ""
 
 
+def precio_desde_zapatos(cat):
+    """Precio minimo (con stock) de la categoria Zapato; asi 'desde Bs N' del inicio nunca queda viejo."""
+    ids = {c.get("id") for c in cat.get("categorias", []) if str(c.get("nombre", "")).strip().lower() in ("zapato", "zapatos", "calzado")}
+    pv = [(v, p) for p in cat["productos"] if p.get("categoria_id") in ids for v in variantes(p) if v.get("precio") is not None]
+    con_stock = [float(v["precio"]) for v, _ in pv if int(v.get("stock") or 0) > 0]
+    todos = [float(v["precio"]) for v, _ in pv]
+    lista = con_stock or todos
+    return min(lista) if lista else None
+
+
 def hacer_og(url, destino):
     """Descarga la foto y la deja en 1200x630 (liviana: WhatsApp descarta imagenes muy pesadas)."""
     from PIL import Image
@@ -132,7 +142,7 @@ def pagina_producto(plantilla, p, sitio, moneda, con_og):
     hay = stock(p) > 0
     partes = [f"{nombre}" + (f" a {moneda} {precio:,.0f}".replace(",", ".") if precio else "")]
     if tallas: partes.append("Tallas " + (tallas[0] if len(tallas) == 1 else f"{tallas[0]}–{tallas[-1]}"))
-    partes.append("Consulta por WhatsApp. Comercial Cañoto, Pasillo Toborochi, Local #163, Av. Busch, Santa Cruz de la Sierra.")
+    partes.append("Consulta por WhatsApp. Comercial Cañoto, Pasillo Toborochi, Local #163, calle Buenos Aires (cerca de la Av. Cañoto), Santa Cruz de la Sierra.")
     desc = ". ".join(partes)
     titulo = f"{nombre}" + (f" — {moneda} {precio:,.0f}".replace(",", ".") if precio else "") + " | VIBRA URBANA"
     img = f"{sitio}/og/{p['id']}.jpg" if con_og else f"{sitio}/assets/img/og-cover.jpg"
@@ -195,6 +205,13 @@ def main():
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_text(contenido, encoding="utf-8")
         urls.append(f"{sitio}/{ruta}")
+
+    desde = precio_desde_zapatos(cat)
+    if desde:  # actualiza "desde Bs N" en la descripcion del inicio (meta y og)
+        idx = out / "index.html"
+        t = idx.read_text(encoding="utf-8")
+        idx.write_text(re.sub(r"desde Bs \d+", f"desde {moneda} {desde:.0f}", t), encoding="utf-8")
+        print(f"Inicio: 'desde {moneda} {desde:.0f}'")
 
     (out / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
