@@ -790,3 +790,21 @@ body.est-ctx .producto-info__precio span { display: inline-block; background: va
 .est-sim__cat { font-size: var(--text-xs); color: var(--color-text-muted); }
 .est-sim__precio { font: 800 .95rem var(--font-display); }
 .est-sim__stock { font-size: var(--text-xs); color: var(--color-ok); font-weight: 700; }
+
+/* Carga de fotos: fondo gris con brillo + fundido de entrada (assets/js/img-carga.js) */
+.img-cargando { position: relative; overflow: hidden; background: var(--color-skeleton); }
+.img-cargando::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .6) 50%, transparent 70%);
+  transform: translateX(-100%); animation: imgBrillo 1.25s ease-in-out infinite;
+}
+.img-cargando img { opacity: 0; }
+.product-card__media img, .estante-card__media img, .est-sim__media img, .galeria__principal img, .galeria__miniatura img { transition: opacity .3s ease; }
+/* En la foto grande de la ficha, ademas, un aro de carga en el centro */
+.galeria__principal.img-cargando::before {
+  content: ""; position: absolute; left: 50%; top: 50%; z-index: 2; width: 38px; height: 38px; margin: -19px 0 0 -19px;
+  border-radius: 50%; border: 3px solid rgba(17, 17, 17, .14); border-top-color: var(--color-accent-ink, #111); animation: imgGira .8s linear infinite;
+}
+@keyframes imgBrillo { to { transform: translateX(100%); } }
+@keyframes imgGira { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .img-cargando::after, .galeria__principal.img-cargando::before { animation: none; } }

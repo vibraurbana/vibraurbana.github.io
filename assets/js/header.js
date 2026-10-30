@@ -2,6 +2,7 @@ import { contarUnidadesCarrito } from "./cart.js";
 import "./api.js";
 import "./analytics.js"; // GA4 en todas las paginas
 import { iniciarLayout } from "./layout.js";
+import { iniciarCargaImagenes } from "./img-carga.js";
 
 let ultimoConteo = null;
 
@@ -41,6 +42,7 @@ export function iniciarMenuMovil() {
 
 export function iniciarHeader() {
   iniciarLayout();
+  iniciarCargaImagenes();
   pintarContadorCarrito();
   iniciarMenuMovil();
 }
