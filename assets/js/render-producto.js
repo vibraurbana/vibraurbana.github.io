@@ -1,4 +1,5 @@
-import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, categoriaDeProducto } from "./data.js";
+import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, categoriaDeProducto, estanteActivo } from "./data.js";
+import { numeroEstanteHTML } from "./estante-num.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
 import { RUTA_PLACEHOLDER } from "./product-card.js";
@@ -42,6 +43,9 @@ function varianteSeleccionada() {
 
 function elegirColorInicial() {
   const colores = producto.colores || [];
+  // Desde el Estante LIVE se abre directo el color que se ve en pantalla (?color=ID).
+  const pedido = Number(new URLSearchParams(location.search).get("color"));
+  if (pedido && colores.some((c) => c.color_id === pedido)) return pedido;
   const conStock = colores.find((c) => (c.variantes || []).some((v) => v.stock > 0));
   return (conStock || colores[0])?.color_id ?? null;
 }
@@ -336,10 +340,61 @@ function iniciarGuiaTallas() {
 }
 
 /* ---------- Productos similares: mismo estilo, con stock ---------- */
+
+/* ---------- Estante LIVE: la ficha abierta desde el estante (?n=) ---------- */
+let estanteCtx = null; // { estante, numero } solo si ese numero del estante publicado es de ESTE producto
+
+function iniciarContextoEstante() {
+  const n = Number(new URLSearchParams(location.search).get("n"));
+  const est = n > 0 ? estanteActivo(catalogo) : null;
+  if (!est || !est.items.some((i) => i.numero === n && i.producto.id === producto.id)) return;
+  estanteCtx = { estante: est, numero: n };
+  document.body.classList.add("est-ctx");
+
+  const principal = els.galeriaImg?.parentElement;
+  if (principal) {
+    principal.insertAdjacentHTML("afterbegin", numeroEstanteHTML(n, "est-num--ficha"));
+    if (producto.es_nuevo) principal.insertAdjacentHTML("afterbegin", '<span class="est-nuevo">NUEVO</span>');
+  }
+  const cat = categoriaDeProducto(catalogo, producto);
+  const nombre = document.querySelector("[data-producto-nombre]");
+  if (cat && nombre) nombre.insertAdjacentHTML("afterend", `<p class="est-cat">Categoría: <strong>${cat.nombre}</strong></p>`);
+
+  const main = document.querySelector("main");
+  if (main) main.insertAdjacentHTML("beforeend",
+    `<a class="est-promo" href="estante.html"><span class="ico ico--corona" aria-hidden="true"></span>
+       <span><strong>¡No te quedes sin el tuyo!</strong><small>Mira todos los modelos del estante LIVE</small></span><b aria-hidden="true">›</b></a>`);
+}
+
+/** "También te puede interesar" dentro del estante: los demas modelos numerados. */
+function renderSimilaresEstante(seccion, grid) {
+  const otros = estanteCtx.estante.items.filter((i) => i.producto.id !== producto.id && stockTotal(i.producto) > 0).slice(0, 6);
+  if (!otros.length) return false;
+  grid.className = "est-sim-grid";
+  grid.innerHTML = otros.map((i) => {
+    const p = i.producto;
+    const color = (p.colores || []).find((c) => c.color_id === i.colorId) || (p.colores || [])[0];
+    const vars = (color?.variantes || []);
+    const precios = (vars.filter((v) => v.stock > 0).length ? vars.filter((v) => v.stock > 0) : vars).map((v) => Number(v.precio));
+    const img = color?.imagen_principal ? resolverImagen(color.imagen_principal) : RUTA_PLACEHOLDER;
+    const cat = categoriaDeProducto(catalogo, p);
+    const q = new URLSearchParams({ id: p.id, n: i.numero });
+    if (color) q.set("color", color.color_id);
+    return `<a class="est-sim" href="producto.html?${q}">
+        <span class="est-sim__media">${numeroEstanteHTML(i.numero, "est-num--mini")}<img src="${img}" alt="${p.nombre}" loading="lazy" onerror="this.src='${RUTA_PLACEHOLDER}'"></span>
+        <span class="est-sim__cat">${cat ? cat.nombre : ""}</span>
+        <strong class="est-sim__precio">${precios.length ? formatearPrecio(Math.min(...precios), catalogo.meta?.moneda) : "Consultar"}</strong>
+        <span class="est-sim__stock">En stock</span></a>`;
+  }).join("");
+  seccion.hidden = false;
+  return true;
+}
+
 function renderSimilares() {
   const seccion = document.querySelector("[data-similares]");
   const grid = document.querySelector("[data-similares-grid]");
   if (!seccion || !grid) return;
+  if (estanteCtx && renderSimilaresEstante(seccion, grid)) return;
   const mias = new Set(producto.etiquetas_ids || []);
   const candidatos = (catalogo.productos || []).filter((p) => p.id !== producto.id && stockTotal(p) > 0);
   // Mas peso al mismo estilo (etiquetas); si no hay, se usa la misma categoria.
@@ -424,6 +479,8 @@ async function iniciar() {
 
     estado.colorId = elegirColorInicial();
     estado.talla = elegirTallaInicial(estado.colorId);
+
+    iniciarContextoEstante();
 
     fijarMetaSEO();
     renderInfoFija();

@@ -11,10 +11,18 @@ const RUTA_CATALOGO = CATALOGO_BASE_URL
   : "data/catalogo.json";
 
 let catalogoCache = null;
+let catalogoPromesa = null;
 
-export async function cargarCatalogo() {
-  if (catalogoCache) return catalogoCache;
+// Una sola descarga aunque varias piezas (menu, pagina) pidan el catalogo a la vez.
+export function cargarCatalogo() {
+  if (catalogoCache) return Promise.resolve(catalogoCache);
+  if (!catalogoPromesa) {
+    catalogoPromesa = descargarCatalogo().catch((err) => { catalogoPromesa = null; throw err; });
+  }
+  return catalogoPromesa;
+}
 
+async function descargarCatalogo() {
   const res = await fetch(RUTA_CATALOGO);
   if (!res.ok) {
     throw new Error("No se pudo cargar el catalogo (" + res.status + ")");
@@ -27,6 +35,22 @@ export async function cargarCatalogo() {
   );
   fijarNumerosWhatsApp(catalogoCache.meta); // los numeros los define el sistema
   return catalogoCache;
+}
+
+/**
+ * Estante LIVE publicado por el sistema (catalogo.estante), con cada numero resuelto a su
+ * producto. Devuelve null si no hay estante o ningun modelo sigue visible en la web.
+ * Forma: { titulo, fecha, items: [{ numero, producto, colorId }] } ordenado por numero.
+ */
+export function estanteActivo(catalogo) {
+  const e = catalogo?.estante;
+  if (!e || !Array.isArray(e.items)) return null;
+  const porId = new Map((catalogo.productos || []).map((p) => [p.id, p]));
+  const items = e.items
+    .map((i) => ({ numero: Number(i.numero), producto: porId.get(i.producto_id), colorId: i.color_id ?? null }))
+    .filter((i) => i.producto && i.numero > 0)
+    .sort((a, b) => a.numero - b.numero);
+  return items.length ? { titulo: e.titulo || "Estante virtual", fecha: e.fecha || null, items } : null;
 }
 
 /**

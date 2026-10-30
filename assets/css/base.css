@@ -708,3 +708,85 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: var(--space-3);
 }
 .producto-info__indicadores[hidden] { display: none; }
+
+/* =====================================================================
+   ESTANTE VIRTUAL LIVE — piezas compartidas (menu, barra inferior, circulo, portada)
+   ===================================================================== */
+.est-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  background: var(--est-c, #1e88e5); color: #fff;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; line-height: 1; letter-spacing: -.02em;
+  border: 2px solid #fff; outline: 2px dashed rgba(255, 255, 255, .75); outline-offset: -5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+}
+.est-num--ficha { position: absolute; top: var(--space-3); left: var(--space-3); z-index: 3; width: 3.4rem; height: 3.4rem; font-size: 1.35rem; }
+.est-num--mini { width: 1.9rem; height: 1.9rem; font-size: .78rem; border-width: 1.5px; outline-offset: -4px; }
+
+.live-pill { display: inline-flex; align-items: center; gap: .3rem; background: #e11d48; color: #fff; font: 800 .66rem/1 var(--font-display); font-style: normal; letter-spacing: .05em; padding: .28rem .5rem; border-radius: 999px; }
+.live-pill i, .nav-live__dot { display: inline-block; width: .45rem; height: .45rem; border-radius: 50%; background: #fff; animation: estLive 1.4s ease-in-out infinite; }
+.nav-live { display: inline-flex; align-items: center; gap: .4rem; font-weight: 800; }
+.nav-live__dot { background: #e11d48; }
+@keyframes estLive { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .live-pill i, .nav-live__dot { animation: none; } }
+
+/* Menu movil: fila amarilla destacada + tarjeta "Modelos del dia" */
+.mobile-nav a.mobile-nav__live {
+  background: var(--color-accent); color: #111; border-radius: .8rem; margin: .35rem 0; padding: .7rem .8rem; border-bottom: 0;
+  font-weight: 800;
+}
+.mobile-nav a.mobile-nav__live .ico { color: #111; }
+.mobile-nav a.mobile-nav__live > span:not(.ico) { flex: 1; }
+.mobile-nav a.mobile-nav__live b, .mobile-nav a.mobile-nav__card b { font-size: 1.5rem; line-height: 1; font-weight: 700; }
+.mobile-nav a.mobile-nav__card {
+  display: flex; align-items: center; gap: .8rem; margin: var(--space-3) 0; padding: .7rem .8rem;
+  border: 1px solid rgba(255, 255, 255, .22); border-radius: .8rem; border-bottom: 1px solid rgba(255, 255, 255, .22);
+}
+.mobile-nav__card > span:nth-child(2) { flex: 1; display: block; }
+.mobile-nav__card strong { display: block; font: 800 .95rem var(--font-display); }
+.mobile-nav__card small { color: rgba(255, 255, 255, .7); }
+.mobile-nav__card-ico { position: relative; display: inline-flex; width: 3rem; height: 2.4rem; align-items: center; justify-content: center; }
+.mobile-nav__card-ico .ico { width: 1.9rem !important; height: 1.9rem !important; }
+.mobile-nav__card-ico i { position: absolute; left: 0; top: -.35rem; background: #e11d48; color: #fff; font: 800 .55rem/1 var(--font-display); font-style: normal; padding: .18rem .32rem; border-radius: .25rem; }
+
+/* Barra inferior con 4 botones; el del estante se resalta en amarillo */
+.bottom-nav.bottom-nav--4 { grid-template-columns: repeat(4, 1fr); }
+.bottom-nav .bottom-nav__live { color: var(--color-text); font-weight: 800; }
+.bottom-nav .bottom-nav__live .ico { color: #b45309; }
+.bottom-nav .bottom-nav__live[aria-current="page"] .ico { color: #111; }
+.bottom-nav .bottom-nav__live[aria-current="page"] { background: var(--color-accent); }
+.bottom-nav .bottom-nav__live[aria-current="page"]::before { display: none; }
+
+/* Portada: banner "Estante Virtual LIVE" (solo con estante publicado) */
+.live-banner { display: block; position: relative; overflow: hidden; margin: var(--space-4) auto; border-radius: 1rem; background: #0b0f17; color: #fff; text-decoration: none; }
+.live-banner__bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .38; filter: blur(1px) saturate(1.1); }
+.live-banner__in { position: relative; display: flex; align-items: center; gap: var(--space-4); padding: var(--space-5) var(--space-4); }
+.live-banner__txt { flex: 1; min-width: 0; }
+.live-banner__txt h2 { margin: .4rem 0 0; font: 800 clamp(1.25rem, 5vw, 1.8rem)/1.05 var(--font-display); text-transform: uppercase; }
+.live-banner__txt h2 em { color: var(--color-accent); font-style: normal; }
+.live-banner__txt p { margin: .35rem 0 0; color: rgba(255, 255, 255, .85); font-size: var(--text-small); }
+.live-banner__cta { flex: none; background: var(--color-accent); color: #111; font: 800 .85rem/1 var(--font-display); padding: .75rem 1rem; border-radius: .7rem; white-space: nowrap; }
+@media (max-width: 520px) { .live-banner__in { flex-wrap: wrap; } .live-banner__cta { width: 100%; text-align: center; } }
+
+/* Ficha de producto abierta desde el estante (?n=): precio amarillo y avisos como en el prototipo */
+body.est-ctx .producto-info__precio span { display: inline-block; background: var(--color-accent); color: #111; padding: .3rem .8rem; border-radius: .6rem; }
+.est-nuevo { position: absolute; top: var(--space-3); right: var(--space-3); z-index: 3; background: var(--color-accent); color: #111; font: 800 .75rem/1 var(--font-display); letter-spacing: .04em; padding: .4rem .65rem; border-radius: .4rem; }
+.est-cat { margin: 0 0 var(--space-3); font-size: var(--text-small); color: var(--color-text-muted); }
+.est-cat strong { color: var(--color-text); }
+.est-promo { display: flex; align-items: center; gap: var(--space-3); margin: var(--space-6) 0; padding: var(--space-4); background: #0b0f17; color: #fff; border-radius: .9rem; text-decoration: none; }
+.est-promo .ico { width: 2rem; height: 2rem; color: var(--color-accent); }
+.est-promo strong { display: block; font: 800 1rem var(--font-display); }
+.est-promo small { color: rgba(255, 255, 255, .75); }
+.est-promo b { margin-left: auto; font-size: 1.6rem; }
+
+/* "También te puede interesar" dentro del estante */
+.est-sim-grid { display: flex; gap: var(--space-3); overflow-x: auto; padding-bottom: var(--space-2); scrollbar-width: none; }
+.est-sim-grid::-webkit-scrollbar { display: none; }
+.est-sim { flex: 0 0 34%; max-width: 170px; min-width: 112px; display: flex; flex-direction: column; gap: .2rem; padding: .5rem; border: 1px solid var(--color-border); border-radius: .8rem; background: var(--color-bg-elevated); color: inherit; text-decoration: none; }
+.est-sim__media { position: relative; display: block; aspect-ratio: 1 / 1; border-radius: .6rem; overflow: hidden; background: var(--color-media); }
+.est-sim__media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.est-sim__media .est-num { position: absolute; top: .3rem; left: .3rem; z-index: 2; }
+.est-sim__cat { font-size: var(--text-xs); color: var(--color-text-muted); }
+.est-sim__precio { font: 800 .95rem var(--font-display); }
+.est-sim__stock { font-size: var(--text-xs); color: var(--color-ok); font-weight: 700; }

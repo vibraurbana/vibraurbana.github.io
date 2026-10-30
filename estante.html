@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estante Virtual · LIVE — VIBRA URBANA</title>
+<meta name="description" content="Los modelos del LIVE de VIBRA URBANA, ahora en tu celular: ve el número de cada modelo, elige color y talla y consúltalo por WhatsApp.">
+<meta name="theme-color" content="#111111">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="canonical" href="https://tiendavibraurbana.com/estante.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VIBRA URBANA">
+<meta property="og:locale" content="es_BO">
+<meta property="og:title" content="Estante Virtual LIVE — VIBRA URBANA">
+<meta property="og:description" content="Los modelos del LIVE, ahora en tu celular.">
+<meta property="og:url" content="https://tiendavibraurbana.com/estante.html">
+<meta property="og:image" content="https://tiendavibraurbana.com/assets/img/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<link rel="stylesheet" href="assets/css/iconos.css">
+<link rel="stylesheet" href="assets/css/catalogo.css">
+<link rel="stylesheet" href="assets/css/estante.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+
+    <a href="index.html" class="brand">
+      <picture class="brand__picture">
+        <img src="assets/img/logo-t.webp" alt="VIBRA URBANA" class="brand__logo">
+      </picture>
+    </a>
+
+    <nav class="site-header__nav" aria-label="Principal">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="como-comprar.html">Cómo comprar</a>
+      <a href="visitanos.html">Visítanos</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+
+    <div class="site-header__search">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="search" placeholder="Buscar productos..." aria-label="Buscar productos" onfocus="location.href='catalogo.html#buscar'" readonly>
+    </div>
+
+    <div class="site-header__icons">
+      <a class="site-header__icon-btn" href="carrito.html" aria-label="Ver carrito" title="Carrito">
+        <span class="ico ico--carrito" aria-hidden="true"></span>
+        <span class="cart-badge" data-cart-count hidden>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="estante-hero" data-estante-hero>
+    <div class="estante-hero__bg" data-estante-bg></div>
+    <div class="container estante-hero__in">
+      <span class="live-pill"><i></i>LIVE</span>
+      <h1 class="estante-hero__title">Estante virtual <em>Vibra Urbana</em></h1>
+      <p class="estante-hero__sub">Los modelos del LIVE, ahora en tu celular.</p>
+      <p class="estante-hero__meta"><strong data-estante-nombre></strong> <span data-estante-fecha></span></p>
+    </div>
+  </section>
+
+  <div class="estante-sheet">
+    <div class="container">
+      <div class="estante-tools" data-estante-tools>
+        <div class="estante-chips" data-estante-chips></div>
+        <label class="estante-num-search"><span>N.º</span>
+          <input type="number" inputmode="numeric" min="1" max="99" placeholder="Ir al…" aria-label="Buscar por número del estante" data-estante-num>
+        </label>
+      </div>
+
+      <div class="estante-grid" data-estante-grid></div>
+
+      <div class="estante-empty" data-estante-sin hidden>No hay modelos con ese filtro. <button type="button" class="estante-link" data-estante-reset>Ver todos</button></div>
+
+      <label class="estante-orden">
+        <span class="ico ico--ordenar" aria-hidden="true"></span> Ordenar por:
+        <select data-estante-orden aria-label="Ordenar el estante">
+          <option value="numero">Número del estante</option>
+          <option value="recientes">Más recientes</option>
+          <option value="precio-asc">Precio: menor a mayor</option>
+          <option value="precio-desc">Precio: mayor a menor</option>
+        </select>
+      </label>
+
+      <a class="est-promo" href="catalogo.html">
+        <span class="ico ico--corona" aria-hidden="true"></span>
+        <span><strong>Más modelos en el catálogo</strong><small>Mira todo lo que tenemos disponible</small></span>
+        <b aria-hidden="true">›</b>
+      </a>
+
+      <div class="estante-vacio" data-estante-vacio hidden>
+        <strong>No hay un LIVE activo en este momento</strong>
+        <p>Cuando empecemos una transmisión, aquí verás los modelos numerados. Mientras tanto, mira todo el catálogo.</p>
+        <a class="btn btn--primary" href="catalogo.html">Ver catálogo completo</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer"></footer>
+
+<script type="module" src="assets/js/render-estante.js"></script>
+</body>
+</html>

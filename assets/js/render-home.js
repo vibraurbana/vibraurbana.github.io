@@ -1,4 +1,4 @@
-import { cargarCatalogo, resolverImagen } from "./data.js";
+import { cargarCatalogo, resolverImagen, estanteActivo } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { medirSeleccionDeProductos } from "./analytics.js";
 import { tarjetaProductoHTML, RUTA_PLACEHOLDER } from "./product-card.js";
@@ -38,6 +38,17 @@ async function iniciar() {
 
   try {
     const catalogo = await cargarCatalogo();
+
+    // Banner del Estante Virtual (solo con LIVE publicado)
+    const est = estanteActivo(catalogo);
+    const bannerLive = document.querySelector("[data-live-banner]");
+    if (est && bannerLive) {
+      const p0 = est.items[0].producto;
+      const c0 = (p0.colores || []).find((c) => c.color_id === est.items[0].colorId) || (p0.colores || [])[0];
+      const bg = document.querySelector("[data-live-banner-bg]");
+      if (bg && c0?.imagen_principal) bg.style.backgroundImage = `url("${resolverImagen(c0.imagen_principal)}")`;
+      bannerLive.hidden = false;
+    }
     medirSeleccionDeProductos(catalogo, "home");
 
     if (estiloGrid) {

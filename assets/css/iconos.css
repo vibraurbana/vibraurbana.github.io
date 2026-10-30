@@ -122,3 +122,6 @@ body .wa-float img { width: 100%; height: 100%; display: block; }
 .local-foto figcaption { padding: var(--space-2) var(--space-3); font-size: .78rem; color: var(--color-text-muted); }
 .visit__foto { margin-bottom: var(--space-4); }
 @media (min-width: 1024px) { .visit { align-items: stretch; } }
+
+.ico--live { --i: url("../icons/ui/live.svg"); }
+.ico--corona { --i: url("../icons/ui/corona.svg"); }

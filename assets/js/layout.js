@@ -1,5 +1,6 @@
 import { ENLACES } from "./config.js";
 import { pintarEnlacesWhatsApp } from "./whatsapp.js";
+import { cargarCatalogo, estanteActivo } from "./data.js";
 
 // Piezas compartidas por TODAS las paginas (un solo lugar): menu, barra inferior y pie.
 // Los numeros de WhatsApp no estan aqui: llevan data-wa y los pinta whatsapp.js.
@@ -82,6 +83,44 @@ function menuHTML() {
   ${redes("social-links--menu")}`;
 }
 
+// ---- Estante Virtual LIVE ----
+// Solo aparece (menu, barra inferior, tarjeta del menu) mientras el sistema tenga un estante publicado.
+function aplicarEstante() {
+  cargarCatalogo().then((catalogo) => {
+    const estante = estanteActivo(catalogo);
+    if (!estante) return;
+    const activa = pagina() === "estante";
+
+    // Menu de escritorio: enlace con punto rojo parpadeante
+    const nav = document.querySelector(".site-header__nav");
+    if (nav && !nav.querySelector("[data-estante-link]")) {
+      const enlace = `<a href="estante.html" class="nav-live${activa ? " is-active" : ""}" data-estante-link><span class="nav-live__dot" aria-hidden="true"></span>Estante Virtual</a>`;
+      const cat = nav.querySelector('a[href="catalogo.html"]');
+      if (cat) cat.insertAdjacentHTML("afterend", enlace); else nav.insertAdjacentHTML("afterbegin", enlace);
+    }
+
+    // Menu movil: fila amarilla destacada (con LIVE y flecha) justo despues de "Inicio" + tarjeta "Modelos del dia"
+    const menu = document.querySelector("[data-mobile-nav]");
+    if (menu && !menu.querySelector("[data-estante-link]")) {
+      const fila = `<a href="estante.html" class="mobile-nav__live" data-estante-link>${ico("live")}<span>Estante Virtual</span><em class="live-pill"><i></i>LIVE</em><b aria-hidden="true">›</b></a>`;
+      const inicio = menu.querySelector('a[href="index.html"]');
+      if (inicio) inicio.insertAdjacentHTML("afterend", fila); else menu.insertAdjacentHTML("afterbegin", fila);
+      const titulo = menu.querySelector(".mobile-nav__titulo");
+      const tarjeta = `<a href="estante.html" class="mobile-nav__card" data-estante-link><span class="mobile-nav__card-ico">${ico("live")}<i>LIVE</i></span><span><strong>Estante Virtual</strong><small>Modelos del día</small></span><b aria-hidden="true">›</b></a>`;
+      if (titulo) titulo.insertAdjacentHTML("beforebegin", tarjeta); else menu.insertAdjacentHTML("beforeend", tarjeta);
+    }
+
+    // Barra inferior: 4 botones (Inicio | Catalogo | Estante | Buscar)
+    const barra = document.querySelector(".bottom-nav");
+    if (barra && !barra.querySelector("[data-estante-link]")) {
+      const b = `<a href="estante.html" class="bottom-nav__live" data-estante-link${activa ? ' aria-current="page"' : ""}>${ico("live")}<span>Estante</span></a>`;
+      const cat = barra.querySelector('a[href="catalogo.html"]');
+      if (cat) cat.insertAdjacentHTML("afterend", b); else barra.insertAdjacentHTML("beforeend", b);
+      barra.classList.add("bottom-nav--4");
+    }
+  }).catch(() => {}); // sin catalogo no hay estante: todo queda como siempre
+}
+
 export function iniciarLayout() {
   const activa = pagina();
   // Pie unico
@@ -130,4 +169,5 @@ export function iniciarLayout() {
   if (acc && ENLACES.maps) acc.insertAdjacentHTML("afterbegin", comoLlegar("btn btn--primary"));
 
   pintarEnlacesWhatsApp(); // los enlaces recien creados reciben el numero
+  aplicarEstante();
 }
