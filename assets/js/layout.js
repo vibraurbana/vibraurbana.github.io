@@ -55,7 +55,7 @@ function pieHTML() {
       <h2>COMPRAR Y ENVÍOS</h2>
       <p><a href="como-comprar.html">Cómo comprar</a></p>
       <p><a href="envios.html">Envíos y entregas</a></p>
-      <p><a href="cambios-devoluciones.html">Cambios y devoluciones</a></p>
+      <p><a href="politica-de-cambios.html">Política de cambios</a></p>
       <p><a href="quienes-somos.html">Quiénes somos</a></p>
       <p><a href="visitanos.html">Visítanos</a></p>
       <p><a href="contacto.html">Contacto</a></p>
@@ -75,7 +75,7 @@ function menuHTML() {
   ${it("catalogo.html", "catalogo", "Catálogo")}
   ${it("como-comprar.html", "documento", "Cómo comprar")}
   ${it("envios.html", "delivery", "Envíos y entregas")}
-  ${it("cambios-devoluciones.html", "transferencia", "Cambios y devoluciones")}
+  ${it("politica-de-cambios.html", "transferencia", "Política de cambios")}
   ${it("quienes-somos.html", "tienda", "Quiénes somos")}
   ${it("visitanos.html", "mapa", "Visítanos")}
   ${it("contacto.html", "llamar", "Contacto")}

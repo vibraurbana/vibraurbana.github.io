@@ -20,7 +20,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 EXCLUIR = {".git", ".github", "tools", "data", "_site", "node_modules", "__pycache__", ".gitignore"}
 PAGINAS = ["", "catalogo.html", "como-comprar.html", "envios.html", "visitanos.html",
-           "cambios-devoluciones.html", "contacto.html",
+           "politica-de-cambios.html", "contacto.html",
            "quienes-somos.html", "politica-de-privacidad.html", "terminos-y-condiciones.html"]
 UA = {"User-Agent": "Mozilla/5.0 (VibraUrbana-SiteBuilder)"}
 

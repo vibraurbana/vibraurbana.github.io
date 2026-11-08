@@ -24,9 +24,9 @@
 - Corregido: rejilla de tarjetas en la ficha, carrito "vacío" que seguía mostrando la lista, aviso "Agregado" sobre la barra inferior, flecha "atrás" duplicada junto a la hamburguesa.
 
 # Fase 4 — Confianza
-- Páginas nuevas: como-comprar.html, envios.html, visitanos.html, cambios-devoluciones.html, contacto.html (con título, descripción y canonical propios; todas en sitemap.xml).
+- Páginas nuevas: como-comprar.html, envios.html, visitanos.html, politica-de-cambios.html, contacto.html (con título, descripción y canonical propios; todas en sitemap.xml).
 - Redes (asumidas): facebook.com/tiendavibraurbana, tiktok.com/@tiendavibraurbana, instagram.com/tiendavibraurbana. Se cambian en `assets/js/config.js` > ENLACES (y en el JSON-LD de index.html).
-- Cambios y devoluciones: es un EJEMPLO BASICO (3 días, producto sin uso con etiquetas, falla de fábrica, cómo solicitarlo). Revisar plazos y condiciones antes de publicar; está marcado con un comentario en el HTML.
+- Política de cambios: es un EJEMPLO BASICO (3 días, producto sin uso con etiquetas, falla de fábrica, cómo solicitarlo). Revisar plazos y condiciones antes de publicar; está marcado con un comentario en el HTML.
 - Menú, pie y navegación de escritorio enlazan a las páginas nuevas. El botón "Cómo llegar" aparece solo cuando se pegue el enlace exacto de Google Maps en ENLACES.maps.
 - Los números de WhatsApp de todas las páginas salen del JSON del sistema.
 
