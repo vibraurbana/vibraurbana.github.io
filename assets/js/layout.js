@@ -59,7 +59,7 @@ function pieHTML() {
       <p><a href="quienes-somos.html">Quiénes somos</a></p>
       <p><a href="visitanos.html">Visítanos</a></p>
       <p><a href="contacto.html">Contacto</a></p>
-      <p class="site-footer__small">Retiro en tienda · Delivery local · Encomiendas hasta las <em>17:00</em></p>
+      <p class="site-footer__small">Retiro en tienda · Delivery local · Encomiendas hasta las <em>16:00</em></p>
     </div>
   </div>
   <div class="site-footer__bottom">
