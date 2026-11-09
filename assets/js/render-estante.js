@@ -1,4 +1,4 @@
-import { cargarCatalogo, estanteActivo, resolverImagen, categoriaDeProducto } from "./data.js";
+import { cargarCatalogo, estanteActivo, resolverImagenTarjeta, onerrorImagen, categoriaDeProducto } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { numeroEstanteHTML } from "./estante-num.js";
 import { RUTA_PLACEHOLDER, idsIndicadores } from "./product-card.js";
@@ -31,7 +31,8 @@ function vistaDeItem(item) {
     color,
     precio: precios.length ? Math.min(...precios) : Infinity,
     agotado: conStock.length === 0,
-    imagen: color?.imagen_principal ? resolverImagen(color.imagen_principal) : RUTA_PLACEHOLDER,
+    imagen: color?.imagen_principal ? resolverImagenTarjeta(color.imagen_principal) : RUTA_PLACEHOLDER,
+    ruta: color?.imagen_principal || "",
   };
 }
 
@@ -56,7 +57,7 @@ function tarjetaHTML(item) {
         ${p.es_nuevo ? '<span class="estante-card__nuevo">NUEVO</span>' : ""}
         ${chip ? `<span class="estante-card__tag">${esc(chip)}</span>` : ""}
         ${v.agotado ? '<span class="estante-card__agotado">Agotado</span>' : ""}
-        <img src="${esc(v.imagen)}" alt="${esc(p.nombre)}" loading="lazy" decoding="async" onerror="this.src='${RUTA_PLACEHOLDER}'">
+        <img src="${esc(v.imagen)}" alt="${esc(p.nombre)}" loading="lazy" decoding="async" onerror="${onerrorImagen(v.ruta, RUTA_PLACEHOLDER)}">
       </span>
     </a>`;
 }

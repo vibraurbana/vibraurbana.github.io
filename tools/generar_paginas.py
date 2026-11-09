@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-EXCLUIR = {".git", ".github", "tools", "data", "_site", "node_modules", "__pycache__", ".gitignore"}
+EXCLUIR = {".git", ".github", "tools", "data", "_site", ".espejo", "node_modules", "__pycache__", ".gitignore"}
 PAGINAS = ["", "catalogo.html", "como-comprar.html", "envios.html", "visitanos.html",
            "politica-de-cambios.html", "contacto.html",
            "quienes-somos.html", "politica-de-privacidad.html", "terminos-y-condiciones.html"]
@@ -113,11 +113,13 @@ def precio_desde_zapatos(cat):
     return min(lista) if lista else None
 
 
-def hacer_og(url, destino):
-    """Descarga la foto y la deja en 1200x630 (liviana: WhatsApp descarta imagenes muy pesadas)."""
+def hacer_og(url, destino, local=None):
+    """Deja la foto en 1200x630 (liviana: WhatsApp descarta imagenes muy pesadas).
+    Si ya hay copia local (espejo) la usa; si no, la descarga del servidor."""
     from PIL import Image
     try:
-        img = Image.open(io.BytesIO(descargar(url))).convert("RGB")
+        datos = local.read_bytes() if local is not None and local.is_file() else descargar(url)
+        img = Image.open(io.BytesIO(datos)).convert("RGB")
     except Exception as e:
         print(f"  aviso: sin imagen ({e.__class__.__name__}) {url}")
         return False
@@ -177,6 +179,8 @@ def main():
     ap.add_argument("--json", help="URL o ruta del catalogo.json (por defecto: el de config.js)")
     ap.add_argument("--out", default="_site")
     ap.add_argument("--sin-imagenes", action="store_true", help="no descargar fotos (pruebas)")
+    ap.add_argument("--cache", default=".espejo", help="carpeta donde se guardan las fotos ya optimizadas entre corridas")
+    ap.add_argument("--sin-espejo", action="store_true", help="no copiar las fotos al sitio")
     a = ap.parse_args()
 
     base, sitio = leer_config()
@@ -192,9 +196,24 @@ def main():
 
     plantilla = (RAIZ / "producto.html").read_text(encoding="utf-8")
 
+    cache = (RAIZ / a.cache).resolve()
+    mapa = {}
+    if a.sin_imagenes or a.sin_espejo or not base:
+        print("Espejo de fotos: desactivado")
+    else:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import espejo_imagenes
+        shutil.rmtree(out / "uploads", ignore_errors=True)   # solo se publican las versiones livianas del espejo
+        try:
+            mapa = espejo_imagenes.sincronizar(cat, base, out, cache, descargar, raiz=RAIZ)
+        except Exception as e:  # el espejo es una mejora: si falla, el sitio se publica igual
+            print(f"AVISO: espejo de fotos omitido ({e.__class__.__name__}: {e})")
+
     def og(p):
-        url = url_imagen(imagen_principal(p), base)
-        return p["id"], bool(url and not a.sin_imagenes and hacer_og(url, out / "og" / f"{p['id']}.jpg"))
+        ruta = imagen_principal(p)
+        url = url_imagen(ruta, base)
+        local = cache / mapa[ruta.lstrip("/")]["g"] if ruta and ruta.lstrip("/") in mapa else None
+        return p["id"], bool((url or local) and not a.sin_imagenes and hacer_og(url, out / "og" / f"{p['id']}.jpg", local))
     with ThreadPoolExecutor(max_workers=8) as ex:
         con_og = dict(ex.map(og, prods))
 

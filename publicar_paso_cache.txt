@@ -1,0 +1,11 @@
+# En .github/workflows/publicar.yml, ANTES del paso "Generar paginas de producto" (job "construir"), agrega:
+
+      - name: Cache de fotos (solo se procesan las nuevas)
+        uses: actions/cache@v4
+        with:
+          path: .espejo
+          key: espejo-${{ github.run_id }}
+          restore-keys: espejo-
+
+# Y en .gitignore agrega una linea:
+.espejo/

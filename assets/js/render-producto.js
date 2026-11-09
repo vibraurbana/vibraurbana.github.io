@@ -1,4 +1,4 @@
-import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, categoriaDeProducto, estanteActivo } from "./data.js";
+import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, resolverImagenTarjeta, onerrorImagen, respaldoImagen, categoriaDeProducto, estanteActivo } from "./data.js";
 import { numeroEstanteHTML } from "./estante-num.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
@@ -61,13 +61,18 @@ function elegirTallaInicial(colorId) {
 function renderGaleria() {
   const color = colorDelProducto(estado.colorId);
   const rutasCrudas = color && color.imagenes && color.imagenes.length ? color.imagenes : null;
-  const imagenes = rutasCrudas ? rutasCrudas.map(resolverImagen) : [RUTA_PLACEHOLDER];
+  const imagenes = rutasCrudas ? rutasCrudas.map((r) => resolverImagen(r)) : [RUTA_PLACEHOLDER];
+  const minis = rutasCrudas ? rutasCrudas.map((r) => resolverImagenTarjeta(r)) : [RUTA_PLACEHOLDER];
   const idx = Math.min(estado.miniaturaIndex, imagenes.length - 1);
 
   const cambiarImagen = () => {
     els.galeriaImg.src = imagenes[idx];
     els.galeriaImg.alt = producto.nombre;
-    els.galeriaImg.onerror = () => { els.galeriaImg.src = RUTA_PLACEHOLDER; };
+    els.galeriaImg.onerror = () => {
+      const r = rutasCrudas ? respaldoImagen(rutasCrudas[idx]) : "";
+      els.galeriaImg.onerror = () => { els.galeriaImg.src = RUTA_PLACEHOLDER; };
+      els.galeriaImg.src = r || RUTA_PLACEHOLDER;
+    };
     requestAnimationFrame(() => els.galeriaImg.classList.remove("is-cambiando"));
   };
 
@@ -83,9 +88,9 @@ function renderGaleria() {
 
   els.miniaturas.innerHTML = imagenes
     .map(
-      (src, i) => `
+      (_, i) => `
       <button type="button" class="galeria__miniatura${i === idx ? " is-active" : ""}" data-mini="${i}">
-        <img src="${src}" alt="" onerror="this.src='${RUTA_PLACEHOLDER}'">
+        <img src="${minis[i]}" alt="" onerror="${onerrorImagen(rutasCrudas ? rutasCrudas[i] : "", RUTA_PLACEHOLDER)}">
       </button>`
     )
     .join("");
@@ -165,6 +170,33 @@ function renderTallas() {
       renderTodo();
     });
   });
+
+  renderMedidaTalla();
+}
+
+/* Guia de tallas del producto: { "39": "25 cm", ... } (la envia el sistema en catalogo.json). */
+function guiaDelProducto() {
+  const g = producto && producto.guia_tallas;
+  if (!g || typeof g !== "object" || Array.isArray(g)) return [];
+  return Object.entries(g)
+    .filter(([, medida]) => String(medida ?? "").trim() !== "")
+    .map(([talla, medida]) => ({ talla: String(talla), medida: String(medida).trim() }))
+    
+    .sort((a, b) => (parseFloat(a.talla) - parseFloat(b.talla)) || a.talla.localeCompare(b.talla, "es", { numeric: true }));
+}
+
+/* Debajo de los chips: la medida de la talla elegida. */
+function renderMedidaTalla() {
+  const el = els.tallaMedida;
+  if (!el) return;
+  const m = estado.talla ? guiaDelProducto().find((x) => x.talla === String(estado.talla)) : null;
+  if (!m) { el.hidden = true; el.textContent = ""; return; }
+  el.innerHTML = `Talla ${escapar(m.talla)} · medida <b>${escapar(m.medida)}</b>`;
+  el.hidden = false;
+}
+
+function escapar(t) {
+  return String(t ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
 /* ---------- Render: precio + disponibilidad + accion ---------- */
@@ -329,12 +361,23 @@ function iniciarCompartir() {
 function iniciarGuiaTallas() {
   const btn = document.querySelector("[data-guia-tallas]");
   const dlg = document.querySelector("[data-guia-dialog]");
-  if (!btn || !dlg || !String(GUIA_TALLAS).trim()) return;
+  const guia = guiaDelProducto();
+  const textoGuia = [producto?.medidas_texto, GUIA_TALLAS].map((t) => String(t || "").trim()).filter(Boolean).join("\n\n");
+  if (!btn || !dlg || (!guia.length && !textoGuia)) return;
   const texto = dlg.querySelector("[data-guia-texto]");
-  texto.textContent = GUIA_TALLAS;
+  const tabla = dlg.querySelector("[data-guia-tabla]");
+  texto.textContent = textoGuia;
+  texto.hidden = !textoGuia;
   texto.style.whiteSpace = "pre-line";
   btn.hidden = false;
-  btn.addEventListener("click", () => dlg.showModal());
+  btn.addEventListener("click", () => {
+    if (tabla) {
+      tabla.innerHTML = guia.map((m) =>
+        `<div class="guia-tabla__fila${String(estado.talla) === m.talla ? " is-actual" : ""}"><span>${escapar(m.talla)}</span><b>${escapar(m.medida)}</b></div>`
+      ).join("");
+    }
+    dlg.showModal();
+  });
   dlg.querySelector("[data-guia-cerrar]").addEventListener("click", () => dlg.close());
   dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
 }
@@ -376,12 +419,12 @@ function renderSimilaresEstante(seccion, grid) {
     const color = (p.colores || []).find((c) => c.color_id === i.colorId) || (p.colores || [])[0];
     const vars = (color?.variantes || []);
     const precios = (vars.filter((v) => v.stock > 0).length ? vars.filter((v) => v.stock > 0) : vars).map((v) => Number(v.precio));
-    const img = color?.imagen_principal ? resolverImagen(color.imagen_principal) : RUTA_PLACEHOLDER;
+    const img = color?.imagen_principal ? resolverImagenTarjeta(color.imagen_principal) : RUTA_PLACEHOLDER;
     const cat = categoriaDeProducto(catalogo, p);
     const q = new URLSearchParams({ id: p.id, n: i.numero });
     if (color) q.set("color", color.color_id);
     return `<a class="est-sim" href="producto.html?${q}">
-        <span class="est-sim__media">${numeroEstanteHTML(i.numero, "est-num--mini")}<img src="${img}" alt="${p.nombre}" loading="lazy" onerror="this.src='${RUTA_PLACEHOLDER}'"></span>
+        <span class="est-sim__media">${numeroEstanteHTML(i.numero, "est-num--mini")}<img src="${img}" alt="${p.nombre}" loading="lazy" onerror="${onerrorImagen(color?.imagen_principal, RUTA_PLACEHOLDER)}"></span>
         <span class="est-sim__cat">${cat ? cat.nombre : ""}</span>
         <strong class="est-sim__precio">${precios.length ? formatearPrecio(Math.min(...precios), catalogo.meta?.moneda) : "Consultar"}</strong>
         <span class="est-sim__stock">En stock</span></a>`;
@@ -450,6 +493,7 @@ async function iniciar() {
   els.colorSwatches = document.querySelector("[data-color-swatches]");
   els.colorValor = document.querySelector("[data-color-valor]");
   els.tallaChips = document.querySelector("[data-talla-chips]");
+  els.tallaMedida = document.querySelector("[data-talla-medida]");
   els.marca = document.querySelector("[data-producto-marca]");
   els.nombre = document.querySelector("[data-producto-nombre]");
   els.descripcion = document.querySelector("[data-producto-desc]");

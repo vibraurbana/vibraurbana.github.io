@@ -22,7 +22,23 @@ export function cargarCatalogo() {
   return catalogoPromesa;
 }
 
+// Fotos ya copiadas al propio sitio (las genera tools/espejo_imagenes.py al publicar):
+// { "uploads/productos/x.jpg": { g: "<foto grande>", m: "<foto mediana para tarjetas>" } }
+// Si la foto esta en esa lista se usa la copia local (no gasta el servidor del sistema); si no, la del servidor.
+let fotosEspejo = new Map();
+async function cargarEspejo() {
+  if (!CATALOGO_BASE_URL) return;
+  try {
+    const r = await fetch("espejo.json", { cache: "no-cache" });
+    if (r.ok) {
+      const j = await r.json();
+      if (j && j.v === 2 && j.imagenes) fotosEspejo = new Map(Object.entries(j.imagenes));
+    }
+  } catch (_) { /* sin espejo: todo sale del servidor, como antes */ }
+}
+
 async function descargarCatalogo() {
+  const espejoListo = cargarEspejo();
   const res = await fetch(RUTA_CATALOGO);
   if (!res.ok) {
     throw new Error("No se pudo cargar el catalogo (" + res.status + ")");
@@ -34,6 +50,7 @@ async function descargarCatalogo() {
     (p) => p.activo !== false && p.visible_web !== false && p.visible_web !== 0 && p.visible_web !== "0"
   );
   fijarNumerosWhatsApp(catalogoCache.meta); // los numeros los define el sistema
+  await espejoListo;
   return catalogoCache;
 }
 
@@ -62,11 +79,33 @@ export function estanteActivo(catalogo) {
  * No usar esto con RUTA_PLACEHOLDER (assets/icons/...): ese es un
  * recurso propio de este proyecto, no un dato del catálogo.
  */
-export function resolverImagen(ruta) {
+export function resolverImagen(ruta, tipo = "g") {
   if (!ruta) return ruta;
   if (/^https?:\/\//i.test(ruta)) return ruta;
   if (!CATALOGO_BASE_URL) return ruta;
+  const limpia = ruta.replace(/^\//, "");
+  const copia = fotosEspejo.get(limpia);
+  if (copia && copia[tipo]) return copia[tipo];                       // copia local (GitHub Pages)
+  return `${CATALOGO_BASE_URL.replace(/\/$/, "")}/${limpia}`;        // la del servidor del sistema
+}
+
+/** Version liviana (tarjetas, listados, miniaturas). Si aun no esta copiada, es la normal. */
+export function resolverImagenTarjeta(ruta) {
+  return resolverImagen(ruta, "m");
+}
+
+/** Foto original en el servidor del sistema: respaldo si la copia local fallara. "" en modo local. */
+export function respaldoImagen(ruta) {
+  if (!ruta || !CATALOGO_BASE_URL || /^https?:\/\//i.test(ruta)) return "";
   return `${CATALOGO_BASE_URL.replace(/\/$/, "")}/${ruta.replace(/^\//, "")}`;
+}
+
+/** Atributo onerror: primero el respaldo (si es otra URL), luego el icono por defecto. */
+export function onerrorImagen(ruta, placeholder) {
+  const r = respaldoImagen(ruta);
+  return r
+    ? `if(this.dataset.r!=='1'){this.dataset.r='1';this.src='${r}'}else{this.src='${placeholder}'}`
+    : `this.src='${placeholder}'`;
 }
 
 export function formatearPrecio(valor, moneda) {

@@ -27,6 +27,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pillow
+      - name: Cache de fotos (solo se procesan las nuevas)
+        uses: actions/cache@v4
+        with:
+          path: .espejo
+          key: espejo-${{ github.run_id }}
+          restore-keys: espejo-
       - name: Generar paginas de producto
         run: python tools/generar_paginas.py --out _site
       - uses: actions/configure-pages@v5

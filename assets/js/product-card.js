@@ -1,4 +1,4 @@
-import { formatearPrecio, precioDesde, imagenPrincipal, resolverImagen, categoriaDeProducto } from "./data.js";
+import { formatearPrecio, precioDesde, imagenPrincipal, resolverImagenTarjeta, onerrorImagen, categoriaDeProducto } from "./data.js";
 
 export const RUTA_PLACEHOLDER = "assets/icons/shoe-placeholder.svg";
 
@@ -81,7 +81,7 @@ function puntosColorHTML(catalogo, producto) {
 
 export function tarjetaProductoHTML(catalogo, producto) {
   const rutaImagen = imagenPrincipal(producto);
-  const imagen = rutaImagen ? resolverImagen(rutaImagen) : RUTA_PLACEHOLDER;
+  const imagen = rutaImagen ? resolverImagenTarjeta(rutaImagen) : RUTA_PLACEHOLDER;
   // Las etiquetas especiales (indicadores) no van como insignia sobre la foto: se dibujan aparte.
   const esIndicador = idsIndicadores(producto);
   const primeraEtiquetaId = (producto.etiquetas_ids || []).find((id) => !esIndicador.has(id));
@@ -99,7 +99,7 @@ export function tarjetaProductoHTML(catalogo, producto) {
         ${primeraEtiqueta ? `<span class="product-card__tag">${primeraEtiqueta.nombre}</span>` : ""}
         ${insignia}
         <img src="${imagen}" alt="${producto.nombre}" loading="lazy" decoding="async"
-             onerror="this.src='${RUTA_PLACEHOLDER}'">
+             onerror="${onerrorImagen(rutaImagen, RUTA_PLACEHOLDER)}">
       </span>
       <span class="product-card__body">
         <span class="product-card__name">${producto.nombre}</span>
