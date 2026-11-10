@@ -82,6 +82,18 @@ async function postJSON(ruta, cuerpo) {
   return { ok: false };
 }
 
+/** Identificador anonimo de este navegador (sin datos personales): sirve para reconocer pedidos repetidos del mismo dispositivo. */
+function idDispositivo() {
+  try {
+    let id = localStorage.getItem("vu_dispositivo");
+    if (!/^[a-f0-9-]{16,40}$/.test(id || "")) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join(""));
+      localStorage.setItem("vu_dispositivo", id);
+    }
+    return id;
+  } catch { return ""; }
+}
+
 /** Registra el pedido en el sistema. Respuesta: { ok, datos: { codigo, total, items } }. */
 export function enviarPedido(carrito) {
   // Carritos guardados antes de existir variante_id no se pueden registrar:
@@ -90,6 +102,7 @@ export function enviarPedido(carrito) {
   return postJSON("pedido", {
     origen: origenVisita(),
     hp: "", // campo trampa: un bot lo rellena, una persona nunca
+    dispositivo_id: idDispositivo(),
     items: carrito.map((i) => ({ variante_id: i.varianteId, cantidad: i.cantidad })),
   });
 }
