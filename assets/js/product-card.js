@@ -1,4 +1,4 @@
-import { formatearPrecio, precioDesde, imagenPrincipal, resolverImagenTarjeta, onerrorImagen, categoriaDeProducto } from "./data.js";
+import { formatearPrecio, precioAntesMin, precioDesde, imagenPrincipal, resolverImagenTarjeta, onerrorImagen, categoriaDeProducto } from "./data.js";
 
 export const RUTA_PLACEHOLDER = "assets/icons/shoe-placeholder.svg";
 
@@ -60,10 +60,15 @@ export function estadoStock(producto) {
 /** Precio unico ("Bs 130") o "Desde Bs 130" si las variantes tienen precios distintos. */
 function precioHTML(catalogo, producto) {
   const precios = [];
-  for (const c of producto.colores || []) for (const v of c.variantes || []) precios.push(Number(v.precio));
+  const vars = [];
+  for (const c of producto.colores || []) for (const v of c.variantes || []) { precios.push(Number(v.precio)); vars.push(v); }
   if (!precios.length) return "Consultar";
   const min = Math.min(...precios);
   const moneda = catalogo.meta?.moneda;
+  const antes = producto.en_oferta ? precioAntesMin(vars) : null;
+  if (antes) {
+    return `<s class="precio-antes">${formatearPrecio(antes, moneda)}</s><span class="precio-oferta">${formatearPrecio(min, moneda)}</span>`;
+  }
   return Math.max(...precios) === min
     ? formatearPrecio(min, moneda)
     : `<span class="product-card__price-from">Desde</span>${formatearPrecio(min, moneda)}`;

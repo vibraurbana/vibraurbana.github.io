@@ -1,4 +1,5 @@
 import { enviarPedido } from "./api.js";
+import { promoActiva } from "./data.js";
 import { construirMensajeWhatsApp, construirUrlWhatsApp } from "./whatsapp.js";
 import { track, itemCarrito, valorCarrito, MONEDA_GA } from "./analytics.js";
 
@@ -8,7 +9,13 @@ import { track, itemCarrito, valorCarrito, MONEDA_GA } from "./analytics.js";
 /** El servidor es la fuente de verdad del precio: se usan sus precios en el mensaje. */
 function conPreciosDelServidor(carrito, itemsServidor) {
   const porVariante = new Map((itemsServidor || []).map((i) => [i.variante_id, i.precio_unitario]));
-  return carrito.map((i) => (porVariante.has(i.varianteId) ? { ...i, precio: porVariante.get(i.varianteId) } : i));
+  const promo = promoActiva();
+  return carrito.map((i) => {
+    if (!porVariante.has(i.varianteId)) return i;
+    // Liquidacion: el sistema aun registra el precio normal; al cliente se le mantiene el de la oferta.
+    if (promo && Number(i.precio) === promo.precio && porVariante.get(i.varianteId) > promo.precio) return i;
+    return { ...i, precio: porVariante.get(i.varianteId) };
+  });
 }
 
 export function textoSinStock(carrito, noDisponibles) {

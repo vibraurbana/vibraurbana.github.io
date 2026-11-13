@@ -39,6 +39,20 @@ export function agregarAlCarrito(item) {
   return carrito;
 }
 
+/** Alinea los precios guardados en el carrito con los vigentes del catalogo (promocion o cambio de precio). */
+export function sincronizarPrecios(precioPorSku) {
+  const carrito = obtenerCarrito();
+  let cambio = false;
+  for (const item of carrito) {
+    const p = precioPorSku.get(item.sku);
+    if (p !== undefined && Number(p) > 0 && Number(item.precio) !== Number(p)) {
+      item.precio = Number(p);
+      cambio = true;
+    }
+  }
+  if (cambio) guardarCarrito(carrito);
+}
+
 export function contarUnidadesCarrito() {
   return obtenerCarrito().reduce((total, item) => total + (item.cantidad || 0), 0);
 }

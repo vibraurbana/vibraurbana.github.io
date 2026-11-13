@@ -37,7 +37,63 @@ async function cargarEspejo() {
   } catch (_) { /* sin espejo: todo sale del servidor, como antes */ }
 }
 
+// ── Promocion temporal (promo.json) ─────────────────────────────────────────────
+// Los productos con la etiqueta `etiqueta_id` pasan a `precio` hasta la fecha `hasta` (inclusive).
+// No toca el sistema: solo cambia lo que se muestra y se manda por WhatsApp. Al vencer la fecha
+// (o poner "activa": false) la web vuelve sola a los precios del sistema.
+let promoVigente = null;
+
+export function promoActiva() {
+  return promoVigente;
+}
+
+async function cargarPromo() {
+  try {
+    const r = await fetch("promo.json", { cache: "no-cache" });
+    if (!r.ok) return null;
+    const p = await r.json();
+    const fin = new Date(`${p.hasta}T23:59:59`);
+    if (!p.activa || !(Number(p.precio) > 0) || !p.etiqueta_id || isNaN(fin) || new Date() > fin) return null;
+    return { ...p, precio: Number(p.precio), etiqueta_id: Number(p.etiqueta_id) };
+  } catch {
+    return null;
+  }
+}
+
+function aplicarPromo(catalogo, promo) {
+  if (!promo) return;
+  for (const p of catalogo.productos || []) {
+    if (!(p.etiquetas_ids || []).includes(promo.etiqueta_id)) continue;
+    for (const c of p.colores || []) {
+      for (const v of c.variantes || []) {
+        const normal = Number(v.precio);
+        if (normal > promo.precio) {
+          v.precio_antes = normal;
+          v.precio = promo.precio;
+          p.en_oferta = true;
+        }
+      }
+    }
+  }
+  const css = document.createElement("style");
+  css.textContent = `
+    .precio-antes { text-decoration: line-through; color: var(--color-text-muted, #777); font-weight: 600; font-size: .8em; margin-right: 6px; }
+    .precio-oferta { color: #d62828; }
+    .promo-pill { display: inline-block; background: #d62828; color: #fff; font-size: .65rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .promo-banner { background: #d62828; color: #fff; border-radius: 14px; padding: 14px 18px; margin: 0 0 16px; display: flex; flex-direction: column; gap: 2px; }
+    .promo-banner strong { font-size: 1.05rem; letter-spacing: .02em; }
+    .promo-banner span { font-size: .9rem; opacity: .95; }`;
+  document.head.appendChild(css);
+}
+
+/** Precio "antes" (sin promocion) de un conjunto de variantes, o null si no hay oferta. */
+export function precioAntesMin(variantes) {
+  const antes = (variantes || []).map((v) => Number(v.precio_antes)).filter((n) => n > 0);
+  return antes.length ? Math.min(...antes) : null;
+}
+
 async function descargarCatalogo() {
+  const promoLista = cargarPromo();
   const espejoListo = cargarEspejo();
   const res = await fetch(RUTA_CATALOGO);
   if (!res.ok) {
@@ -50,6 +106,8 @@ async function descargarCatalogo() {
     (p) => p.activo !== false && p.visible_web !== false && p.visible_web !== 0 && p.visible_web !== "0"
   );
   fijarNumerosWhatsApp(catalogoCache.meta); // los numeros los define el sistema
+  promoVigente = await promoLista;
+  aplicarPromo(catalogoCache, promoVigente);
   await espejoListo;
   return catalogoCache;
 }

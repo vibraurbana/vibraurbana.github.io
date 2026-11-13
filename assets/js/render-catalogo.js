@@ -1,4 +1,4 @@
-import { cargarCatalogo, precioDesde } from "./data.js";
+import { cargarCatalogo, precioDesde, promoActiva } from "./data.js";
 import { iniciarHeader } from "./header.js";
 import { track, medirSeleccionDeProductos } from "./analytics.js";
 import { tarjetaProductoHTML, stockTotal } from "./product-card.js";
@@ -128,7 +128,20 @@ function ordenar(lista) {
   }
 }
 
+function pintarBannerPromo() {
+  const promo = promoActiva();
+  const previo = document.getElementById("promoBanner");
+  if (previo) previo.remove();
+  if (!promo || estado.etiquetaId !== promo.etiqueta_id || !els.chips) return;
+  const hasta = new Date(`${promo.hasta}T12:00:00`).toLocaleDateString("es-BO", { day: "numeric", month: "long" });
+  els.chips.insertAdjacentHTML(
+    "beforebegin",
+    `<div class="promo-banner" id="promoBanner"><strong>${promo.titulo}</strong><span>${promo.texto} · hasta el ${hasta}</span></div>`
+  );
+}
+
 function pintarChips() {
+  pintarBannerPromo();
   const activas = (catalogoGlobal.etiquetas || [])
     .filter((e) => e.visible_en_chips)
     .sort((a, b) => (a.orden || 0) - (b.orden || 0));

@@ -1,4 +1,4 @@
-import { cargarCatalogo, formatearPrecio, etiquetasDeProducto, resolverImagen, resolverImagenTarjeta, onerrorImagen, respaldoImagen, categoriaDeProducto, estanteActivo } from "./data.js";
+import { cargarCatalogo, precioAntesMin, formatearPrecio, etiquetasDeProducto, resolverImagen, resolverImagenTarjeta, onerrorImagen, respaldoImagen, categoriaDeProducto, estanteActivo } from "./data.js";
 import { numeroEstanteHTML } from "./estante-num.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
 import { agregarAlCarrito } from "./cart.js";
@@ -205,14 +205,19 @@ function renderPrecioYDisponibilidad() {
   const moneda = catalogo.meta.moneda;
 
   if (variante) {
-    els.precio.innerHTML = formatearPrecio(variante.precio, moneda);
+    els.precio.innerHTML = variante.precio_antes
+      ? `<s class="precio-antes">${formatearPrecio(variante.precio_antes, moneda)}</s><span class="precio-oferta">${formatearPrecio(variante.precio, moneda)}</span><span class="promo-pill">Liquidación</span>`
+      : formatearPrecio(variante.precio, moneda);
     els.precioHint.hidden = true;
   } else {
     const color = colorDelProducto(estado.colorId);
     const precios = (color?.variantes || []).map((v) => v.precio);
     const desde = precios.length ? Math.min(...precios) : null;
+    const antes = precioAntesMin(color?.variantes);
     els.precio.innerHTML = desde !== null
-      ? `<span class="product-card__price-from">Desde</span>${formatearPrecio(desde, moneda)}`
+      ? (antes
+        ? `<s class="precio-antes">${formatearPrecio(antes, moneda)}</s><span class="precio-oferta">${formatearPrecio(desde, moneda)}</span><span class="promo-pill">Liquidación</span>`
+        : `<span class="product-card__price-from">Desde</span>${formatearPrecio(desde, moneda)}`)
       : "Consultar";
     els.precioHint.hidden = false;
     els.precioHint.textContent = "Elige una talla para ver el precio exacto";

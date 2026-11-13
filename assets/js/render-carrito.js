@@ -1,6 +1,6 @@
 import { cargarCatalogo, formatearPrecio } from "./data.js";
 import { iniciarHeader, pintarContadorCarrito } from "./header.js";
-import { obtenerCarrito, actualizarCantidad, eliminarDelCarrito, calcularTotal, vaciarCarrito } from "./cart.js";
+import { obtenerCarrito, actualizarCantidad, eliminarDelCarrito, calcularTotal, vaciarCarrito, sincronizarPrecios } from "./cart.js";
 import { construirMensajeWhatsApp, construirUrlWhatsApp } from "./whatsapp.js";
 import { precargarToken } from "./api.js";
 import { solicitarPorWhatsApp, textoSinStock } from "./solicitud.js";
@@ -152,6 +152,7 @@ async function iniciar() {
 
   try {
     catalogoGlobal = await cargarCatalogo();
+    sincronizarPrecios(new Map((catalogoGlobal.productos || []).flatMap((p) => (p.colores || []).flatMap((c) => (c.variantes || []).map((v) => [v.sku, v.precio])))));
     render();
     const inicial = obtenerCarrito();
     if (inicial.length) {

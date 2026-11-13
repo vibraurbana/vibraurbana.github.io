@@ -13,7 +13,7 @@ Uso:
 Requiere: Python 3.9+ y Pillow (pip install pillow).
 Si no puede leer el catalogo, TERMINA CON ERROR: asi el sitio ya publicado no se pisa con uno vacio.
 """
-import argparse, html, io, json, re, shutil, sys, time, unicodedata, urllib.request
+import argparse, datetime, html, io, json, re, shutil, sys, time, unicodedata, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -66,6 +66,30 @@ def cargar_catalogo(origen, base):
     if not cat["productos"]:
         sys.exit("ERROR: el catalogo no trae productos; no se publica nada.")
     return cat
+
+
+def aplicar_promo(cat):
+    """promo.json: los productos con esa etiqueta salen con el precio de la oferta (mismo criterio que la web)."""
+    ruta = RAIZ / "promo.json"
+    if not ruta.is_file():
+        return
+    try:
+        p = json.loads(ruta.read_text(encoding="utf-8"))
+        vence = datetime.date.fromisoformat(p["hasta"])
+        precio, etiqueta = float(p["precio"]), int(p["etiqueta_id"])
+    except Exception as e:
+        print(f"AVISO: promo.json ilegible, se ignora ({e.__class__.__name__})")
+        return
+    if not p.get("activa") or datetime.date.today() > vence:
+        return
+    n = 0
+    for prod in cat.get("productos", []):
+        if etiqueta in (prod.get("etiquetas_ids") or []):
+            for v in variantes(prod):
+                if v.get("precio") is not None and float(v["precio"]) > precio:
+                    v["precio"] = precio
+                    n += 1
+    print(f"Promocion activa: {n} variantes a {precio:.0f} hasta {vence}")
 
 
 def variantes(p):
@@ -190,6 +214,7 @@ def main():
     shutil.copytree(RAIZ, out, ignore=lambda d, n: [x for x in n if x in EXCLUIR or x.endswith(".md")])
 
     cat = cargar_catalogo(a.json, base)
+    aplicar_promo(cat)
     moneda = cat.get("meta", {}).get("moneda", "Bs")
     prods = cat["productos"]
     print(f"{len(prods)} productos visibles")
