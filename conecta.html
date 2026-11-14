@@ -1,82 +1,79 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Conecta con VIBRA URBANA — Calzado urbano y casual</title>
-<meta name="description" content="Catálogo, WhatsApp, redes sociales y ubicación de VIBRA URBANA en Santa Cruz, Bolivia.">
-<meta name="theme-color" content="#111111">
-<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css">
-<style>
-  * { box-sizing: border-box; }
-  body { margin: 0; min-height: 100vh; background: #111; color: #fff; font-family: var(--font-body); display: flex; justify-content: center; }
-  .cx { width: 100%; max-width: 440px; padding: 32px 16px 40px; text-align: center; }
-  .cx__logo { width: 170px; height: auto; margin: 0 auto 12px; display: block; }
-  .cx__lema { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; margin: 0; }
-  .cx__sub { color: #c8cbd0; font-size: .9rem; margin: 6px 0 24px; }
-  .cx__lista { display: grid; gap: 12px; }
-  .cx__btn { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 18px; border-radius: 14px;
-    font-weight: 700; font-size: 1rem; text-decoration: none; color: #fff; background: #22262b; border: 1px solid #343a40; }
-  .cx__btn:hover { border-color: #6b7178; }
-  .cx__btn img { width: 24px; height: 24px; }
-  .cx__btn--cat { background: var(--color-accent); color: #111; border-color: var(--color-accent); font-size: 1.05rem; }
-  .cx__btn--wa { background: var(--color-wa); border-color: var(--color-wa); }
-  .cx__sep { margin: 12px 0 0; color: #9aa0a6; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
-  .cx__pie { margin-top: 28px; color: #9aa0a6; font-size: .82rem; line-height: 1.5; }
-  [hidden] { display: none !important; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conecta con VIBRA URBANA | Calzado y ropa urbana</title>
+  <meta name="description" content="Encuentra el catálogo de VIBRA URBANA, consulta por WhatsApp y síguenos en nuestras redes sociales. Santa Cruz de la Sierra, Bolivia.">
+  <meta name="theme-color" content="#ffcc17">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/conecta.css">
 </head>
 <body>
-<main class="cx">
-  <img class="cx__logo" src="assets/img/logo-t.webp" alt="VIBRA URBANA" width="170" height="71">
-  <p class="cx__lema">Calzado urbano y casual</p>
-  <p class="cx__sub">Encuentra todo sobre nosotros</p>
+  <main class="connect-shell">
+    <section class="brand-panel" aria-label="Vibra Urbana">
+      <div class="brand-panel__topline"><span>ESTILO QUE SE MUEVE</span><span class="brand-panel__dot"></span><span>SANTA CRUZ · BOLIVIA</span></div>
+      <a class="brand-panel__logo" href="index.html" aria-label="Ir a la tienda VIBRA URBANA"><img src="assets/img/logo-t.webp" alt="VIBRA URBANA"></a>
+      <div class="brand-panel__copy">
+        <p class="eyebrow">CALZADO · ROPA · ACTITUD</p>
+        <h1>ENCUENTRA<br> TU <span>VIBRA.</span></h1>
+        <p class="brand-panel__intro">Tu próximo estilo empieza aquí.</p>
+      </div>
+      <div class="brand-panel__visual">
+        <div class="brand-panel__burst" aria-hidden="true">TU<br>ESTILO<br>TU REGLA</div>
+        <img class="brand-panel__shoe" src="assets/img/todo_terreno.webp" alt="Modelo de calzado de VIBRA URBANA">
+        <span class="brand-panel__visual-tag">NUEVOS<br>ESTILOS</span>
+      </div>
+      <div class="brand-panel__bottom"><span>VIBRA URBANA</span><span>MODA URBANA Y CASUAL</span></div>
+    </section>
 
-  <div class="cx__lista">
-    <a class="cx__btn cx__btn--cat" href="catalogo.html" data-c="catalogo">Ver catálogo</a>
-    <a class="cx__btn cx__btn--wa" href="#" data-wa="principal" data-wa-texto="Hola%2C%20te%20escribo%20desde%20el%20QR%20de%20la%20tienda%20VIBRA%20URBANA." target="_blank" rel="noopener" data-c="whatsapp">
-      <img src="assets/icons/color/whatsapp.svg" alt="">Escríbenos por WhatsApp</a>
-    <div id="redes" class="cx__lista"></div>
-    <a class="cx__btn" id="mapa" href="#" target="_blank" rel="noopener" data-c="maps" hidden>Cómo llegar</a>
-    <a class="cx__btn" href="como-comprar.html" data-c="como-comprar">Cómo comprar</a>
-  </div>
+    <section class="links-panel" aria-label="Enlaces de VIBRA URBANA">
+      <header class="links-heading">
+        <span class="links-heading__kicker">BIENVENIDO A</span>
+        <h2>VIBRA <span>URBANA</span></h2>
+        <p>Todo lo que buscas, en un solo lugar.</p>
+      </header>
 
-  <p class="cx__pie">Comercial Cañoto · Pasillo Toborochi · Local #163<br>Santa Cruz de la Sierra · Lunes a sábado, 10:00 – 19:00</p>
-</main>
+      <div class="primary-actions">
+        <a class="link-card link-card--catalog" href="catalogo.html">
+          <span class="link-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v13H4zM8 5.5V3h8v2.5M8 10h8M8 14h5"/></svg></span>
+          <span class="link-card__text"><strong>Explorar catálogo</strong><small>Descubre calzados y ropa</small></span>
+          <span class="link-card__arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="link-card link-card--whatsapp" href="https://wa.me/59162441699?text=Hola%20Vibra%20Urbana%2C%20quiero%20consultar%20por%20sus%20productos." target="_blank" rel="noopener">
+          <span class="link-card__icon" aria-hidden="true"><img src="assets/icons/color/whatsapp.svg" alt=""></span>
+          <span class="link-card__text"><strong>Escríbenos por WhatsApp</strong><small>Consulta tallas, precios y disponibilidad</small></span>
+          <span class="link-card__arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
 
-<script type="module">
-import { ENLACES } from "./assets/js/config.js";
-import { track } from "./assets/js/analytics.js";
-import { cargarCatalogo } from "./assets/js/data.js";
-import { pintarEnlacesWhatsApp } from "./assets/js/whatsapp.js";
+      <div class="section-label"><span>SÍGUENOS</span><i></i></div>
+      <div class="social-grid">
+        <a class="social-link" href="https://www.instagram.com/vibraurbanastore" target="_blank" rel="noopener"><img src="assets/icons/color/instagram.svg" alt=""><span><strong>Instagram</strong><small>@vibraurbanastore</small></span><b>↗</b></a>
+        <a class="social-link" href="https://www.tiktok.com/@tiendavibraurbana" target="_blank" rel="noopener"><img src="assets/icons/color/tiktok.svg" alt=""><span><strong>TikTok</strong><small>@tiendavibraurbana</small></span><b>↗</b></a>
+        <a class="social-link" href="https://www.facebook.com/vibraurbanastore" target="_blank" rel="noopener"><img src="assets/icons/color/facebook.svg" alt=""><span><strong>Facebook</strong><small>Vibra Urbana Store</small></span><b>↗</b></a>
+      </div>
 
-// Cuentas de redes: [icono, texto del botón, enlace]. Para agregar o quitar una, edita esta lista.
-const REDES = [
-  ["instagram", "Instagram", "https://www.instagram.com/tiendavibraurbana/"],
-  ["tiktok", "TikTok · @tiendavibraurbana", "https://www.tiktok.com/@tiendavibraurbana"],
-  ["facebook", "Facebook", "https://www.facebook.com/tiendavibraurbana"],
-  ["tiktok", "TikTok · @vibra_urbana_zapatos", "https://www.tiktok.com/@vibra_urbana_zapatos"],
-  ["tiktok", "TikTok · @step.trend.store", "https://www.tiktok.com/@step.trend.store"],
-];
+      <div class="section-label section-label--more"><span>MÁS DE VIBRA</span><i></i></div>
+      <div class="extra-links">
+        <a href="https://www.tiktok.com/@vibra_urbana_zapatos" target="_blank" rel="noopener"><span class="extra-links__mark">♪</span> TikTok · @vibra_urbana_zapatos <b>↗</b></a>
+        <a href="https://www.tiktok.com/@step.trend.store" target="_blank" rel="noopener"><span class="extra-links__mark">♪</span> TikTok · @step.trend.store <b>↗</b></a>
+      </div>
 
-document.getElementById("redes").innerHTML = REDES.filter((r) => r[2]).map(([k, n, url]) =>
-  `<a class="cx__btn" href="${url}" target="_blank" rel="noopener" data-c="${url.split('.com/')[1].replace(/[\/@]/g, '')}"><img src="assets/icons/color/${k}.svg" alt="">${n}</a>`).join("");
+      <div class="help-links">
+        <a href="como-comprar.html"><span>¿Cómo comprar?</span><b>→</b></a>
+        <a href="https://maps.app.goo.gl/AUSX7GjwjWWY48CX7" target="_blank" rel="noopener"><span>Cómo llegar a la tienda</span><b>→</b></a>
+      </div>
 
-const mapa = document.getElementById("mapa");
-if (ENLACES.maps) { mapa.href = ENLACES.maps; mapa.hidden = false; }
-
-pintarEnlacesWhatsApp();
-cargarCatalogo().then(() => pintarEnlacesWhatsApp()).catch(() => {});
-
-document.addEventListener("click", (e) => {
-  const a = e.target.closest("[data-c]");
-  if (a) track("click_conecta", { destino: a.dataset.c });
-});
-</script>
+      <footer class="store-info">
+        <span class="store-info__pin" aria-hidden="true">⌖</span>
+        <div><strong>Comercial Cañoto · Pasillo Toborochi · Local #163</strong><p>Santa Cruz de la Sierra, Bolivia</p><p>Lunes a sábado · 10:00 – 19:00</p></div>
+      </footer>
+      <p class="copyright">© 2026 VIBRA URBANA · TU ESTILO VIBRA.</p>
+    </section>
+  </main>
 </body>
 </html>
